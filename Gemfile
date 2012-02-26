@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 group :runtime do
-  gem "gisele", :path => "../gisele" #"~> 0.5.0"
+  gem "gisele", "0.5.0"
 end
 
 group :development do
