@@ -1,7 +1,7 @@
 grammar Gisele::VM::GvmFile
 
   rule file
-    ((trailing_space block)+ trailing_space){
+    ((trailing_space block)+ end_of_file?){
       bls = self[:block].map{|x| x.value}
       if bls.all?{|b| Integer===b.first}
         bls.map{|b| b.last}
@@ -13,6 +13,10 @@ grammar Gisele::VM::GvmFile
         h
       end
     }
+  end
+
+  rule end_of_file
+    trailing_space ('__END__' .*)?
   end
 
   rule block
