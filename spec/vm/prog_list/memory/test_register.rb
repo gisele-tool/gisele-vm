@@ -1,7 +1,7 @@
 require 'spec_helper'
 class Gisele::VM
-  describe ProgList, 'register' do
-    let(:list){ ProgList.new }
+  describe ProgList::Memory, 'register' do
+    let(:list){ ProgList::Memory.new }
 
     it 'returns a valid UUID' do
       uuid = list.register(Prog.new)

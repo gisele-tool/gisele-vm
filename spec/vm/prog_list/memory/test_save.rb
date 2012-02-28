@@ -1,7 +1,7 @@
 require 'spec_helper'
 class Gisele::VM
-  describe ProgList, 'save' do
-    let(:list){ ProgList.new }
+  describe ProgList::Memory, 'save' do
+    let(:list){ ProgList::Memory.new }
 
     before do
       @uuid = list.register(Prog.new)
