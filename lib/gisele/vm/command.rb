@@ -32,8 +32,8 @@ module Gisele
         bytecode = GvmFile.parse(file.read).value
 
         # create the prog list instance
-        list = ProgList.new
-        list.register Prog.new
+        list = ProgList::EndOfFile.new(file)
+        list.register(Prog.new) if list.empty?
 
         # take the uuid if any
         uuid = args.shift || 0
