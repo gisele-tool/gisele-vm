@@ -8,14 +8,14 @@ module Gisele
       end
 
       it 'parses a block with one instruction' do
-        expected = [0, [ [:dump] ] ]
+        expected = [:block, 0, [:dump] ]
         parse(<<-BLOCK.strip).value.should eq(expected)
           0:  dump
         BLOCK
       end
 
       it 'parses a block with two instructions' do
-        expected = [0, [ [:dump], [:pop, 3] ] ]
+        expected = [:block, 0, [:dump], [:pop, 3] ]
         parse(<<-BLOCK.strip).value.should eq(expected)
           0:  dump
               pop 3
@@ -23,7 +23,7 @@ module Gisele
       end
 
       it 'supports comments' do
-        expected = [0, [ [:dump], [:pop, 3] ] ]
+        expected = [:block, 0, [:dump], [:pop, 3] ]
         parse(<<-BLOCK.strip).value.should eq(expected)
           0:  dump     # blah
               pop 3    # blih

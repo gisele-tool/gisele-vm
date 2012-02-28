@@ -7,21 +7,15 @@ module Gisele
         GvmFile.parse(src)
       end
 
-      it 'returns an array if all symbols are integers' do
-        expected = [[ [:dump], [:pop, 3] ], [ [:hello] ]]
+      it 'returns a [:gvm] array' do
+        expected = \
+          [:gvm,
+            [ :block, 0, [:dump], [:pop, 3] ],
+            [ :block, 1, [:hello] ] ]
         parse(<<-BLOCK.strip).value.should eq(expected)
           0: dump
              pop 3
           1: hello
-        BLOCK
-      end
-
-      it 'returns a hash if not all symbols are integers' do
-        expected = {:a => [ [:dump], [:pop, 3] ], :b => [ [:hello] ] }
-        parse(<<-BLOCK.strip).value.should eq(expected)
-          a: dump
-             pop 3
-          b: hello
         BLOCK
       end
 

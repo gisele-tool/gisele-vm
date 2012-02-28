@@ -2,16 +2,7 @@ grammar Gisele::VM::GvmFile
 
   rule file
     ((trailing_space block)+ end_of_file?){
-      bls = self[:block].map{|x| x.value}
-      if bls.all?{|b| Integer===b.first}
-        bls.map{|b| b.last}
-      else
-        h = Hash.new
-        bls.each do |bl|
-          h[bl.first] = bl.last
-        end
-        h
-      end
+      [:gvm] + self[:block].map{|x| x.value}
     }
   end
 
@@ -21,7 +12,7 @@ grammar Gisele::VM::GvmFile
 
   rule block
     (label (spacing instruction)+){
-      [ self[:label].first.value, self[:instruction].map{|x| x.value} ]
+      [:block, self[:label].first.value] + self[:instruction].map{|x| x.value}
     }
   end
 
