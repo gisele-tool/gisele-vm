@@ -43,7 +43,7 @@ module Gisele
           if found
             yield(io)
           elsif mode == 'r+'
-            io << "__END__\n"
+            io << "\n__END__\n"
             yield(io)
           else
             raise "Unable to find __END__"

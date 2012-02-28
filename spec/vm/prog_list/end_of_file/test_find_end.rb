@@ -27,7 +27,7 @@ class Gisele::VM::ProgList
     context 'when __END__ cannot be found but mode is r+' do
 
       before do
-        file.write("blah\nblih\nbluh\n")
+        file.write("blah\nblih\nbluh")
       end
 
       it 'adds it at the end' do
