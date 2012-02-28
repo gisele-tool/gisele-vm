@@ -51,6 +51,21 @@ module Gisele
          push arr.reverse
        end
 
+       # Pops an array of argument `args`. Pops a method name `m` (Symbol). Pops an object
+       # `o`. Invoke `m` on `o`, passing arguments `args`. Push the result on the stack.
+       def op_send
+         args = pop
+         m = pop
+         o = pop
+         push o.send(m, *args)
+       end
+
+       # Same as `op_send` but does not keep the result on the stack.
+       def op_invoke
+         op_send
+         op_pop
+       end
+
                                                                   ### TOP PROGRAM HANDLING
 
       # Pushes the parent uuid of the top program.

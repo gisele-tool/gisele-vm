@@ -21,6 +21,8 @@ module Gisele
            :op_notify,
            :op_pop,
            :op_push,
+           :op_send,
+           :op_invoke,
            :op_slice,
            :op_resume
 
