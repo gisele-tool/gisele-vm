@@ -3,7 +3,7 @@ class Gisele::VM
   describe Prog do
 
     let(:h){
-      {:uuid => "uuid", :parent => "parent", :pc => 12, :wait => [:a]}
+      {:uuid => "uuid", :parent => "parent", :pc => 12, :wait => [:a], :start => true}
     }
 
     it 'has defaults' do
@@ -12,14 +12,16 @@ class Gisele::VM
       s.parent.should be_nil
       s.pc.should eq(0)
       s.wait.should eq([])
+      s.start.should eq(false)
     end
 
     it 'understand options' do
-      s = Prog.new(:uuid => "uuid", :parent => "parent", :pc => 12, :wait => [:a])
+      s = Prog.new(h)
       s.uuid.should eq("uuid")
       s.parent.should eq("parent")
       s.pc.should eq(12)
       s.wait.should eq([:a])
+      s.start.should eq(true)
     end
 
     it 'provides a to_hash' do

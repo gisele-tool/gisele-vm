@@ -5,16 +5,18 @@ module Gisele
       attr_accessor :parent
       attr_accessor :pc
       attr_accessor :wait
+      attr_accessor :start
 
       def initialize(attrs = {})
         @uuid   = attrs[:uuid]   || nil
         @parent = attrs[:parent] || nil
         @pc     = attrs[:pc]     || 0
         @wait   = attrs[:wait]   || []
+        @start  = attrs[:start]  || false
       end
 
       def to_hash
-        {:uuid => uuid, :parent => parent, :pc => pc, :wait => wait}
+        {:uuid => uuid, :parent => parent, :pc => pc, :wait => wait, :start => start}
       end
 
       def dup
