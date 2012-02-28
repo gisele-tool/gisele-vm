@@ -29,7 +29,7 @@ module Gisele
         unless (file = Path(args.shift)).exist?
           raise Quickl::IOAccessError, "File does not exists: #{file}"
         end
-        bytecode = Gvm.parse(file.read).value
+        bytecode = Gvm.bytecode(file)
 
         # create the prog list instance
         list = ProgList::EndOfFile.new(file)
@@ -42,7 +42,17 @@ module Gisele
         vm = VM.new(uuid, bytecode, list)
 
         # Run it
-        vm.run
+        begin
+          vm.run
+        rescue Exception => ex
+          puts "Error occured: #{ex.message}"
+          puts ex.backtrace.join("\n")
+          puts "--- Stack"
+          puts vm.stack.join("\n")
+          puts "--- Opcodes"
+          puts vm.opcodes.join("\n")
+          exit(1)
+        end
 
         # Puts the current proglist
         puts vm.proglist.to_relation
