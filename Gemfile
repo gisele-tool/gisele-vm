@@ -1,7 +1,8 @@
 source 'http://rubygems.org'
 
 group :runtime do
-  gem "gisele", "0.5.0"
+  gem "gisele", "~> 0.5.0"
+  gem "alf", :git => "git://github.com/blambeau/alf.git"
 end
 
 group :development do
