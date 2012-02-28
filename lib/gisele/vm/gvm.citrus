@@ -1,0 +1,83 @@
+grammar Gisele::VM::GvmFile
+
+  rule file
+    ((trailing_space block)+ trailing_space){
+      bls = self[:block].map{|x| x.value}
+      if bls.all?{|b| Integer===b.first}
+        bls.map{|b| b.last}
+      else
+        h = Hash.new
+        bls.each do |bl|
+          h[bl.first] = bl.last
+        end
+        h
+      end
+    }
+  end
+
+  rule block
+    (label (spacing instruction)+){
+      [ self[:label].first.value, self[:instruction].map{|x| x.value} ]
+    }
+  end
+
+  rule instruction
+    (opcode (spaces arglist)? spacing (eol_comment | eol)){
+      [self[:opcode].first.value] + Array(self[:arglist].map{|x| x.value}.first)
+    }
+  end
+
+  rule arglist
+    (arg (spacing ',' spacing arg)*){ self[:arg].map{|x| x.value} }
+  end
+
+  rule opcode
+    ([a-z]+){ strip.to_sym }
+  end
+
+  rule label
+      ([0-9]+ ':'){ strip[0...-1].to_i }
+    | ([a-zA-Z0-9_-]+ ":"){ strip[0...-1].to_sym }
+  end
+
+  rule arg
+    int | symbol | string
+  end
+
+  rule int
+   ( '0' | [1-9] [0-9]*){ strip.to_i }
+  end
+
+  rule symbol
+    (':' [a-zA-Z] [a-zA-Z0-9_]*){ strip[1..-1].to_sym }
+  end
+
+  rule string
+    ("'" (!"'" .)* "'"){ strip[1...-1] }
+  end
+
+  rule trailing_space
+    (eol_comment | spaces | [\n])*
+  end
+
+  rule eol_comment
+    "#" (![\n] .)* eol
+  end
+
+  rule spaces
+    space+
+  end
+
+  rule spacing
+    space*
+  end
+
+  rule space
+    [ \t]
+  end
+
+  rule eol
+    [\n] | !.
+  end
+
+end

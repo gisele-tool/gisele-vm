@@ -1,0 +1,16 @@
+# This file demonstrates the use of comments
+# in .gvm files
+
+# Below is the first block of instructions
+0: self
+   fetch    # comments are allowed here
+   save     # as well as here
+   
+# A second block here
+1: break    
+   dump     # and here also
+
+# trailing comments are allowed as well
+
+
+# as well as trailign spaces
