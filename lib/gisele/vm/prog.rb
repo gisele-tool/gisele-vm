@@ -9,7 +9,7 @@ module Gisele
 
       def initialize(attrs = {})
         @uuid   = attrs[:uuid]   || nil
-        @parent = attrs[:parent] || nil
+        @parent = attrs[:parent] || @uuid
         @pc     = attrs[:pc]     || 0
         @wait   = attrs[:wait]   || []
         @start  = attrs[:start]  || false
