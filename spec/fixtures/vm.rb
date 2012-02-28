@@ -10,6 +10,7 @@ module Gisele
     public :op_pushc,
            :op_self,
            :op_parent,
+           :op_pc,
            :op_fetch,
            :op_setpc,
            :op_start,

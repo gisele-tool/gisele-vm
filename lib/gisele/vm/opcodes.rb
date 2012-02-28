@@ -19,6 +19,11 @@ module Gisele
         push peek.parent
       end
 
+      # Pushes the program counter of the top program.
+      def op_pc
+        push peek.pc
+      end
+
       # Pops an uuid. Fetches and pushes the corresponding program.
       def op_fetch
         push @proglist.fetch(pop)
