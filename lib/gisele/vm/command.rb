@@ -5,7 +5,7 @@ module Gisele
     #
     # SYNOPSIS
     #   gvm [--version] [--help]
-    #   gvm GVM_FILE
+    #   gvm GVM_FILE [UUID]
     #
     # OPTIONS
     # #{summarized_options}
@@ -23,11 +23,29 @@ module Gisele
       end
 
       def execute(args)
-        raise Quickl::Help unless args.size == 1
+        raise Quickl::Help unless [1,2].include? args.size
 
-        unless (file = Path(args.first)).exist?
+        # find the .gvm file and parse it
+        unless (file = Path(args.shift)).exist?
           raise Quickl::IOAccessError, "File does not exists: #{file}"
         end
+        bytecode = GvmFile.parse(file.read).value
+
+        # create the prog list instance
+        list = ProgList.new
+        list.register Prog.new
+
+        # take the uuid if any
+        uuid = args.shift || 0
+
+        # build the virtual machine
+        vm = VM.new(uuid, bytecode, list)
+
+        # Run it
+        vm.run
+
+        # Puts the current proglist
+        puts vm.proglist.to_relation
       end
 
     end # class Command
