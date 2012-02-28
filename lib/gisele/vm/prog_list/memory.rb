@@ -22,6 +22,10 @@ module Gisele
           }
         end
 
+        def empty?
+          @progs.empty?
+        end
+
         def to_relation
           Alf::Relation(@progs.map{|p| p.to_hash})
         end
