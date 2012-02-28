@@ -66,6 +66,11 @@ module Gisele
         peek.start = true
       end
 
+      # Set the `start` attribute to false on the top program
+      def op_stop
+        peek.start = false
+      end
+
       # Pops the top program from the stack. Saves it. Pushes its uuid back on
       # the stack.
       def op_save

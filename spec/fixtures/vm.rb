@@ -14,6 +14,7 @@ module Gisele
            :op_fetch,
            :op_setpc,
            :op_start,
+           :op_stop,
            :op_save,
            :op_new,
            :op_wait,
