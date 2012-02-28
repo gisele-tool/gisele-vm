@@ -22,6 +22,10 @@ module Gisele
         @progs[prog.uuid] = prog.dup
       end
 
+      def to_relation
+        Alf::Relation(@progs.map{|p| p.to_hash})
+      end
+
     end # class ProgList
   end # class VM
 end # module Gisele

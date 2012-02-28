@@ -45,5 +45,12 @@ class Gisele::VM
       list.fetch(0).pc.should eq(12)
     end
 
+    it 'helps getting a relation' do
+      2.times do list.register(Prog.new) end
+      list.to_relation.should be_a(Alf::Relation)
+      expected = Relation(:uuid => [0, 1])
+      list.to_relation.project([:uuid]).should eq(expected)
+    end
+
   end
 end
