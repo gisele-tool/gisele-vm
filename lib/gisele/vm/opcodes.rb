@@ -30,6 +30,11 @@ module Gisele
         peek.pc = label
       end
 
+      # Set the `start` attribute to true on the top program
+      def op_start
+        peek.start = true
+      end
+
       # Pops the top program from the stack. Saves it. Pushes its uuid back on
       # the stack.
       def op_save
@@ -64,10 +69,6 @@ module Gisele
       def op_resume
         label = pop
         @opcodes += @bytecode[label] if peek.wait.empty?
-      end
-
-      # Pops a uuid. Enlists it for further starting by the VM.
-      def op_start
       end
 
       # Make a native call to the object called `name`

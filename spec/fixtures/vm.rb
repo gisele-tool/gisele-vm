@@ -12,6 +12,7 @@ module Gisele
            :op_parent,
            :op_fetch,
            :op_setpc,
+           :op_start,
            :op_save,
            :op_new,
            :op_wait,
