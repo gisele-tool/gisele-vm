@@ -1,4 +1,3 @@
-require_relative '../../gisele-vm'
 module Gisele
   class VM
     #
