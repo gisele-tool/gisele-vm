@@ -33,10 +33,15 @@ module Gisele
 
                                                                  ### DATA STACK MANAGEMENT
 
-      # Pops the top element from the stack.
-      def op_pop
-        pop
-      end
+       # Pushes `arg` on the data stack.
+       def op_push(arg)
+         push arg
+       end
+
+       # Pops the top element from the stack.
+       def op_pop
+         pop
+       end
 
                                                                   ### TOP PROGRAM HANDLING
 

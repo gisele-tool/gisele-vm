@@ -19,6 +19,7 @@ module Gisele
            :op_wait,
            :op_notify,
            :op_pop,
+           :op_push,
            :op_resume
 
   end
