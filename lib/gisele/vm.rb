@@ -22,7 +22,6 @@ module Gisele
         op = @opcodes.shift
         send :"op_#{op.first}", *op[1..-1]
       end
-      op_save
     end
 
   private
@@ -32,6 +31,7 @@ module Gisele
       @opcodes << [:fetch]  # fetch the corresponding Prog
       @opcodes << [:pc]     # push the program counter
       @opcodes << [:pushc]  # load the instructions
+      @opcodes << [:pop]    # pop the Prog
     end
 
     def push(x)

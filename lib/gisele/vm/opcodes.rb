@@ -64,7 +64,7 @@ module Gisele
       # Pops the top program from the stack. Saves it. Pushes its uuid back on
       # the stack.
       def op_save
-        @proglist.save pop
+        push @proglist.save pop
       end
 
       # Pops an uuid. Adds it to the notifying list of the peek program.

@@ -16,6 +16,7 @@ module Gisele
         vm.proglist.fetch(0).pc.should eq(0)
         vm.op_save
         vm.proglist.fetch(0).pc.should eq(12)
+        vm.stack.should eq([ @at0.uuid ])
       end
 
     end
