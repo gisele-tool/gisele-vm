@@ -55,7 +55,7 @@ module Gisele
         progs = []
         EndOfFile.find_end @file, 'r+' do |io|
           while s = io.gets
-            progs << Prog.new(eval(s, TOPLEVEL_BINDING))
+            progs << Prog.new(eval(s, TOPLEVEL_BINDING)) unless s.strip.empty?
           end
         end
         @delegate = ProgList::Memory.new(progs)
