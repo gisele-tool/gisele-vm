@@ -5,6 +5,9 @@ require_relative 'vm/opcodes'
 module Gisele
   class VM
 
+    attr_reader :stack
+    attr_reader :opcodes
+
     def initialize(uuid, bytecode, proglist = ProgList.new)
       @uuid     = uuid
       @bytecode = bytecode
@@ -14,15 +17,22 @@ module Gisele
     end
 
     def run
-      push 0
-      op_pushc
+      push_loader
       until @opcodes.empty?
         op = @opcodes.shift
         send :"op_#{op.first}", *op[1..-1]
       end
+      op_save
     end
 
   private
+
+    def push_loader
+      @opcodes << [:self]   # push self uuid
+      @opcodes << [:fetch]  # fetch the corresponding Prog
+      @opcodes << [:pc]     # push the program counter
+      @opcodes << [:pushc]  # load the instructions
+    end
 
     def push(x)
       @stack << x
