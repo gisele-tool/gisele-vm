@@ -3,8 +3,8 @@ module Gisele
     class ProgList
       class Memory
 
-        def initialize
-          @progs = []
+        def initialize(progs = [])
+          @progs = progs
         end
 
         def register(prog)
