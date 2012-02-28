@@ -8,6 +8,7 @@ module Gisele
 
     attr_reader :stack
     attr_reader :opcodes
+    attr_reader :proglist
 
     def initialize(uuid, bytecode, proglist = ProgList.new)
       @uuid     = uuid
