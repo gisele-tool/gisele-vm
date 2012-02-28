@@ -8,7 +8,10 @@ module Gisele
         end
 
         def register(prog)
-          @progs << is_a_prog!(prog).dup.tap{|d| d.uuid = @progs.size }
+          @progs << is_a_prog!(prog).dup.tap{|d|
+            d.uuid   = @progs.size
+            d.parent = d.uuid if d.parent.nil?
+          }
           @progs.last.uuid
         end
 

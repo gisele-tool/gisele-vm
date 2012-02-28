@@ -9,6 +9,16 @@ class Gisele::VM
       list.fetch(uuid).uuid.should eq(uuid)
     end
 
+    it 'keeps the specified parent if any' do
+      uuid = list.register(Prog.new(:parent => 27))
+      list.fetch(uuid).parent.should eq(27)
+    end
+
+    it 'sets the parent to itself if no parent' do
+      uuid = list.register(Prog.new)
+      list.fetch(uuid).parent.should eq(uuid)
+    end
+
     it 'does not keep the original registered progs' do
       prog = Prog.new(:pc => 12)
       uuid = list.register(prog)
