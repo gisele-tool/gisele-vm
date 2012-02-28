@@ -4,15 +4,41 @@ module Gisele
 
     private
 
-      # Pops a label. Pushes opcodes at that location on the code stack.
-      def op_pushc
-        @opcodes += @bytecode[pop]
-      end
+                                                              ### CURRENT PROGRAM HANDLING
 
       # Puts the current uuid on top of the stack
       def op_self
         push @uuid
       end
+
+                                                                ### GETTING PROGS ON STACK
+
+      # Pops an uuid. Fetches and pushes the corresponding program.
+      def op_fetch
+        push @proglist.fetch(pop)
+      end
+
+      # Pops an uuid. Creates a child program of it. Registers that child and
+      # pushes its uuid back on the stack.
+      def op_new
+        push @proglist.register(Prog.new(:parent => pop))
+      end
+
+                                                                 ### CODE STACK MANAGEMENT
+
+      # Pops a label. Pushes opcodes at that location on the code stack.
+      def op_pushc
+        @opcodes += @bytecode[pop]
+      end
+
+                                                                 ### DATA STACK MANAGEMENT
+
+      # Pops the top element from the stack.
+      def op_pop
+        pop
+      end
+
+                                                                  ### TOP PROGRAM HANDLING
 
       # Pushes the parent uuid of the top program.
       def op_parent
@@ -22,11 +48,6 @@ module Gisele
       # Pushes the program counter of the top program.
       def op_pc
         push peek.pc
-      end
-
-      # Pops an uuid. Fetches and pushes the corresponding program.
-      def op_fetch
-        push @proglist.fetch(pop)
       end
 
       # Pops a label. Sets the program counter of the top program to it.
@@ -46,12 +67,6 @@ module Gisele
         @proglist.save pop
       end
 
-      # Pops an uuid. Creates a child program of it. Registers that child and
-      # pushes its uuid back on the stack.
-      def op_new
-        push @proglist.register(Prog.new(:parent => pop))
-      end
-
       # Pops an uuid. Adds it to the notifying list of the peek program.
       def op_wait
         uuid = pop
@@ -64,20 +79,11 @@ module Gisele
         peek.wait.delete uuid
       end
 
-      # Pops the top element from the stack.
-      def op_pop
-        pop
-      end
-
       # Pops a label. If the wait list of the peek program is empty then pushes
       # the opcodes at that location on the code stack. Otherwise do nothing.
       def op_resume
         label = pop
         @opcodes += @bytecode[label] if peek.wait.empty?
-      end
-
-      # Make a native call to the object called `name`
-      def op_call
       end
 
     end # module Opcodes
