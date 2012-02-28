@@ -20,6 +20,10 @@ class Gisele::VM
       list.fetch(@uuid).pc.should eq(0)
     end
 
+    it 'allows passing strings' do
+      list.fetch(@uuid.to_s).should be_a(Prog)
+    end
+
     it 'raises an ArgumentError if arg is not an UUID' do
       lambda{
         list.fetch(self)

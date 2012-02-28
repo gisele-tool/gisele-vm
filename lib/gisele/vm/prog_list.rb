@@ -33,9 +33,15 @@ module Gisele
       end
 
       def is_a_valid_uuid!(uuid)
-        raise ArgumentError, "Not an UUID: #{uuid}" unless Integer===uuid
-        raise InvalidUUIDError, "Invalid uuid: #{uuid}" unless valid_uuid?(uuid)
-        uuid
+        case uuid
+        when Integer
+          raise InvalidUUIDError, "Invalid uuid: #{uuid}" unless valid_uuid?(uuid)
+          uuid
+        when /^\d+$/
+          is_a_valid_uuid! Integer(uuid)
+        else
+          raise ArgumentError, "Not an UUID: #{uuid}"
+        end
       end
 
       def valid_uuid?(uuid)
