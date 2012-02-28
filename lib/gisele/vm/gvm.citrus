@@ -45,7 +45,7 @@ grammar Gisele::VM::GvmFile
   end
 
   rule arg
-    int | symbol | string
+    int | symbol | string | constant
   end
 
   rule int
@@ -58,6 +58,12 @@ grammar Gisele::VM::GvmFile
 
   rule string
     ("'" (!"'" .)* "'"){ strip[1...-1] }
+  end
+
+  rule constant
+    ([A-Z][A-Za-z]* ('::' [A-Z][A-Za-z]*)*){
+      strip.split('::').inject(Kernel){|cur,c| cur.const_get(c)}
+    }
   end
 
   rule trailing_space
