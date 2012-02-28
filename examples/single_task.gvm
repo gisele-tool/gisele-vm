@@ -1,4 +1,4 @@
-0:  self
+0:  uuid
     new         # create a children of self
     fetch
     push 1
@@ -12,7 +12,7 @@
     push 1
     slice
     invoke
-    self
+    uuid
     fetch
     push 2
     setpc

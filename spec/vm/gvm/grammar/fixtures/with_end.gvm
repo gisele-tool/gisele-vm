@@ -1,5 +1,5 @@
 # We show here the __END__ trick
-0: self
+0: uuid
 
 __END__
 {:uuid => 0, :parent => nil}

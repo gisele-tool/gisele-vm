@@ -1,4 +1,4 @@
-0: self
+0: uuid
    pushc
 1: pushc
    pop

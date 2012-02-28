@@ -29,7 +29,7 @@ module Gisele
   private
 
     def push_loader
-      @opcodes << [:self]   # push self uuid
+      @opcodes << [:uuid]   # push self uuid
       @opcodes << [:fetch]  # fetch the corresponding Prog
       @opcodes << [:pc]     # push the program counter
       @opcodes << [:pushc]  # load the instructions

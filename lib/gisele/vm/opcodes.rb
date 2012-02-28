@@ -6,8 +6,8 @@ module Gisele
 
                                                               ### CURRENT PROGRAM HANDLING
 
-      # Puts the current uuid on top of the stack
-      def op_self
+      # Puts the uuid of the executing Prog on the stack
+      def op_uuid
         push @uuid
       end
 
