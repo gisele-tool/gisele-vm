@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe GvmFile, "instruction" do
+    describe Gvm, "instruction" do
 
       def parse(src)
-        GvmFile.parse(src, :root => :instruction)
+        Gvm.parse(src, :root => :instruction)
       end
 
       it 'parses an instruction without arg' do

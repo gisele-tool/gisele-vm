@@ -1,0 +1,21 @@
+0: fetch
+   invoke
+   new
+   notify
+   parent
+   pc
+   pop
+   push 12
+   push 'hello'
+   push Symbol
+   pushc
+   resume
+   save
+   self
+   send
+   setpc
+   slice
+   start
+   stop
+   wait
+

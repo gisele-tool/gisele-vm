@@ -1,0 +1,70 @@
+parser:
+  gvm.citrus
+rules:
+  gvm:
+    - [ block+ ]
+  block:
+    - [ label, instruction+ ]
+  label:
+    - '::Integer'
+    - '::Symbol'
+  instruction:
+    - fetch
+    - invoke
+    - new
+    - notify
+    - parent
+    - pc
+    - pop
+    - push
+    - pushc
+    - resume
+    - save
+    - self
+    - send
+    - setpc
+    - slice
+    - start
+    - stop
+    - wait
+  argument:
+    - '::Symbol'
+    - '::Integer'
+    - '::String'
+    - '::Module'
+  fetch:
+    - []
+  invoke:
+    - []
+  new:
+    - []
+  notify:
+    - []
+  parent:
+    - []
+  pc:
+    - []
+  pop:
+    - []
+  push:
+    - [ argument ]
+  pushc:
+    - []
+  resume:
+    - []
+  save:
+    - []
+  self:
+    - []
+  send:
+    - []
+  setpc:
+    - []
+  slice:
+    - []
+  start:
+    - []
+  stop:
+    - []
+  wait:
+    - []

@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe GvmFile, "eol" do
+    describe Gvm, "eol" do
 
       def parse(src)
-        GvmFile.parse(src, :root => :eol)
+        Gvm.parse(src, :root => :eol)
       end
 
       it 'parses \n' do

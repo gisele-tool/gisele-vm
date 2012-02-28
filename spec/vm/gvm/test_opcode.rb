@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe GvmFile, "opcode" do
+    describe Gvm, "opcode" do
 
       def parse(src)
-        GvmFile.parse(src, :root => :opcode)
+        Gvm.parse(src, :root => :opcode)
       end
 
       it 'parses typical opcodes' do

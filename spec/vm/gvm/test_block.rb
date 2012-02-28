@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe GvmFile, "block" do
+    describe Gvm, "block" do
 
       def parse(src)
-        GvmFile.parse(src, :root => :block)
+        Gvm.parse(src, :root => :block)
       end
 
       it 'parses a block with one instruction' do

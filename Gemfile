@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 group :runtime do
+  gem "sexpr", :git => "git://github.com/blambeau/sexpr.git"
   gem "gisele", "~> 0.5.0"
   gem "alf", :git => "git://github.com/blambeau/alf.git"
 end

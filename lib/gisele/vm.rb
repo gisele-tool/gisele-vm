@@ -1,10 +1,10 @@
 require_relative 'vm/errors'
 require_relative 'vm/prog'
 require_relative 'vm/prog_list'
+require_relative 'vm/gvm'
 require_relative 'vm/opcodes'
 module Gisele
   class VM
-    Citrus.load File.expand_path("../vm/gvm.citrus", __FILE__)
 
     attr_reader :stack
     attr_reader :opcodes

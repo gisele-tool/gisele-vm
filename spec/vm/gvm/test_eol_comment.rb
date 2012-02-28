@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe GvmFile, "eol_comment" do
+    describe Gvm, "eol_comment" do
 
       def parse(src)
-        GvmFile.parse(src, :root => :eol_comment)
+        Gvm.parse(src, :root => :eol_comment)
       end
 
       it 'parses a comment, including the \n' do

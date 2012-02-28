@@ -1,4 +1,4 @@
 0: self
    pushc
-1: pushr
+1: pushc
    pop

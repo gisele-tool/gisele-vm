@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe GvmFile, "int" do
+    describe Gvm, "int" do
 
       def parse(src)
-        GvmFile.parse(src, :root => :int)
+        Gvm.parse(src, :root => :int)
       end
 
       it 'parses integers correctly' do

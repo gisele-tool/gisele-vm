@@ -29,7 +29,7 @@ module Gisele
         unless (file = Path(args.shift)).exist?
           raise Quickl::IOAccessError, "File does not exists: #{file}"
         end
-        bytecode = GvmFile.parse(file.read).value
+        bytecode = Gvm.parse(file.read).value
 
         # create the prog list instance
         list = ProgList::EndOfFile.new(file)

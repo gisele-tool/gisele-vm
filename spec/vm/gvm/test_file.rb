@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe GvmFile, "file" do
+    describe Gvm, "file" do
 
       def parse(src)
-        GvmFile.parse(src)
+        Gvm.parse(src)
       end
 
       it 'returns a [:gvm] array' do
@@ -19,12 +19,18 @@ module Gisele
         BLOCK
       end
 
-      Dir[File.expand_path('../fixtures/*.gvm', __FILE__)].each do |file|
+      (Path.dir/'fixtures').glob('*.gvm').each do |file|
+        context "the fixture #{File.basename(file)}" do
+          let(:sexpr){ Gvm.sexpr(file) }
 
-        it "parses #{File.basename(file)}" do
-          parse(File.read(file)).value.should be_a(Array)
+          it "is parsed correctly" do
+            sexpr.should be_a(Array)
+          end
+
+          it "respects the grammar" do
+            (Gvm === sexpr).should be_true
+          end
         end
-
       end
 
     end
