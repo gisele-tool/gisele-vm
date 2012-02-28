@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+begin
+  require 'gisele/vm/command'
+rescue LoadError
+  $:.unshift File.expand_path('../../lib', __FILE__)
+  require 'gisele/vm/command'
+end
+Gisele::VM::Command.run(ARGV)
