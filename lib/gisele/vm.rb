@@ -6,6 +6,7 @@ require_relative 'vm/opcodes'
 module Gisele
   class VM
 
+    attr_reader :puid
     attr_reader :stack
     attr_reader :opcodes
     attr_reader :proglist
@@ -28,10 +29,6 @@ module Gisele
       end
     end
 
-    def call(puid, kind, args)
-      puts "#{kind}(#{puid}): #{args.inspect}"
-    end
-
   private
 
     def push_loader
@@ -41,6 +38,25 @@ module Gisele
       @opcodes << [:pushc]  # load the instructions
       @opcodes << [:pop]    # pop the Prog
     end
+
+  private ### event management
+
+    def event(kind, args)
+      event_interface.call(@puid, kind, args)
+    end
+
+    def call(puid, kind, args)
+      puts "#{kind}(#{puid}): #{args.inspect}"
+    end
+    public :call
+
+  private ### code stack management
+
+    def enlist_bytecode_at(label)
+      @opcodes += @bytecode[label]
+    end
+
+  private ### data stack management
 
     def push(x)
       @stack << x
@@ -53,6 +69,22 @@ module Gisele
     def peek
       @stack.last
     end
+
+  private ### progs management
+
+    def fetch(puid)
+      @proglist.fetch(puid)
+    end
+
+    def register(prog)
+      @proglist.register(prog)
+    end
+
+    def save(prog)
+      @proglist.save(prog)
+    end
+
+  private ### opcodes
 
     include Opcodes
   end

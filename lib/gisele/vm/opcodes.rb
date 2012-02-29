@@ -8,27 +8,27 @@ module Gisele
 
       # Puts the puid of the executing Prog on the stack
       def op_puid
-        push @puid
+        push puid
       end
 
       ### GETTING PROGS ON STACK #########################################################
 
       # Pops an puid. Fetches and pushes the corresponding program.
       def op_fetch
-        push @proglist.fetch(pop)
+        push fetch(pop)
       end
 
       # Pops an puid. Creates a child program of it. Registers that child and
       # pushes its puid back on the stack.
       def op_new
-        push @proglist.register(Prog.new(:parent => pop))
+        push register(Prog.new(:parent => pop))
       end
 
        ### CODE STACK MANAGEMENT #########################################################
 
       # Pops a label. Pushes opcodes at that location on the code stack.
       def op_pushc
-        @opcodes += @bytecode[pop]
+        enlist_bytecode_at(pop)
       end
 
       ### DATA STACK MANAGEMENT ##########################################################
@@ -97,7 +97,7 @@ module Gisele
       # Pops the top program from the stack. Saves it. Pushes its puid back on
       # the stack.
       def op_save
-        push @proglist.save pop
+        push save(pop)
       end
 
       # Pops an puid. Adds it to the notifying list of the peek program.
@@ -116,7 +116,7 @@ module Gisele
       # the opcodes at that location on the code stack. Otherwise do nothing.
       def op_resume
         label = pop
-        @opcodes += @bytecode[label] if peek.wait.empty?
+        enlist_bytecode_at(label) if peek.wait.empty?
       end
 
       ### EVENT HANDLING #################################################################
@@ -127,7 +127,7 @@ module Gisele
       def op_event(kind = nil)
         kind ||= pop
         args = pop
-        event_interface.call(@puid, kind, args)
+        event(kind, args)
       end
 
     end # module Opcodes
