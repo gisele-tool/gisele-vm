@@ -1,0 +1,45 @@
+0:        then :new              # create a new process by default
+
+new:      fork :par
+          save
+          pop
+
+par:      fork :B_start          # fork a child at :B_start
+          fork :A_start          # fork a second child at :A_start
+          save 2                 # save both
+          wait 2                 # wait for them both
+          push :endpar
+          set  :pc
+          save
+
+A_start:  push 'Task A'
+          group 1
+          event :start
+          cont :A_end
+          save
+          pop
+
+B_start:  push 'Task B'
+          group 1
+          event :start
+          cont :B_end
+          save
+          pop
+
+A_end:    push 'Task A'
+          group 1
+          event :end
+          notify
+          save
+
+B_end:    push 'Task B'
+          group 1
+          event :end
+          notify
+          save
+
+endpar:   push 'Parallel'
+          group 1
+          event :end
+
+__END__
