@@ -6,20 +6,20 @@ module Gisele
 
                                                               ### CURRENT PROGRAM HANDLING
 
-      # Puts the uuid of the executing Prog on the stack
-      def op_uuid
-        push @uuid
+      # Puts the puid of the executing Prog on the stack
+      def op_puid
+        push @puid
       end
 
                                                                 ### GETTING PROGS ON STACK
 
-      # Pops an uuid. Fetches and pushes the corresponding program.
+      # Pops an puid. Fetches and pushes the corresponding program.
       def op_fetch
         push @proglist.fetch(pop)
       end
 
-      # Pops an uuid. Creates a child program of it. Registers that child and
-      # pushes its uuid back on the stack.
+      # Pops an puid. Creates a child program of it. Registers that child and
+      # pushes its puid back on the stack.
       def op_new
         push @proglist.register(Prog.new(:parent => pop))
       end
@@ -68,7 +68,7 @@ module Gisele
 
                                                                   ### TOP PROGRAM HANDLING
 
-      # Pushes the parent uuid of the top program.
+      # Pushes the parent puid of the top program.
       def op_parent
         push peek.parent
       end
@@ -94,22 +94,22 @@ module Gisele
         peek.start = false
       end
 
-      # Pops the top program from the stack. Saves it. Pushes its uuid back on
+      # Pops the top program from the stack. Saves it. Pushes its puid back on
       # the stack.
       def op_save
         push @proglist.save pop
       end
 
-      # Pops an uuid. Adds it to the notifying list of the peek program.
+      # Pops an puid. Adds it to the notifying list of the peek program.
       def op_wait
-        uuid = pop
-        peek.wait << uuid
+        puid = pop
+        peek.wait << puid
       end
 
-      # Pops a uuid. Removes it from the wait list of the peek program.
+      # Pops a puid. Removes it from the wait list of the peek program.
       def op_notify
-        uuid = pop
-        peek.wait.delete uuid
+        puid = pop
+        peek.wait.delete puid
       end
 
       # Pops a label. If the wait list of the peek program is empty then pushes

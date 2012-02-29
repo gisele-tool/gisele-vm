@@ -11,7 +11,7 @@
    pushc
    resume
    save
-   uuid
+   puid
    send
    setpc
    slice

@@ -10,7 +10,7 @@ module Gisele
         vm.stack = [ 0 ]
       end
 
-      it 'sets the resulting uuid on the stack' do
+      it 'sets the resulting puid on the stack' do
         vm.op_new
         vm.stack.should eq([ 1 ])
         vm.proglist.fetch(1).parent.should eq(0)

@@ -25,7 +25,7 @@ rules:
     - slice
     - start
     - stop
-    - uuid
+    - puid
     - wait
   argument:
     - '::Symbol'
@@ -64,7 +64,7 @@ rules:
     - []
   stop:
     - []
-  uuid:
+  puid:
     - []
   wait:
     - []

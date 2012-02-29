@@ -1,18 +1,18 @@
-0:  uuid
+0:  puid
     new         # create a children of self
     fetch
     push 1
     setpc       # program counter to 1
     start
     save        # mark as to be run and save
-                # keep the uuid on the stack
+                # keep the puid on the stack
 1:  push STDOUT
     push :puts
     push 'Starting task'
     push 1
     slice
     invoke
-    uuid
+    puid
     fetch
     push 2
     setpc
@@ -25,5 +25,5 @@
     slice
     invoke
 __END__
-{:uuid => 0, :parent => 0, :pc => 0, :wait => [], :start => false}
-{:uuid => 1, :parent => 0, :pc => 2, :wait => [], :start => false}
+{:puid => 0, :parent => 0, :pc => 0, :wait => [], :start => false}
+{:puid => 1, :parent => 0, :pc => 2, :wait => [], :start => false}

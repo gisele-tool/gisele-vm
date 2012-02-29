@@ -4,8 +4,8 @@ module Gisele
     class Error < StandardError
     end # class Error
 
-    class InvalidUUIDError < Error
-    end # class InvalidUUIDError
+    class InvalidPUIDError < Error
+    end # class InvalidPUIDError
 
   end # class VM
 end # module Gisele

@@ -10,8 +10,8 @@ module Gisele
     attr_reader :opcodes
     attr_reader :proglist
 
-    def initialize(uuid, bytecode, proglist = ProgList.new)
-      @uuid     = uuid
+    def initialize(puid, bytecode, proglist = ProgList.new)
+      @puid     = puid
       @bytecode = bytecode
       @proglist = proglist
       @stack    = []
@@ -29,7 +29,7 @@ module Gisele
   private
 
     def push_loader
-      @opcodes << [:uuid]   # push self uuid
+      @opcodes << [:puid]   # push self puid
       @opcodes << [:fetch]  # fetch the corresponding Prog
       @opcodes << [:pc]     # push the program counter
       @opcodes << [:pushc]  # load the instructions

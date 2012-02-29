@@ -12,7 +12,7 @@ module Gisele
         @at1.should be_a(Prog)
       end
 
-      it 'fetches with the uuid' do
+      it 'fetches with the puid' do
         vm.stack = [ 1 ]
         vm.op_fetch
         vm.stack.should eq([ @at1 ])

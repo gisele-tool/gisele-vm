@@ -11,7 +11,7 @@ module Gisele
         vm.stack = [ @at0, 12 ]
       end
 
-      it 'enlists the uuid in prog wait list' do
+      it 'enlists the puid in prog wait list' do
         vm.op_wait
         @at0.wait.should eq([12])
         vm.stack.should eq([ @at0 ])

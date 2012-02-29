@@ -9,9 +9,9 @@ class Gisele::VM::ProgList
         blah
         blih
         __END__
-        {:uuid => 0, :parent => 0, :pc => 17}
+        {:puid => 0, :parent => 0, :pc => 17}
 
-        {:uuid => 1, :parent => 0, :pc => 5}
+        {:puid => 1, :parent => 0, :pc => 5}
 
       GVM
     end
@@ -23,10 +23,10 @@ class Gisele::VM::ProgList
     it 'loads the file correctly' do
       list = EndOfFile.new(file)
       expected = Relation([
-        {:uuid => 0, :parent => 0, :pc => 17},
-        {:uuid => 1, :parent => 0, :pc => 5}
+        {:puid => 0, :parent => 0, :pc => 17},
+        {:puid => 1, :parent => 0, :pc => 5}
       ])
-      list.to_relation.project([:uuid, :parent, :pc]).should eq(expected)
+      list.to_relation.project([:puid, :parent, :pc]).should eq(expected)
     end
 
   end

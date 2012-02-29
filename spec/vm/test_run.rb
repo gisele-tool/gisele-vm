@@ -4,8 +4,8 @@ module Gisele
     describe "run" do
 
       let(:list)    { ProgList.new                }
-      let(:uuid)    { list.register Prog.new      }
-      let(:vm)      { VM.new uuid, bytecode, list }
+      let(:puid)    { list.register Prog.new      }
+      let(:vm)      { VM.new puid, bytecode, list }
 
       context 'when the program counters points to no instruction' do
         let(:bytecode){ [ [] ] }

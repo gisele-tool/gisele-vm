@@ -3,7 +3,7 @@ The Gisele Virtual Machine
 
 SYNOPSIS
   gvm [--version] [--help]
-  gvm GVM_FILE [UUID]
+  gvm GVM_FILE [PUID]
 
 OPTIONS
       --help                       Show this help message

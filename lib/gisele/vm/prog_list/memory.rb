@@ -9,19 +9,19 @@ module Gisele
 
         def register(prog)
           @progs << is_a_prog!(prog).dup.tap{|d|
-            d.uuid   = @progs.size
-            d.parent = d.uuid if d.parent.nil?
+            d.puid   = @progs.size
+            d.parent = d.puid if d.parent.nil?
           }
-          @progs.last.uuid
+          @progs.last.puid
         end
 
-        def fetch(uuid)
-          @progs[is_a_valid_uuid!(uuid)].dup
+        def fetch(puid)
+          @progs[is_a_valid_puid!(puid)].dup
         end
 
         def save(prog)
-          is_a_prog!(prog).uuid.tap{|uuid|
-            @progs[is_a_valid_uuid!(uuid)] = prog.dup
+          is_a_prog!(prog).puid.tap{|puid|
+            @progs[is_a_valid_puid!(puid)] = prog.dup
           }
         end
 
@@ -40,20 +40,20 @@ module Gisele
           prog
         end
 
-        def is_a_valid_uuid!(uuid)
-          case uuid
+        def is_a_valid_puid!(puid)
+          case puid
           when Integer
-            raise InvalidUUIDError, "Invalid uuid: #{uuid}" unless valid_uuid?(uuid)
-            uuid
+            raise InvalidPUIDError, "Invalid puid: #{puid}" unless valid_puid?(puid)
+            puid
           when /^\d+$/
-            is_a_valid_uuid! Integer(uuid)
+            is_a_valid_puid! Integer(puid)
           else
-            raise ArgumentError, "Not an UUID: #{uuid}"
+            raise ArgumentError, "Not an PUID: #{puid}"
           end
         end
 
-        def valid_uuid?(uuid)
-          (Integer===uuid) and (0 <= uuid) and (uuid < @progs.size)
+        def valid_puid?(puid)
+          (Integer===puid) and (0 <= puid) and (puid < @progs.size)
         end
 
       end # class Memory

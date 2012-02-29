@@ -1,6 +1,6 @@
 module Gisele
   class VM
-    attr_reader :uuid
+    attr_reader :puid
     attr_accessor :opcodes
     attr_accessor :stack
     attr_accessor :proglist
@@ -8,7 +8,7 @@ module Gisele
     public :push, :peek, :pop
 
     public :op_pushc,
-           :op_uuid,
+           :op_puid,
            :op_parent,
            :op_pc,
            :op_fetch,

@@ -9,19 +9,19 @@ module Gisele
         end
 
         def register(prog)
-          uuid = @delegate.register(prog)
+          puid = @delegate.register(prog)
           save!
-          uuid
+          puid
         end
 
-        def fetch(uuid)
-          @delegate.fetch(uuid)
+        def fetch(puid)
+          @delegate.fetch(puid)
         end
 
         def save(prog)
-          uuid = @delegate.save(prog)
+          puid = @delegate.save(prog)
           save!
-          uuid
+          puid
         end
 
         def empty?

@@ -5,7 +5,7 @@ module Gisele
     #
     # SYNOPSIS
     #   gvm [--version] [--help]
-    #   gvm GVM_FILE [UUID]
+    #   gvm GVM_FILE [PUID]
     #
     # OPTIONS
     # #{summarized_options}
@@ -35,11 +35,11 @@ module Gisele
         list = ProgList::EndOfFile.new(file)
         list.register(Prog.new) if list.empty?
 
-        # take the uuid if any
-        uuid = args.shift || 0
+        # take the puid if any
+        puid = args.shift || 0
 
         # build the virtual machine
-        vm = VM.new(uuid, bytecode, list)
+        vm = VM.new(puid, bytecode, list)
 
         # Run it
         begin

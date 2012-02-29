@@ -6,11 +6,11 @@ module Gisele
       let(:vm){ VM.new 0, [] }
 
       before do
-        uuid  = vm.proglist.register Prog.new(:parent => 0)
-        @child = vm.proglist.fetch(uuid)
+        puid  = vm.proglist.register Prog.new(:parent => 0)
+        @child = vm.proglist.fetch(puid)
       end
 
-      it 'pushes the parent uuid on the stack' do
+      it 'pushes the parent puid on the stack' do
         vm.stack = [ :hello, @child ]
         vm.op_parent
         vm.stack.should eq([:hello, @child, 0])

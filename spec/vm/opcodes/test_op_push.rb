@@ -9,7 +9,7 @@ module Gisele
         vm.stack = [ 1 ]
       end
 
-      it 'fetches with the uuid' do
+      it 'fetches with the puid' do
         vm.op_push 'hello'
         vm.stack.should eq([ 1, 'hello' ])
       end
