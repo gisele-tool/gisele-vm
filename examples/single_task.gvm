@@ -1,27 +1,35 @@
-0:  puid
-    new         # create a children of self
-    fetch
-    push 1
-    setpc       # program counter to 1
-    start
-    save        # mark as to be run and save
-                # keep the puid on the stack
-1:  push STDOUT
-    push :puts
-    push 'Starting task'
-    group 1
-    invoke
-    puid
-    fetch
-    push 2
-    setpc
-    stop
-    save
-2:  push STDOUT
-    push :puts
-    push 'Task ended'
-    group 1
-    invoke
+0:        push :new
+          pushc                  # create a new process by default
+
+new:      puid
+          new                    # create a children of self
+          fetch
+          push :A_start
+          setpc                  # program counter to a
+          start
+          save                   # mark as to be run and save
+          pop                    # pops the puid from the stack
+
+A_start:  puid                   # Set program counter to :A_end...
+          fetch                  #
+          push :A_end            #
+          setpc                  #
+          stop                   #
+          save                   # ... and stop the process
+          push 'Task A'
+          group 1
+          event :start           # Broadcast A_start to the world
+
+A_end:    puid                   # Set program counter to :end...
+          fetch                  #
+          push :end              #
+          setpc                  #
+          stop                   #
+          save                   # ... and stop the process
+          push 'Task A'
+          group 1
+          event :end             # Broadcast A_end to the world
+
+end:      puid
+
 __END__
-{:puid => 0, :parent => 0, :pc => 0, :wait => [], :start => false}
-{:puid => 1, :parent => 0, :pc => 2, :wait => [], :start => false}
