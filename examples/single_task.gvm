@@ -1,5 +1,4 @@
-0:        push :new
-          pushc                  # create a new process by default
+0:        then :new              # create a new process by default
 
 new:      fork :A_start          # fork a child at :A_start
           save                   # save it so it is scheduled
@@ -11,11 +10,10 @@ A_start:  cont :A_end            # Mark the current program as to be continued a
           group 1
           event :start           # Broadcast A_start to the world
 
-A_end:    push :end
-          pushc                  # enlist instructions at :end
-          push 'Task A'
+A_end:    push 'Task A'
           group 1
           event :end             # Broadcast A_end to the world
+          then :end              # And 'jump' to the end
 
 end:      push 'Main process'
           group 1

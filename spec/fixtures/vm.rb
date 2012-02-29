@@ -7,7 +7,7 @@ module Gisele
 
     public :push, :peek, :pop
 
-    public :op_pushc,
+    public :op_then,
            :op_puid,
            :op_parent,
            :op_pc,

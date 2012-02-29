@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe "op_resume" do
 
-      let(:vm){ VM.new :test_pushc, [[:at_0], [:hello, :world]] }
+      let(:vm){ VM.new 0, [[:at_0], [:hello, :world]] }
 
       before do
         vm.proglist.save Prog.new(:wait => waitlist)
@@ -13,7 +13,7 @@ module Gisele
       context "when the waitlist is empty" do
         let(:waitlist){ [] }
 
-        it 'resumes through pushc' do
+        it 'resumes by enqueing code' do
           vm.op_resume
           vm.opcodes.should eq([:hello, :world])
           vm.stack.should eq([ vm.proglist.fetch(0) ])

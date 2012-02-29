@@ -15,7 +15,9 @@
    push 12
    push 'hello'
    push Symbol
-   pushc
+   then
+   then 0
+   then :a_label
    resume
    save
    puid

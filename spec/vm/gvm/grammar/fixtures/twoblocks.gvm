@@ -1,4 +1,4 @@
 0: puid
-   pushc
-1: pushc
+   then
+1: then
    pop

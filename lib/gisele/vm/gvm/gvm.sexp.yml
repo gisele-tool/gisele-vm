@@ -20,7 +20,7 @@ rules:
     - pc
     - pop
     - push
-    - pushc
+    - then
     - resume
     - save
     - send
@@ -50,8 +50,6 @@ rules:
     - []
   push:
     - [ argument ]
-  pushc:
-    - []
   resume:
     - []
   save:
@@ -60,6 +58,8 @@ rules:
     - []
   setpc:
     - []
+  then:
+    - [ 'label_arg?' ]
   group:
     - [ 'integer_arg?' ]
   schedule:

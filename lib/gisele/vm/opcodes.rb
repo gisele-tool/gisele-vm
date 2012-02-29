@@ -26,19 +26,18 @@ module Gisele
         push current_prog(:pc => at || pop, :progress => false)
       end
 
+      # Pushes opcodes at label `at` on the code queue. If `at` is unspecified, it it
+      # poped from the stack first
+      def op_then(at = nil)
+        enlist_bytecode_at(at || pop)
+      end
+
       ### GETTING PROGS ON STACK #########################################################
 
       # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
       # specified, pops it from the stack first.
       def op_fetch(puid = nil)
         push fetch(puid || pop)
-      end
-
-       ### CODE STACK MANAGEMENT #########################################################
-
-      # Pops a label. Pushes opcodes at that location on the code stack.
-      def op_pushc
-        enlist_bytecode_at(pop)
       end
 
       ### DATA STACK MANAGEMENT ##########################################################
