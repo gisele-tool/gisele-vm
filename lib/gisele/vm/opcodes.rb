@@ -58,6 +58,16 @@ module Gisele
         push puid
       end
 
+      # Push the current Prog on the stack.
+      def op_self
+        push current_prog
+      end
+
+      # Pushes the parent Prog of the executing program.
+      def op_parent
+        push fetch(current_prog.parent)
+      end
+
       # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
       # specified, pops it from the stack first.
       def op_fetch(puid = nil)
@@ -141,11 +151,6 @@ module Gisele
       end
 
       ### TOP PROGRAM HANDLING ###########################################################
-
-      # Pushes the parent puid of the top program.
-      def op_parent
-        push peek.parent
-      end
 
       # Pops a puid. Removes it from the wait list of the peek program.
       def op_notify

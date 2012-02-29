@@ -34,3 +34,4 @@
    get :attrname
    set
    set :attrname
+   self

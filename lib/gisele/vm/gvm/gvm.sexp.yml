@@ -16,6 +16,8 @@ rules:
     - set
     # lifecycle
     - puid
+    - self
+    - parent
     - fetch
     - fork
     - cont
@@ -32,7 +34,6 @@ rules:
     - group
     # to clean
     - notify
-    - parent
     - resume
   # generic
   send:
@@ -45,6 +46,10 @@ rules:
     - [ 'symbol_arg?' ]
   # lifecycle
   puid:
+    - []
+  self:
+    - []
+  parent:
     - []
   fetch:
     - [ 'argument?' ]
@@ -74,8 +79,6 @@ rules:
     - [ 'symbol_arg?' ]
   # to clean
   notify:
-    - []
-  parent:
     - []
   resume:
     - []
