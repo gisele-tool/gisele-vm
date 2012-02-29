@@ -30,43 +30,48 @@ rules:
     - unschedule
     - puid
     - wait
-  cont:
-    - [ 'label_arg?' ]
-  event:
+  # generic
+  send:
     - [ 'symbol_arg?' ]
+  invoke:
+    - [ 'symbol_arg?' ]
+  # lifecycle
+  puid:
+    - []
   fetch:
     - [ 'argument?' ]
   fork:
     - [ 'label_arg?' ]
-  invoke:
+  cont:
+    - [ 'label_arg?' ]
+  then:
+    - [ 'label_arg?' ]
+  schedule:
+    - []
+  unschedule:
+    - []
+  save:
+    - []
+  # stack
+  pop:
+    - []
+  push:
+    - [ argument ]
+  group:
+    - [ 'integer_arg?' ]
+  # events
+  event:
     - [ 'symbol_arg?' ]
+  # to clean
   notify:
     - []
   parent:
     - []
   pc:
     - []
-  pop:
-    - []
-  push:
-    - [ argument ]
   resume:
     - []
-  save:
-    - []
-  send:
-    - [ 'symbol_arg?' ]
   setpc:
-    - []
-  then:
-    - [ 'label_arg?' ]
-  group:
-    - [ 'integer_arg?' ]
-  schedule:
-    - []
-  unschedule:
-    - []
-  puid:
     - []
   wait:
     - []

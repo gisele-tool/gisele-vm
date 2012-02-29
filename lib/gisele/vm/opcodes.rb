@@ -4,14 +4,36 @@ module Gisele
 
     private
 
-      ### CURRENT PROGRAM HANDLING #######################################################
+      ### GENERIC OPCODES ################################################################
+
+      # Pops a method name on the stack unless `method` is specified. Pops an array of
+      # argument `args`. Pops an object `receiver`. Invoke `method` on `receiver`, passing
+      # arguments `args`. Push the result back on the stack.
+      def op_send(method = nil, push_result = true)
+        method ||= pop
+        args     = pop
+        receiver = pop
+        result   = receiver.send(method, *args)
+        push result if push_result
+      end
+
+      # Same as `op_send` but does not keep the result on the stack.
+      def op_invoke(method = nil)
+        op_send(method, false)
+      end
+
+      ### LIFECYCLE ######################################################################
 
       # Puts the puid of the executing Prog on the stack
       def op_puid
         push puid
       end
 
-      ### LIFECYCLE ######################################################################
+      # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
+      # specified, pops it from the stack first.
+      def op_fetch(puid = nil)
+        push fetch(puid || pop)
+      end
 
       # Fork the current Prog. Set its program counter to `at` (taken from the stack if
       # not specified), and mark it as schedulable by default. The resulting Prog is
@@ -32,18 +54,20 @@ module Gisele
         enlist_bytecode_at(at || pop)
       end
 
+      # Set the `progress` attribute to true on the top program
+      def op_schedule
+        peek.progress = true
+      end
+
+      # Set the `progress` attribute to false on the top program
+      def op_unschedule
+        peek.progress = false
+      end
+
       # Pops the top program from the stack. Saves it. Pushes its puid back on
       # the stack.
       def op_save
         push save(pop)
-      end
-
-      ### GETTING PROGS ON STACK #########################################################
-
-      # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
-      # specified, pops it from the stack first.
-      def op_fetch(puid = nil)
-        push fetch(puid || pop)
       end
 
       ### DATA STACK MANAGEMENT ##########################################################
@@ -66,22 +90,15 @@ module Gisele
         push arr.reverse
       end
 
-      ### GENERIC OPCODES ################################################################
+      ### EVENT HANDLING #################################################################
 
-      # Pops a method name on the stack unless `method` is specified. Pops an array of
-      # argument `args`. Pops an object `receiver`. Invoke `method` on `receiver`, passing
-      # arguments `args`. Push the result back on the stack.
-      def op_send(method = nil, push_result = true)
-        method ||= pop
-        args     = pop
-        receiver = pop
-        result   = receiver.send(method, *args)
-        push result if push_result
-      end
-
-      # Same as `op_send` but does not keep the result on the stack.
-      def op_invoke(method = nil)
-        op_send(method, false)
+      # Pops event arguments from the stack (an array). Send an event of the specified
+      # kind on the event interface. If `kind` is not provided, it is first poped from
+      # the stack
+      def op_event(kind = nil)
+        kind ||= pop
+        args = pop
+        event(kind, args)
       end
 
       ### TOP PROGRAM HANDLING ###########################################################
@@ -102,16 +119,6 @@ module Gisele
         peek.pc = label
       end
 
-      # Set the `progress` attribute to true on the top program
-      def op_schedule
-        peek.progress = true
-      end
-
-      # Set the `progress` attribute to false on the top program
-      def op_unschedule
-        peek.progress = false
-      end
-
       # Pops an puid. Adds it to the notifying list of the peek program.
       def op_wait
         puid = pop
@@ -129,17 +136,6 @@ module Gisele
       def op_resume
         label = pop
         enlist_bytecode_at(label) if peek.wait.empty?
-      end
-
-      ### EVENT HANDLING #################################################################
-
-      # Pops event arguments from the stack (an array). Send an event of the specified
-      # kind on the event interface. If `kind` is not provided, it is first poped from
-      # the stack
-      def op_event(kind = nil)
-        kind ||= pop
-        args = pop
-        event(kind, args)
       end
 
     end # module Opcodes
