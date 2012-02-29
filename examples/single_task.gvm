@@ -1,14 +1,9 @@
 0:        push :new
           pushc                  # create a new process by default
 
-new:      puid
-          new                    # create a children of self
-          fetch
-          push :A_start
-          setpc                  # program counter to a
-          start
-          save                   # mark as to be run and save
-          pop                    # pops the puid from the stack
+new:      fork :A_start          # fork a child at :A_start
+          save                   # save it so it is scheduled
+          pop                    # pops its puid from the stack
 
 A_start:  puid                   # Set program counter to :A_end...
           fetch                  #

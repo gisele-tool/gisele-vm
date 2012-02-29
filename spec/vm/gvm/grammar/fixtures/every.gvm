@@ -1,6 +1,9 @@
 0: fetch
    fetch 1
    fetch 'blah'
+   fork
+   fork 15
+   fork :a_label
    invoke
    new
    notify

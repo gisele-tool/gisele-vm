@@ -39,6 +39,12 @@ module Gisele
       @opcodes << [:pop]    # pop the Prog
     end
 
+  private ### lifecycle
+
+    def fork(at)
+      Prog.new(:parent => puid, :pc => at, :start => true)
+    end
+
   private ### event management
 
     def event(kind, args)

@@ -11,6 +11,15 @@ module Gisele
         push puid
       end
 
+      ### LIFECYCLE ######################################################################
+
+      # Fork the current Prog. Set its program counter to `at` (taken from the stack if
+      # not specified), and mark it as schedulable by default. The resulting Prog is
+      # pushed on the stack. It is not saved.
+      def op_fork(at = nil)
+        push fork(at || pop)
+      end
+
       ### GETTING PROGS ON STACK #########################################################
 
       # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
