@@ -36,7 +36,7 @@ module Gisele
         list.save(Prog.new) if list.empty?
 
         # take the puid if any
-        puid = args.shift || 0
+        puid = Integer(args.shift || 0)
 
         # build the virtual machine
         vm = VM.new(puid, bytecode, list)
