@@ -119,6 +119,17 @@ module Gisele
         @opcodes += @bytecode[label] if peek.wait.empty?
       end
 
+                                                                        ### EVENT HANDLING
+
+      # Pops event arguments from the stack (an array). Send an event of the specified
+      # kind on the event interface. If `kind` is not provided, it is first poped from
+      # the stack
+      def op_event(kind = nil)
+        kind ||= pop
+        args = pop
+        event_interface.call(@puid, kind, args)
+      end
+
     end # module Opcodes
   end # class VM
 end # module Gisele

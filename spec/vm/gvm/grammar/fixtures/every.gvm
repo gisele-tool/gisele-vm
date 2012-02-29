@@ -19,4 +19,6 @@
    start
    stop
    wait
+   event
+   event :hello
 

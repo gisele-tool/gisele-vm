@@ -9,6 +9,7 @@ rules:
     - '::Integer'
     - '::Symbol'
   instruction:
+    - event
     - fetch
     - invoke
     - new
@@ -27,6 +28,8 @@ rules:
     - stop
     - puid
     - wait
+  event:
+    - [ 'symbol_arg?' ]
   fetch:
     - []
   invoke:

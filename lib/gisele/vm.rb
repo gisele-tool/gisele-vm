@@ -9,13 +9,15 @@ module Gisele
     attr_reader :stack
     attr_reader :opcodes
     attr_reader :proglist
+    attr_reader :event_interface
 
-    def initialize(puid, bytecode, proglist = ProgList.new)
+    def initialize(puid, bytecode, proglist = ProgList.new, event_interface = self)
       @puid     = puid
       @bytecode = bytecode
       @proglist = proglist
       @stack    = []
       @opcodes  = []
+      @event_interface = event_interface
     end
 
     def run
@@ -24,6 +26,10 @@ module Gisele
         op = @opcodes.shift
         send :"op_#{op.first}", *op[1..-1]
       end
+    end
+
+    def call(puid, kind, args)
+      puts "#{kind}(#{puid}): #{args.inspect}"
     end
 
   private
