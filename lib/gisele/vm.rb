@@ -93,7 +93,11 @@ module Gisele
     end
 
     def save(prog)
-      @proglist.save(prog)
+      if Array===prog
+        prog.map{|p| @proglist.save(p) }
+      else
+        @proglist.save(prog)
+      end
     end
 
   private ### opcodes

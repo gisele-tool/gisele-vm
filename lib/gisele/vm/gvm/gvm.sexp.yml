@@ -59,7 +59,7 @@ rules:
   unschedule:
     - []
   save:
-    - []
+    - [ 'integer_arg?' ]
   # stack
   pop:
     - [ 'integer_arg?' ]

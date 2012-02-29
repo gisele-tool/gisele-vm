@@ -93,10 +93,12 @@ module Gisele
         peek.progress = false
       end
 
-      # Pops the top program from the stack. Saves it. Pushes its puid back on
-      # the stack.
-      def op_save
-        push save(pop)
+      # Pops `n` programs from the stack and save them. Pushes their puid back on
+      # the stack after saving, in the original order. `n` is considered 1 if unspecified.
+      def op_save(n = nil)
+        progs = pop(n || 1)
+        puids = save(progs)
+        puids.reverse.each{|puid| push(puid)}
       end
 
       ### DATA STACK MANAGEMENT ##########################################################
