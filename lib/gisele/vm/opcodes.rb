@@ -111,6 +111,15 @@ module Gisele
         push prog
       end
 
+      # Find the parent Prog. Remove the current puid from its wait list. Push it unsaved
+      # on the stack.
+      def op_notify
+        parent = fetch(current_prog.parent)
+        parent.wait.delete puid
+        parent.progress = true if parent.wait.empty?
+        push parent
+      end
+
       # Pops `n` programs from the stack and save them. Pushes their puid back on
       # the stack after saving, in the original order. `n` is considered 1 if unspecified.
       def op_save(n = nil)
@@ -151,12 +160,6 @@ module Gisele
       end
 
       ### TOP PROGRAM HANDLING ###########################################################
-
-      # Pops a puid. Removes it from the wait list of the peek program.
-      def op_notify
-        puid = pop
-        peek.wait.delete puid
-      end
 
       # Pops a label. If the wait list of the peek program is empty then pushes
       # the opcodes at that location on the code stack. Otherwise do nothing.
