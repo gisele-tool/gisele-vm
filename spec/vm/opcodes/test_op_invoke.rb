@@ -9,11 +9,26 @@ module Gisele
         @args = args
       end
 
-      it 'pushes the result on the stack' do
-        vm.stack = [ self, :hello, [ "world", "!" ] ]
-        vm.op_invoke
+      before do
+        vm.stack = [ self, [ "world", "!" ] ]
+      end
+
+      after do
         @args.should eq(["world", "!"])
-        vm.stack.should eq([ ])
+      end
+
+      it 'invoke as expected' do
+        vm.op_invoke(:hello)
+      end
+
+      it 'does not push back on the stack' do
+        vm.op_invoke(:hello)
+        vm.stack.should eq([])
+      end
+
+      it 'takes the method name from the stack if unspecified' do
+        vm.op_push :hello
+        vm.op_invoke
       end
 
     end

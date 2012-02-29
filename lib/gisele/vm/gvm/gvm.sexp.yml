@@ -39,7 +39,7 @@ rules:
   fork:
     - [ 'label_arg?' ]
   invoke:
-    - []
+    - [ 'symbol_arg?' ]
   notify:
     - []
   parent:
@@ -55,7 +55,7 @@ rules:
   save:
     - []
   send:
-    - []
+    - [ 'symbol_arg?' ]
   setpc:
     - []
   then:

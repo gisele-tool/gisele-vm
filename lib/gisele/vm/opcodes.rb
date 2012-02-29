@@ -66,19 +66,22 @@ module Gisele
         push arr.reverse
       end
 
-      # Pops an array of argument `args`. Pops a method name `m` (Symbol). Pops an object
-      # `o`. Invoke `m` on `o`, passing arguments `args`. Push the result on the stack.
-      def op_send
-        args = pop
-        m = pop
-        o = pop
-        push o.send(m, *args)
+      ### GENERIC OPCODES ################################################################
+
+      # Pops a method name on the stack unless `method` is specified. Pops an array of
+      # argument `args`. Pops an object `receiver`. Invoke `method` on `receiver`, passing
+      # arguments `args`. Push the result back on the stack.
+      def op_send(method = nil, push_result = true)
+        method ||= pop
+        args     = pop
+        receiver = pop
+        result   = receiver.send(method, *args)
+        push result if push_result
       end
 
       # Same as `op_send` but does not keep the result on the stack.
-      def op_invoke
-        op_send
-        op_pop
+      def op_invoke(method = nil)
+        op_send(method, false)
       end
 
       ### TOP PROGRAM HANDLING ###########################################################
