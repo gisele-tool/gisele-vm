@@ -3,9 +3,14 @@ module Gisele
     class ProgList
       class EndOfFile
 
-        def initialize(file)
+        def initialize(file, truncate = false)
           @file = file
-          load!
+          if truncate
+            @delegate = ProgList::Memory.new
+            save!
+          else
+            @delegate = ProgList::Memory.new(load!)
+          end
         end
 
         def register(prog)
@@ -58,11 +63,12 @@ module Gisele
             progs << Prog.new(eval(s, TOPLEVEL_BINDING)) unless s.strip.empty?
           end
         end
-        @delegate = ProgList::Memory.new(progs)
+        progs
       end
 
       def save!
         EndOfFile.find_end @file, 'r+' do |io|
+          io.truncate(io.pos)
           @delegate.to_relation.each do |tuple|
             io << Alf::Tools::to_ruby_literal(tuple) << "\n"
           end

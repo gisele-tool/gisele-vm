@@ -5,7 +5,13 @@ class Gisele::VM::ProgList
     let(:file){ Path.dir/'afile.gvm' }
 
     before do
-      file.write("blah\nblih\n__END__\n{:puid => 0, :parent => 0, :pc => 17}\n{:puid => 1, :parent => 0, :pc => 5}")
+      file.write(<<-GVM.gsub(/^\s*/, '').strip)
+        blah
+        blih
+        __END__
+        {:puid => 0, :parent => 0, :pc => 17}
+        {:puid => 1, :parent => 0, :pc => 5}
+      GVM
     end
 
     after do
@@ -26,6 +32,12 @@ class Gisele::VM::ProgList
 
       list2 = EndOfFile.new(file)
       list2.to_relation.project([:puid, :parent, :pc]).should eq(expected)
+    end
+
+    it 'truncates the file before saving' do
+      EndOfFile.new(file, true)
+      list = EndOfFile.new(file)
+      list.to_relation.should be_empty
     end
 
   end
