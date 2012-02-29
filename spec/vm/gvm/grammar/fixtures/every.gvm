@@ -1,4 +1,7 @@
-0: fetch
+0: cont
+   cont 1
+   cont :a_label
+   fetch
    fetch 1
    fetch 'blah'
    fork

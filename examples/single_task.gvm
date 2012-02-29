@@ -5,26 +5,20 @@ new:      fork :A_start          # fork a child at :A_start
           save                   # save it so it is scheduled
           pop                    # pops its puid from the stack
 
-A_start:  puid                   # Set program counter to :A_end...
-          fetch                  #
-          push :A_end            #
-          setpc                  #
-          stop                   #
-          save                   # ... and stop the process
+A_start:  cont :A_end            # Mark the current program as to be continued at :A_end
+          save                   # ... and save it
           push 'Task A'
           group 1
           event :start           # Broadcast A_start to the world
 
-A_end:    puid                   # Set program counter to :end...
-          fetch                  #
-          push :end              #
-          setpc                  #
-          stop                   #
-          save                   # ... and stop the process
+A_end:    push :end
+          pushc                  # enlist instructions at :end
           push 'Task A'
           group 1
           event :end             # Broadcast A_end to the world
 
-end:      puid
+end:      push 'Main process'
+          group 1
+          event :end             # Broadcast main end to the world
 
 __END__

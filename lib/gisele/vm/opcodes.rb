@@ -20,6 +20,12 @@ module Gisele
         push fork(at || pop)
       end
 
+      # Sets the program counter of the current Prog to `at` (taken from the stack if not
+      # specified). Unschedule it. Push the unsaved Prog on the stack.
+      def op_cont(at = nil)
+        push current_prog(:pc => at || pop, :start => false)
+      end
+
       ### GETTING PROGS ON STACK #########################################################
 
       # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not

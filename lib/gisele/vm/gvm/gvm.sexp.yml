@@ -9,6 +9,7 @@ rules:
     - '::Integer'
     - '::Symbol'
   instruction:
+    - cont
     - event
     - fetch
     - fork
@@ -29,6 +30,8 @@ rules:
     - stop
     - puid
     - wait
+  cont:
+    - [ 'label_arg?' ]
   event:
     - [ 'symbol_arg?' ]
   fetch:

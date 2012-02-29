@@ -41,6 +41,12 @@ module Gisele
 
   private ### lifecycle
 
+    def current_prog(with = nil)
+      prog = fetch(puid)
+      prog = prog.merge(with) if with
+      prog
+    end
+
     def fork(at)
       Prog.new(:parent => puid, :pc => at, :start => true)
     end

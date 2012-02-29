@@ -25,7 +25,8 @@ module Gisele
            :op_group,
            :op_resume,
            :op_event,
-           :op_fork
+           :op_fork,
+           :op_cont
 
   end
 end
