@@ -16,7 +16,6 @@ module Gisele
            :op_start,
            :op_stop,
            :op_save,
-           :op_new,
            :op_wait,
            :op_notify,
            :op_pop,

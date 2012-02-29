@@ -28,12 +28,6 @@ module Gisele
         push fetch(puid || pop)
       end
 
-      # Pops an puid. Creates a child program of it. Registers that child and
-      # pushes its puid back on the stack.
-      def op_new
-        push save(Prog.new(:parent => pop))
-      end
-
        ### CODE STACK MANAGEMENT #########################################################
 
       # Pops a label. Pushes opcodes at that location on the code stack.

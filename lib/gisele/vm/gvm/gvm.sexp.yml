@@ -37,8 +37,6 @@ rules:
     - [ 'label_arg?' ]
   invoke:
     - []
-  new:
-    - []
   notify:
     - []
   parent:

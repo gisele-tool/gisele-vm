@@ -5,7 +5,6 @@
    fork 15
    fork :a_label
    invoke
-   new
    notify
    parent
    pc
