@@ -32,6 +32,12 @@ module Gisele
         enlist_bytecode_at(at || pop)
       end
 
+      # Pops the top program from the stack. Saves it. Pushes its puid back on
+      # the stack.
+      def op_save
+        push save(pop)
+      end
+
       ### GETTING PROGS ON STACK #########################################################
 
       # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
@@ -101,12 +107,6 @@ module Gisele
       # Set the `progress` attribute to false on the top program
       def op_unschedule
         peek.progress = false
-      end
-
-      # Pops the top program from the stack. Saves it. Pushes its puid back on
-      # the stack.
-      def op_save
-        push save(pop)
       end
 
       # Pops an puid. Adds it to the notifying list of the peek program.
