@@ -137,17 +137,6 @@ module Gisele
         push peek.parent
       end
 
-      # Pushes the program counter of the top program.
-      def op_pc
-        push peek.pc
-      end
-
-      # Pops a label. Sets the program counter of the top program to it.
-      def op_setpc
-        label = pop
-        peek.pc = label
-      end
-
       # Pops an puid. Adds it to the notifying list of the peek program.
       def op_wait
         puid = pop

@@ -32,9 +32,7 @@ rules:
     # to clean
     - notify
     - parent
-    - pc
     - resume
-    - setpc
     - wait
   # generic
   send:
@@ -77,11 +75,7 @@ rules:
     - []
   parent:
     - []
-  pc:
-    - []
   resume:
-    - []
-  setpc:
     - []
   wait:
     - []

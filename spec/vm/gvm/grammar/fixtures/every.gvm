@@ -10,7 +10,6 @@
    invoke
    notify
    parent
-   pc
    pop
    push 12
    push 'hello'
@@ -22,7 +21,6 @@
    save
    puid
    send
-   setpc
    group
    group 3
    schedule

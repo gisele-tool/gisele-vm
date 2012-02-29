@@ -32,11 +32,11 @@ module Gisele
   private
 
     def push_loader
-      @opcodes << [:puid]   # push self puid
-      @opcodes << [:fetch]  # fetch the corresponding Prog
-      @opcodes << [:pc]     # push the program counter
-      @opcodes << [:then]   # load the instructions
-      @opcodes << [:pop]    # pop the Prog
+      @opcodes << [:puid]     # push self puid
+      @opcodes << [:fetch]    # fetch the corresponding Prog
+      @opcodes << [:get, :pc] # push the program counter
+      @opcodes << [:then]     # load the instructions
+      @opcodes << [:pop]      # pop the Prog
     end
 
   private ### lifecycle
