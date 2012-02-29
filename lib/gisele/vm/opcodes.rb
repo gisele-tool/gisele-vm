@@ -4,14 +4,14 @@ module Gisele
 
     private
 
-                                                              ### CURRENT PROGRAM HANDLING
+      ### CURRENT PROGRAM HANDLING #######################################################
 
       # Puts the puid of the executing Prog on the stack
       def op_puid
         push @puid
       end
 
-                                                                ### GETTING PROGS ON STACK
+      ### GETTING PROGS ON STACK #########################################################
 
       # Pops an puid. Fetches and pushes the corresponding program.
       def op_fetch
@@ -24,49 +24,49 @@ module Gisele
         push @proglist.register(Prog.new(:parent => pop))
       end
 
-                                                                 ### CODE STACK MANAGEMENT
+       ### CODE STACK MANAGEMENT #########################################################
 
       # Pops a label. Pushes opcodes at that location on the code stack.
       def op_pushc
         @opcodes += @bytecode[pop]
       end
 
-                                                                 ### DATA STACK MANAGEMENT
+      ### DATA STACK MANAGEMENT ##########################################################
 
-       # Pushes `arg` on the data stack.
-       def op_push(arg)
-         push arg
-       end
+      # Pushes `arg` on the data stack.
+      def op_push(arg)
+        push arg
+      end
 
-       # Pops the top element from the stack.
-       def op_pop
-         pop
-       end
+      # Pops the top element from the stack.
+      def op_pop
+        pop
+      end
 
-       # Pops `n` elements from the stack, keep them in a new array and push the later
-       # back on the stack. If `n` is not provided, it is taken from the stack first.
-       def op_group(nb = nil)
-         n, arr = (nb || pop), []
-         n.times{ arr << pop }
-         push arr.reverse
-       end
+      # Pops `n` elements from the stack, keep them in a new array and push the later
+      # back on the stack. If `n` is not provided, it is taken from the stack first.
+      def op_group(nb = nil)
+        n, arr = (nb || pop), []
+        n.times{ arr << pop }
+        push arr.reverse
+      end
 
-       # Pops an array of argument `args`. Pops a method name `m` (Symbol). Pops an object
-       # `o`. Invoke `m` on `o`, passing arguments `args`. Push the result on the stack.
-       def op_send
-         args = pop
-         m = pop
-         o = pop
-         push o.send(m, *args)
-       end
+      # Pops an array of argument `args`. Pops a method name `m` (Symbol). Pops an object
+      # `o`. Invoke `m` on `o`, passing arguments `args`. Push the result on the stack.
+      def op_send
+        args = pop
+        m = pop
+        o = pop
+        push o.send(m, *args)
+      end
 
-       # Same as `op_send` but does not keep the result on the stack.
-       def op_invoke
-         op_send
-         op_pop
-       end
+      # Same as `op_send` but does not keep the result on the stack.
+      def op_invoke
+        op_send
+        op_pop
+      end
 
-                                                                  ### TOP PROGRAM HANDLING
+      ### TOP PROGRAM HANDLING ###########################################################
 
       # Pushes the parent puid of the top program.
       def op_parent
@@ -119,7 +119,7 @@ module Gisele
         @opcodes += @bytecode[label] if peek.wait.empty?
       end
 
-                                                                        ### EVENT HANDLING
+      ### EVENT HANDLING #################################################################
 
       # Pops event arguments from the stack (an array). Send an event of the specified
       # kind on the event interface. If `kind` is not provided, it is first poped from
