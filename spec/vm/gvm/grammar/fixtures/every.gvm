@@ -11,6 +11,7 @@
    notify
    parent
    pop
+   pop 2
    push 12
    push 'hello'
    push Symbol

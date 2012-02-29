@@ -107,8 +107,8 @@ module Gisele
       end
 
       # Pops the top element from the stack.
-      def op_pop
-        pop
+      def op_pop(n = nil)
+        pop(n)
       end
 
       # Pops `n` elements from the stack, keep them in a new array and push the later

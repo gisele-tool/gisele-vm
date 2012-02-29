@@ -74,8 +74,12 @@ module Gisele
       @stack << x
     end
 
-    def pop
-      @stack.pop
+    def pop(n = nil)
+      if n.nil?
+        @stack.pop
+      else
+        n.times.map{ @stack.pop }
+      end
     end
 
     def peek

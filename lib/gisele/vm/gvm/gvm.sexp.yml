@@ -62,7 +62,7 @@ rules:
     - []
   # stack
   pop:
-    - []
+    - [ 'integer_arg?' ]
   push:
     - [ argument ]
   group:
