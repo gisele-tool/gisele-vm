@@ -1,4 +1,6 @@
 0: fetch
+   fetch 1
+   fetch 'blah'
    invoke
    new
    notify

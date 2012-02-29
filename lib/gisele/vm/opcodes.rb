@@ -13,9 +13,10 @@ module Gisele
 
       ### GETTING PROGS ON STACK #########################################################
 
-      # Pops an puid. Fetches and pushes the corresponding program.
-      def op_fetch
-        push fetch(pop)
+      # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
+      # specified, pops it from the stack first.
+      def op_fetch(puid = nil)
+        push fetch(puid || pop)
       end
 
       # Pops an puid. Creates a child program of it. Registers that child and

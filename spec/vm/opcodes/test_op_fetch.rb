@@ -9,10 +9,14 @@ module Gisele
         vm.proglist.register Prog.new
         vm.proglist.register Prog.new
         @at1 = vm.proglist.fetch(1)
-        @at1.should be_a(Prog)
       end
 
-      it 'fetches with the puid' do
+      it 'fetches the correct Prog' do
+        vm.op_fetch(1)
+        vm.stack.should eq([ @at1 ])
+      end
+
+      it 'supports taking the puid from the stack' do
         vm.stack = [ 1 ]
         vm.op_fetch
         vm.stack.should eq([ @at1 ])
