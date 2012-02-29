@@ -9,31 +9,41 @@ rules:
     - '::Integer'
     - '::Symbol'
   instruction:
-    - cont
-    - event
+    # generic
+    - send
+    - invoke
+    - get
+    - set
+    # lifecycle
+    - puid
     - fetch
     - fork
-    - invoke
-    - new
+    - cont
+    - then
+    - schedule
+    - unschedule
+    - save
+    # events
+    - event
+    # stack
+    - pop
+    - push
+    - group
+    # to clean
     - notify
     - parent
     - pc
-    - pop
-    - push
-    - then
     - resume
-    - save
-    - send
     - setpc
-    - group
-    - schedule
-    - unschedule
-    - puid
     - wait
   # generic
   send:
     - [ 'symbol_arg?' ]
   invoke:
+    - [ 'symbol_arg?' ]
+  get:
+    - [ 'symbol_arg?' ]
+  set:
     - [ 'symbol_arg?' ]
   # lifecycle
   puid:

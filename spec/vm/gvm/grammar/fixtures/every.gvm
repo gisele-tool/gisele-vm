@@ -30,4 +30,7 @@
    wait
    event
    event :hello
-
+   get
+   get :attrname
+   set
+   set :attrname

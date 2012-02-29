@@ -22,6 +22,35 @@ module Gisele
         op_send(method, false)
       end
 
+      # Push the value of the attribute `attrname` of the top object. If `attrname` is not
+      # specified, pops it from the stack first.
+      def op_get(attrname = nil)
+        attrname ||= pop
+        receiver = peek
+        if receiver.respond_to?(:[])
+          push receiver[attrname]
+        elsif receiver.respond_to?(attrname)
+          push receiver.send(attrname)
+        else
+          raise Error, "Unable to get #{attrname} on #{receiver}"
+        end
+      end
+
+      # If `attrname` is unspecified, pops it from the stack first. Pops a value `val`
+      # from the stack. Set attribute `attrname` to `val` on the top object.
+      def op_set(attrname = nil)
+        attrname ||= pop
+        attrvalue  = pop
+        receiver   = peek
+        if receiver.respond_to?(:[]=)
+          receiver[attrname] = attrvalue
+        elsif receiver.respond_to?(:"#{attrname}=")
+          receiver.send(:"#{attrname}=", attrvalue)
+        else
+          raise Error, "Unable to set #{attrname} on #{receiver}"
+        end
+      end
+
       ### LIFECYCLE ######################################################################
 
       # Puts the puid of the executing Prog on the stack
