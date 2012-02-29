@@ -19,6 +19,17 @@ module Gisele
         {:uuid => uuid, :parent => parent, :pc => pc, :wait => wait, :start => start}
       end
 
+      def merge(with)
+        merged = to_hash.merge(with.to_hash){|k,v1,v2|
+          if k == :wait
+            v1 | v2
+          else
+            v2
+          end
+        }
+        Prog.new(merged)
+      end
+
       def dup
         super.tap do |c|
           c.wait = wait.dup
