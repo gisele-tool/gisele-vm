@@ -14,7 +14,8 @@
    puid
    send
    setpc
-   slice
+   group
+   group 3
    start
    stop
    wait

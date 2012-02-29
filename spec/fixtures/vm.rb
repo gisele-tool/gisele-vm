@@ -23,7 +23,7 @@ module Gisele
            :op_push,
            :op_send,
            :op_invoke,
-           :op_slice,
+           :op_group,
            :op_resume
 
   end

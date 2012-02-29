@@ -22,16 +22,11 @@ rules:
     - save
     - send
     - setpc
-    - slice
+    - group
     - start
     - stop
     - puid
     - wait
-  argument:
-    - '::Symbol'
-    - '::Integer'
-    - '::String'
-    - '::Module'
   fetch:
     - []
   invoke:
@@ -58,8 +53,8 @@ rules:
     - []
   setpc:
     - []
-  slice:
-    - []
+  group:
+    - [ 'integer_arg?' ]
   start:
     - []
   stop:
@@ -68,3 +63,12 @@ rules:
     - []
   wait:
     - []
+  argument:
+    - symbol_arg
+    - integer_arg
+    - string_arg
+    - module_arg
+  symbol_arg:  '::Symbol'
+  integer_arg: '::Integer'
+  string_arg:  '::String'
+  module_arg:  '::Module'

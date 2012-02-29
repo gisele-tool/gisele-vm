@@ -9,8 +9,7 @@
 1:  push STDOUT
     push :puts
     push 'Starting task'
-    push 1
-    slice
+    group 1
     invoke
     puid
     fetch
@@ -21,8 +20,7 @@
 2:  push STDOUT
     push :puts
     push 'Task ended'
-    push 1
-    slice
+    group 1
     invoke
 __END__
 {:puid => 0, :parent => 0, :pc => 0, :wait => [], :start => false}

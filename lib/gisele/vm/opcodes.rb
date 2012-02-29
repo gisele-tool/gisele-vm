@@ -43,10 +43,10 @@ module Gisele
          pop
        end
 
-       # Pops an integer `n`. Pops `n` elements from the stack, keep them in a new array
-       # and push the later on the stack.
-       def op_slice
-         n, arr = pop, []
+       # Pops `n` elements from the stack, keep them in a new array and push the later
+       # back on the stack. If `n` is not provided, it is taken from the stack first.
+       def op_group(nb = nil)
+         n, arr = (nb || pop), []
          n.times{ arr << pop }
          push arr.reverse
        end
