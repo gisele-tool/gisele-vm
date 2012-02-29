@@ -76,10 +76,6 @@ module Gisele
       @proglist.fetch(puid)
     end
 
-    def register(prog)
-      @proglist.register(prog)
-    end
-
     def save(prog)
       @proglist.save(prog)
     end

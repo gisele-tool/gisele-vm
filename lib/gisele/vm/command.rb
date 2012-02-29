@@ -33,7 +33,7 @@ module Gisele
 
         # create the prog list instance
         list = ProgList::EndOfFile.new(file)
-        list.register(Prog.new) if list.empty?
+        list.save(Prog.new) if list.empty?
 
         # take the puid if any
         puid = args.shift || 0

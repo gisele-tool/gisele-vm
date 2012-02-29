@@ -4,7 +4,7 @@ class Gisele::VM
     let(:list){ ProgList::Memory.new }
 
     before do
-      @puids = (0..1).map{ list.register(Prog.new) }
+      @puids = (0..1).map{ list.save(Prog.new) }
       @puids.size.should eq(2)
     end
 

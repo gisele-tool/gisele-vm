@@ -22,7 +22,7 @@ module Gisele
       # Pops an puid. Creates a child program of it. Registers that child and
       # pushes its puid back on the stack.
       def op_new
-        push register(Prog.new(:parent => pop))
+        push save(Prog.new(:parent => pop))
       end
 
        ### CODE STACK MANAGEMENT #########################################################

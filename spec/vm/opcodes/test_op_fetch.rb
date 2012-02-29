@@ -6,8 +6,8 @@ module Gisele
       let(:vm){ VM.new 0, [] }
 
       before do
-        vm.proglist.register Prog.new
-        vm.proglist.register Prog.new
+        vm.proglist.save Prog.new
+        vm.proglist.save Prog.new
         @at1 = vm.proglist.fetch(1)
       end
 

@@ -6,7 +6,7 @@ module Gisele
       let(:vm){ VM.new :test_pushc, [[:at_0], [:hello, :world]] }
 
       before do
-        vm.proglist.register Prog.new(:wait => waitlist)
+        vm.proglist.save Prog.new(:wait => waitlist)
         vm.stack = [ vm.proglist.fetch(0), 1 ]
       end
 

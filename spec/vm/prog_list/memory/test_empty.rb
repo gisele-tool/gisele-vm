@@ -8,7 +8,7 @@ class Gisele::VM
     end
 
     it 'returns false on a non empty list' do
-      list.register(Prog.new)
+      list.save(Prog.new)
       list.should_not be_empty
     end
 

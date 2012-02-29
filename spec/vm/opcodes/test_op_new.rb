@@ -6,7 +6,7 @@ module Gisele
       let(:vm){ VM.new 0, [] }
 
       before do
-        vm.proglist.register Prog.new
+        vm.proglist.save Prog.new
         vm.stack = [ 0 ]
       end
 

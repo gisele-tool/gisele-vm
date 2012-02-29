@@ -4,7 +4,7 @@ class Gisele::VM
     let(:list){ ProgList::Memory.new }
 
     before do
-      @puid = list.register(Prog.new)
+      @puid = list.save(Prog.new)
     end
 
     it 'returns Progs' do

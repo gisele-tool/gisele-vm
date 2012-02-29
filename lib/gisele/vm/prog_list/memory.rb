@@ -7,22 +7,17 @@ module Gisele
           @progs = progs
         end
 
-        def register(prog)
-          @progs << is_a_prog!(prog).dup.tap{|d|
-            d.puid   = @progs.size
-            d.parent = d.puid if d.parent.nil?
-          }
-          @progs.last.puid
-        end
-
         def fetch(puid)
           @progs[is_a_valid_puid!(puid)].dup
         end
 
         def save(prog)
-          is_a_prog!(prog).puid.tap{|puid|
-            @progs[is_a_valid_puid!(puid)] = prog.dup
-          }
+          prog = is_a_prog!(prog)
+          if prog.puid
+            save_prog(prog)
+          else
+            register_prog(prog)
+          end
         end
 
         def empty?
@@ -34,6 +29,20 @@ module Gisele
         end
 
       private
+
+        def save_prog(prog)
+          prog.puid.tap{|puid|
+            @progs[is_a_valid_puid!(puid)] = prog.dup
+          }
+        end
+
+        def register_prog(prog)
+          @progs << prog.dup.tap{|d|
+            d.puid   = @progs.size
+            d.parent = d.puid if d.parent.nil?
+          }
+          @progs.last.puid
+        end
 
         def is_a_prog!(prog)
           raise ArgumentError, "Invalid prog: #{prog}", caller unless Prog===prog

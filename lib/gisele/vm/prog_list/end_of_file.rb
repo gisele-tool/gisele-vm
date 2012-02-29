@@ -13,12 +13,6 @@ module Gisele
           end
         end
 
-        def register(prog)
-          puid = @delegate.register(prog)
-          save!
-          puid
-        end
-
         def fetch(puid)
           @delegate.fetch(puid)
         end

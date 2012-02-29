@@ -6,7 +6,7 @@ module Gisele
       let(:vm){ VM.new 0, [] }
 
       before do
-        puid = vm.proglist.register Prog.new(:pc => 17)
+        puid = vm.proglist.save Prog.new(:pc => 17)
         @at0 = vm.proglist.fetch(0)
         vm.stack = [ @at0 ]
       end
