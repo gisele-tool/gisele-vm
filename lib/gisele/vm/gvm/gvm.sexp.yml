@@ -22,6 +22,7 @@ rules:
     - then
     - schedule
     - unschedule
+    - wait
     - save
     # events
     - event
@@ -33,7 +34,6 @@ rules:
     - notify
     - parent
     - resume
-    - wait
   # generic
   send:
     - [ 'symbol_arg?' ]
@@ -58,6 +58,8 @@ rules:
     - []
   unschedule:
     - []
+  wait:
+    - [ 'integer_arg?' ]
   save:
     - [ 'integer_arg?' ]
   # stack
@@ -76,8 +78,6 @@ rules:
   parent:
     - []
   resume:
-    - []
-  wait:
     - []
   argument:
     - symbol_arg
