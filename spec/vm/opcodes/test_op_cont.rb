@@ -6,10 +6,10 @@ module Gisele
       let(:list){ ProgList.new           }
       let(:vm)  { VM.new @puid, [], list }
 
-      before { 
-        @puid = list.save Prog.new(:parent => 17, :start => true) 
+      before {
+        @puid = list.save Prog.new(:parent => 17, :progress => true)
       }
-      
+
       context 'with a label' do
 
         before do
@@ -31,8 +31,8 @@ module Gisele
           subject.parent.should eq(17)
         end
 
-        it 'is unscheduled' do
-          subject.start.should be_false
+        it 'is not scheduled' do
+          subject.progress.should be_false
         end
 
         it 'has the correct program counter' do
@@ -41,7 +41,7 @@ module Gisele
 
         it 'is not saved' do
           list.fetch(@puid).pc.should eq(0)
-          list.fetch(@puid).start.should be_true
+          list.fetch(@puid).progress.should be_true
         end
 
       end # with a label

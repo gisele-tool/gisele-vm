@@ -26,8 +26,8 @@ rules:
     - send
     - setpc
     - group
-    - start
-    - stop
+    - schedule
+    - unschedule
     - puid
     - wait
   cont:
@@ -62,9 +62,9 @@ rules:
     - []
   group:
     - [ 'integer_arg?' ]
-  start:
+  schedule:
     - []
-  stop:
+  unschedule:
     - []
   puid:
     - []

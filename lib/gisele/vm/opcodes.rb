@@ -23,7 +23,7 @@ module Gisele
       # Sets the program counter of the current Prog to `at` (taken from the stack if not
       # specified). Unschedule it. Push the unsaved Prog on the stack.
       def op_cont(at = nil)
-        push current_prog(:pc => at || pop, :start => false)
+        push current_prog(:pc => at || pop, :progress => false)
       end
 
       ### GETTING PROGS ON STACK #########################################################
@@ -94,14 +94,14 @@ module Gisele
         peek.pc = label
       end
 
-      # Set the `start` attribute to true on the top program
-      def op_start
-        peek.start = true
+      # Set the `progress` attribute to true on the top program
+      def op_schedule
+        peek.progress = true
       end
 
-      # Set the `start` attribute to false on the top program
-      def op_stop
-        peek.start = false
+      # Set the `progress` attribute to false on the top program
+      def op_unschedule
+        peek.progress = false
       end
 
       # Pops the top program from the stack. Saves it. Pushes its puid back on

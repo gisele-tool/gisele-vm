@@ -48,7 +48,7 @@ module Gisele
     end
 
     def fork(at)
-      Prog.new(:parent => puid, :pc => at, :start => true)
+      Prog.new(:parent => puid, :pc => at, :progress => true)
     end
 
   private ### event management

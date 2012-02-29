@@ -5,18 +5,22 @@ module Gisele
       attr_accessor :parent
       attr_accessor :pc
       attr_accessor :wait
-      attr_accessor :start
+      attr_accessor :progress
 
       def initialize(attrs = {})
-        @puid   = attrs[:puid]   || nil
-        @parent = attrs[:parent] || @puid
-        @pc     = attrs[:pc]     || 0
-        @wait   = attrs[:wait]   || []
-        @start  = attrs[:start]  || false
+        @puid     = attrs[:puid]     || nil
+        @parent   = attrs[:parent]   || @puid
+        @pc       = attrs[:pc]       || 0
+        @wait     = attrs[:wait]     || []
+        @progress = attrs[:progress] || false
       end
 
       def to_hash
-        {:puid => puid, :parent => parent, :pc => pc, :wait => wait, :start => start}
+        { :puid => puid,
+          :parent => parent,
+          :pc => pc,
+          :wait => wait,
+          :progress => progress }
       end
 
       def merge(with)

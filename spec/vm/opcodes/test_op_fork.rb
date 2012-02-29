@@ -25,8 +25,8 @@ module Gisele
           subject.parent.should eq(17)
         end
 
-        it 'is marked as to be started' do
-          subject.start.should be_true
+        it 'is scheduled' do
+          subject.progress.should be_true
         end
 
         it 'has the correct program counter' do

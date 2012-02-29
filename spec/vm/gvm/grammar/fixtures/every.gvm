@@ -23,8 +23,8 @@
    setpc
    group
    group 3
-   start
-   stop
+   schedule
+   unschedule
    wait
    event
    event :hello
