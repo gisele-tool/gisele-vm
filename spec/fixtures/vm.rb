@@ -27,7 +27,8 @@ module Gisele
            :op_cont,
            :op_get,
            :op_set,
-           :op_self
+           :op_self,
+           :op_end
 
   end
 end

@@ -87,6 +87,12 @@ module Gisele
         push current_prog(:pc => at || pop, :progress => false)
       end
 
+      # Sets the program counter of the current Prog to `-1`. Unschedule it. Push the
+      # unsaved Prog on the stack.
+      def op_end
+        op_cont(-1)
+      end
+
       # Pushes opcodes at label `at` on the code queue. If `at` is unspecified, it it
       # poped from the stack first
       def op_then(at = nil)

@@ -41,5 +41,7 @@ B_end:    push 'Task B'
 endpar:   push 'Parallel'
           group 1
           event :end
+          end
+          save
 
 __END__

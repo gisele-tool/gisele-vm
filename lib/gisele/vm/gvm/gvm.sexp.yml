@@ -21,6 +21,7 @@ rules:
     - fetch
     - fork
     - cont
+    - end
     - then
     - schedule
     - unschedule
@@ -57,6 +58,8 @@ rules:
     - [ 'label_arg?' ]
   cont:
     - [ 'label_arg?' ]
+  end:
+    - []
   then:
     - [ 'label_arg?' ]
   schedule:
