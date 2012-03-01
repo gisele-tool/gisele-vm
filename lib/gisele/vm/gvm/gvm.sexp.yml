@@ -35,7 +35,6 @@ rules:
     - group
     # to clean
     - notify
-    - resume
   # generic
   send:
     - [ 'symbol_arg?' ]
@@ -82,8 +81,6 @@ rules:
     - [ 'symbol_arg?' ]
   # to clean
   notify:
-    - []
-  resume:
     - []
   argument:
     - symbol_arg

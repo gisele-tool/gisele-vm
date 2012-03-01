@@ -18,7 +18,6 @@
    then
    then 0
    then :a_label
-   resume
    save
    save 2
    puid

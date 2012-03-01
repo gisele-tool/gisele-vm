@@ -165,15 +165,6 @@ module Gisele
         event(kind, args)
       end
 
-      ### TOP PROGRAM HANDLING ###########################################################
-
-      # Pops a label. If the wait list of the peek program is empty then pushes
-      # the opcodes at that location on the code stack. Otherwise do nothing.
-      def op_resume
-        label = pop
-        enlist_bytecode_at(label) if peek.wait.empty?
-      end
-
     end # module Opcodes
   end # class VM
 end # module Gisele
