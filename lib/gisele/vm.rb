@@ -3,6 +3,7 @@ require_relative 'vm/prog'
 require_relative 'vm/prog_list'
 require_relative 'vm/gvm'
 require_relative 'vm/opcodes'
+require_relative 'vm/agent'
 module Gisele
   class VM
 
@@ -21,8 +22,9 @@ module Gisele
       @event_interface = event_interface
     end
 
-    def run
-      push_loader
+    def run(at, stack = [])
+      @stack = stack
+      enlist_bytecode_at(at)
       until @opcodes.empty?
         op = @opcodes.shift
         send :"op_#{op.first}", *op[1..-1]
@@ -33,16 +35,6 @@ module Gisele
 
     def be(prog)
       @puid = prog.puid
-    end
-
-  private
-
-    def push_loader
-      @opcodes << [:puid]     # push self puid
-      @opcodes << [:fetch]    # fetch the corresponding Prog
-      @opcodes << [:get, :pc] # push the program counter
-      @opcodes << [:then]     # load the instructions
-      @opcodes << [:pop]      # pop the Prog
     end
 
   private ### lifecycle

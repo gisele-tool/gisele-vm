@@ -1,0 +1,19 @@
+# Start expects a label on top of the stack. It forks a new child process and schedules
+# it for running at that label
+start:   fork
+         save
+         pop
+
+# Run indefinitely picks a scheduled Prog and runs it
+run:     pick
+         be
+         get :pc
+         then
+         pop
+         then :run
+
+# Resume expects a puid on the stack. It fetches the corresponding Prog and schedules it.
+resume:  fetch
+         schedule
+         save
+         pop
