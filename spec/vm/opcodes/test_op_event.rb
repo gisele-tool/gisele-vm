@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe "op_event" do
 
-      let(:vm){ VM.new 17, [], ProgList.new, self }
+      let(:vm){ VM.new 17, [], ProgList.memory, self }
 
       def call(puid, kind, args)
         @called = [puid, kind, args]

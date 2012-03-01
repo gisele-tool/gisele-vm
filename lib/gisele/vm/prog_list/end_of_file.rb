@@ -6,10 +6,10 @@ module Gisele
         def initialize(file, truncate = false)
           @file = file
           if truncate
-            super(ProgList::Memory.new)
+            super(ProgList.memory)
             save!
           else
-            super(ProgList::Memory.new(load!))
+            super(ProgList.memory(load!))
           end
         end
 

@@ -6,8 +6,13 @@ module Gisele
   class VM
     class ProgList
 
-      def self.new
-        Memory.new
+      def self.new(*args)
+        raise "ProgList is an abstract class" if self == ProgList
+        super
+      end
+
+      def self.memory(progs = [])
+        ProgList::Memory.new(progs)
       end
 
     end # class ProgList

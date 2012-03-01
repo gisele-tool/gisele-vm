@@ -4,7 +4,7 @@ module Gisele
     class ProgList
       class Blocking < ProgList::Delegate
 
-        def initialize(delegate = ProgList.new)
+        def initialize(delegate)
           super(delegate)
           @mutex    = Mutex.new
           @cv       = ConditionVariable.new

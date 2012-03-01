@@ -3,9 +3,11 @@ module Gisele
   class VM
     describe "run" do
 
-      let(:list)    { ProgList.new                }
-      let(:puid)    { list.save Prog.new          }
-      let(:vm)      { VM.new puid, bytecode, list }
+      let(:vm){ VM.new 0, bytecode }
+
+      before do
+        vm.proglist.save Prog.new
+      end
 
       context 'when the program counters points to no instruction' do
         let(:bytecode){ [ [] ] }

@@ -1,7 +1,7 @@
 module Gisele
   class VM
     class ProgList
-      class Memory
+      class Memory < ProgList
 
         def initialize(progs = [])
           @progs = progs

@@ -1,9 +1,9 @@
 module Gisele
   class VM
     class ProgList
-      class Delegate
+      class Delegate < ProgList
 
-        def initialize(delegate = ProgList.new)
+        def initialize(delegate)
           @delegate = delegate
         end
 

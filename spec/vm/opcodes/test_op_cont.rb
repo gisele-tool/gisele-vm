@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe "op_cont" do
 
-      let(:list){ ProgList.new           }
+      let(:list){ ProgList.memory        }
       let(:vm)  { VM.new @puid, [], list }
 
       before {

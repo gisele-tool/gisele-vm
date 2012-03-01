@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe 'op_pick' do
 
-      let(:vm){ VM.new 0, [], ProgList::Blocking.new(ProgList.new) }
+      let(:vm){ VM.new 0, [], ProgList::Blocking.new(ProgList.memory) }
 
       context 'when a scheduled Prog exists' do
 

@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe "op_notify" do
 
-      let(:list){ ProgList.new }
+      let(:list){ ProgList.memory }
 
       before do
         @puid0 = list.save Prog.new(:progress => false)
