@@ -2,8 +2,9 @@ module Gisele
   class VM
     class Agent
 
-      attr_reader :bytecode
-      attr_reader :proglist
+      attr_reader   :bytecode
+      attr_reader   :proglist
+      attr_accessor :event_interface
 
       def initialize(bytecode, proglist = nil, event_interface = nil)
         @bytecode        = load(bytecode)
