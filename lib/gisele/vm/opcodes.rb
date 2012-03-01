@@ -152,6 +152,11 @@ module Gisele
         pop(n)
       end
 
+      # Flips the two elements on top of the stack
+      def op_flip
+        pop(2).each{|e| push(e)}
+      end
+
       # Pops `n` elements from the stack, keep them in a new array and push the later
       # back on the stack. If `n` is not provided, it is taken from the stack first.
       def op_group(nb = nil)

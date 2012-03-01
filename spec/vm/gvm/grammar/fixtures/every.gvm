@@ -36,3 +36,4 @@
    self
    end
    pick
+   flip
