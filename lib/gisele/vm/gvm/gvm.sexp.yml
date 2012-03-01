@@ -26,6 +26,7 @@ rules:
     - schedule
     - unschedule
     - wait
+    - notify
     - save
     # events
     - event
@@ -33,8 +34,6 @@ rules:
     - pop
     - push
     - group
-    # to clean
-    - notify
   # generic
   send:
     - [ 'symbol_arg?' ]
@@ -67,6 +66,8 @@ rules:
     - []
   wait:
     - [ 'integer_arg?' ]
+  notify:
+    - []
   save:
     - [ 'integer_arg?' ]
   # stack
@@ -79,9 +80,6 @@ rules:
   # events
   event:
     - [ 'symbol_arg?' ]
-  # to clean
-  notify:
-    - []
   argument:
     - symbol_arg
     - integer_arg
