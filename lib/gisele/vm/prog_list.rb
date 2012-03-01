@@ -1,5 +1,5 @@
 require_relative 'prog_list/delegate'
-require_relative 'prog_list/blocking'
+require_relative 'prog_list/threadsafe'
 require_relative 'prog_list/memory'
 require_relative 'prog_list/end_of_file'
 module Gisele

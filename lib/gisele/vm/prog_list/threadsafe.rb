@@ -2,7 +2,7 @@ require 'thread'
 module Gisele
   class VM
     class ProgList
-      class Blocking < ProgList::Delegate
+      class Threadsafe < ProgList::Delegate
 
         def initialize(delegate)
           super(delegate)
@@ -34,7 +34,7 @@ module Gisele
           end
         end
 
-      end # class Blocking
+      end # class Threadsafe
     end # class ProgList
   end # class VM
 end # module Gisele

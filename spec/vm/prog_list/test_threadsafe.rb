@@ -2,9 +2,9 @@ require 'spec_helper'
 module Gisele
   class VM
     class ProgList
-      describe Blocking do
+      describe Threadsafe do
 
-        let(:list){ Blocking.new(self) }
+        let(:list){ Threadsafe.new(self) }
 
         def save(prog)
           @prog = prog
