@@ -9,7 +9,7 @@ module Gisele
         @puid = agent.proglist.save Prog.new(:progress => false)
       end
 
-      subject{ 
+      subject{
         agent.resume(@puid)
         agent.dump
       }

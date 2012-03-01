@@ -5,7 +5,7 @@ module Gisele
 
       let(:agent){ Agent.new Path.dir/'code.gvm' }
 
-      subject{ 
+      subject{
         agent.start(:A_start)
         agent.dump
       }

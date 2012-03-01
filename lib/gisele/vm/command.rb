@@ -14,6 +14,14 @@ module Gisele
 
       # Install options
       options do |opt|
+        @mode = nil
+        opt.on('-i', '--interactive', 'Start the interactive mode') do
+          @mode = :interactive
+        end
+        @truncate = false
+        opt.on('-t', '--truncate', 'Truncate process instances first') do
+          @truncate = true
+        end
         opt.on_tail('--help', "Show this help message") do
           raise Quickl::Help
         end
@@ -29,33 +37,22 @@ module Gisele
         unless (file = Path(args.shift)).exist?
           raise Quickl::IOAccessError, "File does not exists: #{file}"
         end
-        bytecode = Gvm.bytecode(file)
 
-        # create the prog list instance
-        list = ProgList::EndOfFile.new(file)
-        list.save(Prog.new) if list.empty?
+        list  = ProgList.end_of_file(file, @truncate).threadsafe
+        agent = VM::Agent.new(file, list)
 
-        # take the puid if any
-        puid = Integer(args.shift || 0)
-
-        # build the virtual machine
-        vm = VM.new(puid, bytecode, list)
-
-        # Run it
-        begin
-          vm.run
-        rescue Exception => ex
-          puts "Error occured: #{ex.message}"
-          puts ex.backtrace.join("\n")
-          puts "--- Stack"
-          puts vm.stack.join("\n")
-          puts "--- Opcodes"
-          puts vm.opcodes.join("\n")
-          exit(1)
+        case @mode
+        when :interactive then start_interactive(agent)
+        else
+          puts "You didn't specify a mode."
         end
+      end
 
-        # Puts the current proglist
-        puts vm.proglist.to_relation
+    private
+
+      def start_interactive(agent)
+        require_relative 'command/interactive'
+        Interactive.new(agent).run!
       end
 
     end # class Command

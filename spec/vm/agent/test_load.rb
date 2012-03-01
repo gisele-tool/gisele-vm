@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Agent, "load" do
 
-      subject{ 
+      subject{
         Agent.new Path.dir/'code.gvm'
       }
 

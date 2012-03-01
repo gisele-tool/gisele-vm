@@ -6,6 +6,8 @@ SYNOPSIS
   gvm GVM_FILE [PUID]
 
 OPTIONS
+  -i, --interactive                Start the interactive mode
+  -t, --truncate                   Truncate process instances first
       --help                       Show this help message
       --version                    Show version and exit
 
