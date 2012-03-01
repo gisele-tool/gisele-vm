@@ -12,7 +12,7 @@ module Gisele
     attr_reader :proglist
     attr_reader :event_interface
 
-    def initialize(puid, bytecode, proglist = nil, event_interface = self)
+    def initialize(puid, bytecode, proglist = nil, event_interface = nil)
       @puid     = puid
       @bytecode = bytecode
       @proglist = proglist || ProgList.memory
@@ -60,13 +60,8 @@ module Gisele
   private ### event management
 
     def event(kind, args)
-      event_interface.call(@puid, kind, args)
+      event_interface.call(@puid, kind, args) if event_interface
     end
-
-    def call(puid, kind, args)
-      puts "#{kind}(#{puid}): #{args.inspect}"
-    end
-    public :call
 
   private ### code stack management
 
