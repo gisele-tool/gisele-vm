@@ -35,3 +35,4 @@
    set :attrname
    self
    end
+   pick

@@ -100,6 +100,10 @@ module Gisele
       end
     end
 
+    def pick
+      @proglist.pick
+    end
+
   private ### opcodes
 
     include Opcodes
