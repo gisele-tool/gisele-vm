@@ -1,9 +1,3 @@
-0:        then :new              # create a new process by default
-
-new:      fork :par
-          save
-          pop
-
 par:      fork :B_start          # fork a child at :B_start
           fork :A_start          # fork a second child at :A_start
           save 2                 # save both

@@ -1,23 +1,19 @@
-0:        then :new              # create a new process by default
-
-new:      fork :A_start          # fork a child at :A_start
-          save                   # save it so it is scheduled
-          pop                    # pops its puid from the stack
-
-A_start:  cont :A_end            # Mark the current program as to be continued at :A_end
+A:        cont :A_wait           # Mark the current program as to be continued at :A_wait
           save                   # ... and save it
           push 'Task A'
           group 1
           event :start           # Broadcast A_start to the world
 
-A_end:    push 'Task A'
+A_wait:   cont :A_end
+          schedule
+          save
+          push 'Task A'
           group 1
-          event :end             # Broadcast A_end to the world
-          then :end              # And 'jump' to the end
+          event :end             # Broadcast A_wait to the world
 
-end:      push 'Main process'
+A_end:    end
+          save
+          push 'Main process'
           group 1
           event :end             # Broadcast main end to the world
-          end
-          save
 __END__
