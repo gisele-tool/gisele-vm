@@ -20,8 +20,10 @@ module Gisele
           end
         end
 
-        def pick
-          @progs.find{|p| p.progress}
+        def pick(&bl)
+          @progs.find{|p| p.progress}.tap{|found|
+            bl.call if bl && !found
+          }
         end
 
         def empty?

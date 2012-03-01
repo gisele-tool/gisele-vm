@@ -27,8 +27,10 @@ class Gisele::VM
         @puid1 = list.save(Prog.new(:progress => false))
       end
 
-      it 'returns nil' do
-        list.pick.should be_nil
+      it 'calls the block and returns nil' do
+        called = false
+        list.pick{ called = true }.should be_nil
+        called.should be_true
       end
 
     end
