@@ -31,6 +31,12 @@ module Gisele
 
   private
 
+    def be(prog)
+      @puid = prog.puid
+    end
+
+  private
+
     def push_loader
       @opcodes << [:puid]     # push self puid
       @opcodes << [:fetch]    # fetch the corresponding Prog

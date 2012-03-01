@@ -29,7 +29,8 @@ module Gisele
            :op_self,
            :op_end,
            :op_pick,
-           :op_flip
+           :op_flip,
+           :op_be
 
   end
 end
