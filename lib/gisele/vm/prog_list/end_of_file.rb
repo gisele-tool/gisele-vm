@@ -23,6 +23,10 @@ module Gisele
           puid
         end
 
+        def pick
+          @delegate.pick
+        end
+
         def empty?
           @delegate.empty?
         end

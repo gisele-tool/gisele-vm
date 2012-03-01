@@ -20,6 +20,10 @@ module Gisele
           end
         end
 
+        def pick
+          @progs.find{|p| p.progress}
+        end
+
         def empty?
           @progs.empty?
         end
