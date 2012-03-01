@@ -15,6 +15,10 @@ module Gisele
         ProgList::Memory.new(progs)
       end
 
+      def threadsafe
+        Threadsafe.new(self)
+      end
+
     end # class ProgList
   end # class VM
 end # module Gisele

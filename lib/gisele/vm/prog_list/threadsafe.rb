@@ -10,28 +10,50 @@ module Gisele
           @cv       = ConditionVariable.new
         end
 
-        def save(prog)
-          super.tap{|puid| _notify! }
+        def fetch(puid)
+          synchronize{ super }
         end
 
-        def pick(&listener)
-          _wait!(listener) while (prog = super).nil?
-          prog
+        def save(prog)
+          synchronize do
+            puid = super
+            notify!
+            puid
+          end
+        end
+
+        def pick(&bl)
+          synchronize do
+            wait!(bl) while (prog = super).nil?
+            prog
+          end
+        end
+
+        def empty?
+          synchronize{ super }
+        end
+
+        def to_relation
+          synchronize{ super }
+        end
+
+        def threadsafe
+          self
         end
 
       private
 
-        def _wait!(listener)
-          @mutex.synchronize do
-            listener.call if listener
-            @cv.wait(@mutex)
-          end
+        def synchronize(&bl)
+          @mutex.synchronize(&bl)
         end
 
-        def _notify!
-          @mutex.synchronize do
-            @cv.signal
-          end
+        def wait!(bl)
+          bl.call if bl
+          @cv.wait(@mutex)
+        end
+
+        def notify!
+          @cv.signal
         end
 
       end # class Threadsafe
