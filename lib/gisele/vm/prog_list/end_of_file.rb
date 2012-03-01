@@ -1,38 +1,20 @@
 module Gisele
   class VM
     class ProgList
-      class EndOfFile
+      class EndOfFile < ProgList::Delegate
 
         def initialize(file, truncate = false)
           @file = file
           if truncate
-            @delegate = ProgList::Memory.new
+            super(ProgList::Memory.new)
             save!
           else
-            @delegate = ProgList::Memory.new(load!)
+            super(ProgList::Memory.new(load!))
           end
         end
 
-        def fetch(puid)
-          @delegate.fetch(puid)
-        end
-
         def save(prog)
-          puid = @delegate.save(prog)
-          save!
-          puid
-        end
-
-        def pick
-          @delegate.pick
-        end
-
-        def empty?
-          @delegate.empty?
-        end
-
-        def to_relation
-          @delegate.to_relation
+          super.tap{|puid| save! }
         end
 
       private
