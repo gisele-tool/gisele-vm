@@ -76,8 +76,8 @@ module Gisele
 
       # Pick a scheduled Prog and puts it on the stack. This is a blocking opcode, i.e.
       # it will block the VM thread until a Prog can be found.
-      def op_pick
-        push pick
+      def op_pick(&bl)
+        push pick(&bl)
       end
 
       # Fork the current Prog. Set its program counter to `at` (taken from the stack if

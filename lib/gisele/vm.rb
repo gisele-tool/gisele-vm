@@ -100,8 +100,8 @@ module Gisele
       end
     end
 
-    def pick
-      @proglist.pick
+    def pick(&bl)
+      @proglist.pick(&bl)
     end
 
   private ### opcodes
