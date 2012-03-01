@@ -15,6 +15,10 @@ module Gisele
         ProgList::Memory.new(progs)
       end
 
+      def self.end_of_file(file, truncate = false)
+        ProgList::EndOfFile.new(file, truncate)
+      end
+
       def threadsafe
         Threadsafe.new(self)
       end
