@@ -6,6 +6,7 @@ module Gisele
       attr_accessor :pc
       attr_accessor :wait
       attr_accessor :progress
+      attr_accessor :input
 
       def initialize(attrs = {})
         @puid     = attrs[:puid]     || nil
@@ -13,30 +14,29 @@ module Gisele
         @pc       = attrs[:pc]       || 0
         @wait     = attrs[:wait]     || []
         @progress = attrs[:progress] || false
+        @input    = attrs[:input]    || []
       end
 
       def to_hash
-        { :puid => puid,
-          :parent => parent,
-          :pc => pc,
-          :wait => wait,
-          :progress => progress }
+        { :puid     => puid,
+          :parent   => parent,
+          :pc       => pc,
+          :wait     => wait,
+          :progress => progress,
+          :input    => input }
       end
 
       def merge(with)
         merged = to_hash.merge(with.to_hash){|k,v1,v2|
-          if k == :wait
-            v1 | v2
-          else
-            v2
-          end
+          k == :wait ? (v1 | v2) : v2
         }
         Prog.new(merged)
       end
 
       def dup
         super.tap do |c|
-          c.wait = wait.dup
+          c.wait  = wait.dup
+          c.input = input.dup
         end
       end
 
