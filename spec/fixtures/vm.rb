@@ -21,6 +21,7 @@ module Gisele
            :op_send,
            :op_invoke,
            :op_fold,
+           :op_unfold,
            :op_event,
            :op_fork,
            :op_cont,

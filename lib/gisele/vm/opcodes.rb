@@ -166,6 +166,13 @@ module Gisele
         push arr.reverse
       end
 
+      # Pops an array. Unfolds it on the stack.
+      def op_unfold
+        pop.each do |elm|
+          push elm
+        end
+      end
+
       ### CODE MANAGEMENT ###############################################################
 
       # If the top element is nil, pops it and skips `n` instructions (defaults

@@ -37,6 +37,7 @@ rules:
     - push
     - flip
     - fold
+    - unfold
     # code
     - then
     - skipnil
@@ -88,6 +89,8 @@ rules:
     - []
   fold:
     - [ 'integer_arg?' ]
+  unfold:
+    - []
   # code
   skipnil:
     - [ 'integer_arg?' ]
