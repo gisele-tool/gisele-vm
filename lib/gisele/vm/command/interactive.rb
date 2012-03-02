@@ -42,6 +42,9 @@ module Gisele
           else
             puts "Unrecognized: #{s}"
           end
+        rescue Interrupt
+          puts "Interrupt on user request (graceful shutdown)."
+          stop!
         rescue Exception => ex
           puts ex.message
         end
