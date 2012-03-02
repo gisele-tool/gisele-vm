@@ -22,9 +22,9 @@ module Gisele
       @event_interface = event_interface
     end
 
-    def run(at, stack = [])
+    def run(at = nil, stack = [])
       @stack = stack
-      enlist_bytecode_at(at)
+      enlist_bytecode_at(at) if at
       until @opcodes.empty?
         op = @opcodes.shift
         send :"op_#{op.first}", *op[1..-1]
