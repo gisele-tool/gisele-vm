@@ -1,0 +1,18 @@
+s0: cont :s1
+    save
+    push []
+    event :start
+s1: push { hello: :s2, goodbye: :s3 }
+    flip
+    get
+    skipnil
+    then
+s2: push []
+    event :hello
+    end
+    save
+s3: push []
+    event :goodbye
+    end
+    save
+__END__
