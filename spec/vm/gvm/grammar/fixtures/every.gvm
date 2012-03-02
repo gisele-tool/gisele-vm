@@ -15,6 +15,9 @@
    push 12
    push 'hello'
    push Symbol
+   push []
+   push [12]
+   puts [12, 'hello']
    then
    then 0
    then :a_label

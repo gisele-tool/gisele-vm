@@ -36,7 +36,7 @@ grammar Gisele::VM::GvmFile
   end
 
   rule arg
-    int | symbol | string | constant
+    int | symbol | string | constant | array
   end
 
   rule int
@@ -55,6 +55,11 @@ grammar Gisele::VM::GvmFile
     ([A-Z][A-Za-z]* ('::' [A-Z][A-Za-z]*)*){
       strip.split('::').inject(Kernel){|cur,c| cur.const_get(c)}
     }
+  end
+
+  rule array
+      ('[' spacing arglist spacing ']'){ self[:arglist].last.value }
+    | ('[' spacing ']'){ [] }
   end
 
   rule trailing_space
