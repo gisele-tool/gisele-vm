@@ -160,7 +160,7 @@ module Gisele
 
       # Pops `n` elements from the stack, keep them in a new array and push the later
       # back on the stack. If `n` is not provided, it is taken from the stack first.
-      def op_group(nb = nil)
+      def op_fold(nb = nil)
         n, arr = (nb || pop), []
         n.times{ arr << pop }
         push arr.reverse

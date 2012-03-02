@@ -7,33 +7,33 @@ par:      fork :B_start          # fork a child at :B_start
           save
 
 A_start:  push 'Task A'
-          group 1
+          fold 1
           event :start
           cont :A_end
           save
           pop
 
 B_start:  push 'Task B'
-          group 1
+          fold 1
           event :start
           cont :B_end
           save
           pop
 
 A_end:    push 'Task A'
-          group 1
+          fold 1
           event :end
           notify
           save
 
 B_end:    push 'Task B'
-          group 1
+          fold 1
           event :end
           notify
           save
 
 endpar:   push 'Parallel'
-          group 1
+          fold 1
           event :end
           end
           save

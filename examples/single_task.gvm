@@ -1,19 +1,19 @@
 A:        cont :A_wait           # Mark the current program as to be continued at :A_wait
           save                   # ... and save it
           push 'Task A'
-          group 1
+          fold 1
           event :start           # Broadcast A_start to the world
 
 A_wait:   cont :A_end
           schedule
           save
           push 'Task A'
-          group 1
+          fold 1
           event :end             # Broadcast A_wait to the world
 
 A_end:    end
           save
           push 'Main process'
-          group 1
+          fold 1
           event :end             # Broadcast main end to the world
 __END__
