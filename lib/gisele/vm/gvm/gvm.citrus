@@ -36,7 +36,7 @@ grammar Gisele::VM::GvmFile
   end
 
   rule arg
-    int | symbol | string | constant | array
+    int | symbol | string | constant | array | hash
   end
 
   rule int
@@ -44,7 +44,7 @@ grammar Gisele::VM::GvmFile
   end
 
   rule symbol
-    (':' [a-zA-Z] [a-zA-Z0-9_]*){ strip[1..-1].to_sym }
+    (':' symbol_chars){ strip[1..-1].to_sym }
   end
 
   rule string
@@ -60,6 +60,23 @@ grammar Gisele::VM::GvmFile
   rule array
       ('[' spacing arglist spacing ']'){ self[:arglist].last.value }
     | ('[' spacing ']'){ [] }
+  end
+
+  rule hash
+      ('{' spacing hash_entries spacing '}'){ Hash[self[:hash_entries].last.value] }
+    | ('{' spacing '}'){ Hash.new }
+  end
+
+  rule hash_entries
+    (hash_entry (spacing ',' spacing hash_entry)*){ self[:hash_entry].map{|x| x.value} }
+  end
+
+  rule hash_entry
+    (symbol_chars ':' spacing arg){ [ self[:symbol_chars].last.value, self[:arg].last.value ] }
+  end
+
+  rule symbol_chars
+    ([a-zA-Z] [a-zA-Z0-9_]*){ strip.to_sym }
   end
 
   rule trailing_space

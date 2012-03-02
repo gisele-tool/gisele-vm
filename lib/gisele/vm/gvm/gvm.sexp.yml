@@ -97,6 +97,7 @@ rules:
     - string_arg
     - module_arg
     - array_arg
+    - hash_arg
   label_arg:
     - symbol_arg
     - integer_arg
@@ -105,3 +106,4 @@ rules:
   string_arg:  '::String'
   module_arg:  '::Module'
   array_arg:   '::Array'
+  hash_arg:    '::Hash'

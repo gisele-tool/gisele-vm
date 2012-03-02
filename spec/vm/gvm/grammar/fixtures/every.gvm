@@ -17,7 +17,11 @@
    push Symbol
    push []
    push [12]
-   puts [12, 'hello']
+   push [12, 'hello']
+   push {}
+   push { }
+   push {name: 'blah'}
+   push {name: 'blah', at: :A_start}
    then
    then 0
    then :a_label
