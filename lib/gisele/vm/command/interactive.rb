@@ -35,10 +35,10 @@ module Gisele
         def run_one
           puts "? Please choose an action:(list, new, resume, quit or help)\n"
           case s = $stdin.gets
-          when /^l(ist)?/          then puts agent.dump
-          when /^n(ew)?\s+(.+)$/   then agent.start($2.strip.to_sym)
-          when /^r(esume)?\s+(.+)$/ then agent.resume($2.strip)
-          when /^q(uit)?/          then stop!
+          when /^l(ist)?/           then list_action
+          when /^n(ew)?\s+(.+)$/    then new_action($2)
+          when /^r(esume)?\s+(.+)$/ then resume_action($2)
+          when /^q(uit)?/           then stop_action
           else
             puts "Unrecognized: #{s}"
           end
@@ -49,7 +49,24 @@ module Gisele
           puts ex.message
         end
 
-        def call(puid, kind, args)
+        def list_action
+          puts agent.dump
+        end
+
+        def new_action(args)
+          agent.start(args.strip.to_sym)
+        end
+
+        def resume_action(args)
+          puid, *input = args.split(/\s+/)
+          agent.resume(puid, input.map{|x| Gvm.parse(x, :root => :arg).value})
+        end
+
+        def stop_action
+          stop!
+        end
+
+        def call(puid, kind, args) ### event interface
           @log.info "Process(#{puid}): #{kind}(#{args.join(', ')})"
           puts agent.dump
         end

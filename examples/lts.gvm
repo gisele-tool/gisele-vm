@@ -7,12 +7,12 @@ s1: push { hello: :s2, goodbye: :s3 }
     get
     skipnil
     then
-s2: push []
+s2: end
+    save
+    push []
     event :hello
-    end
+s3: end
     save
-s3: push []
+    push []
     event :goodbye
-    end
-    save
 __END__
