@@ -10,13 +10,13 @@ module Gisele
       end
 
       subject{
-        agent.resume(@puid)
+        agent.resume(@puid, [ :an_event ])
         agent.dump
       }
 
       it 'creates a fresh new Prog instance and schedules it' do
-        expected = Relation(:puid => @puid, :progress => true)
-        subject.project([:puid, :progress]).should eq(expected)
+        expected = Relation(:puid => @puid, :progress => true, :input => [ :an_event ])
+        subject.project([:puid, :progress, :input]).should eq(expected)
       end
 
     end

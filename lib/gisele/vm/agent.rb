@@ -20,8 +20,8 @@ module Gisele
         vm.run(:run, [ ])
       end
 
-      def resume(puid)
-        vm.run(:resume, [ puid ])
+      def resume(puid, input = [])
+        vm.run(:resume, [ input, puid ])
       end
 
       def dump

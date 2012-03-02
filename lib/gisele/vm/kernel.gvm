@@ -1,19 +1,33 @@
+#
 # Start expects a label on top of the stack. It forks a new child process and schedules
 # it for running at that label
+#
 start:   fork
          save
          pop
 
+#
 # Run indefinitely picks a scheduled Prog and runs it
-run:     pick
-         be
+#
+run:     pick                       # get a Prog
+         be                         # bound the VM to it
          get :pc
-         then
+         then                       # enqueue instruction at program counter
+         get :input
+         flip                       # [ Prog, [ input... ] ] -> [ [ input... ], Prog ]
+         push []
+         set :input
+         save
          pop
-         then :run
+         unfold                     # [ input... ]
+         then :run                  # enqueue run instructions again
 
-# Resume expects a puid on the stack. It fetches the corresponding Prog and schedules it.
-resume:  fetch
-         schedule
+#
+# Resume expects a puid on the stack and an input array. It fetches the corresponding Prog # and schedules it with the given input
+#
+resume:  fetch                      # pop the uuid and fetch the corresponding Prog
+         schedule                   # schedule it
+         flip                       # [ input, prog ] -> [ prog, input ]
+         set :input                 # prog.input = input
          save
          pop
