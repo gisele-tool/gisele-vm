@@ -14,6 +14,21 @@ module Gisele
           Compiler.new(builder).compile(ts)
         end
 
+        def self.from_adl(file, namespace = nil)
+          a = Stamina::ADL.parse_automaton_file(file.to_s)
+          a.states.each do |s|
+            s[:kind] = if s.out_edges.empty?
+              :end
+            else
+              s.accepting? ? :listen : :event
+            end
+          end
+          a.edges.each do |e|
+            e.symbol = e.symbol.to_sym
+          end
+          compile(a, namespace)
+        end
+
         def compile(ts)
           builder.at do |b|
             b.then "entry#{ts.initial_state.index}"

@@ -2,7 +2,7 @@ require 'spec_helper'
 module Gisele
   class VM
     class Bytecode
-      describe Compiler do
+      describe Compiler, ".compile" do
 
         subject{
           Compiler.compile(ts)
