@@ -26,6 +26,7 @@ module Gisele
               @agent.run
             rescue Exception => ex
               $stderr.puts "Fatal exception: #{ex.message}"
+              $stderr.puts ex.backtrace.join("\n")
               stop!
             end
           }
