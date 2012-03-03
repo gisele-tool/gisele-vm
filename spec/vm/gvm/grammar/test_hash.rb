@@ -24,6 +24,10 @@ module Gisele
         parse("{hello: :s2, goodbye: :s3}").value.should eq(expected)
       end
 
+      it 'supports 1.8 syntax' do
+        parse("{:key => 12, :name => 'blaj'}").value.should eq({:key => 12, :name => 'blaj'})
+      end
+
     end
   end
 end

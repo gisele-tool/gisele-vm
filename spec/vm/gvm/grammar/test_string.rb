@@ -11,8 +11,13 @@ module Gisele
         parse("'hello'").value.should eq("hello")
       end
 
+      it 'parses double quoted strings' do
+        parse('"hello"').value.should eq("hello")
+      end
+
       it 'parses empty strings' do
         parse("''").value.should eq("")
+        parse('""').value.should eq("")
       end
 
     end

@@ -48,7 +48,8 @@ grammar Gisele::VM::GvmFile
   end
 
   rule string
-    ("'" (!"'" .)* "'"){ strip[1...-1] }
+      (['] (!['] .)* [']){ strip[1...-1] }
+    | (["] (!["] .)* ["]){ strip[1...-1] }
   end
 
   rule constant
@@ -72,7 +73,12 @@ grammar Gisele::VM::GvmFile
   end
 
   rule hash_entry
-    (symbol_chars ':' spacing arg){ [ self[:symbol_chars].last.value, self[:arg].last.value ] }
+    (symbol_chars ':' spacing arg){
+      [ self[:symbol_chars].last.value, self[:arg].last.value ]
+    } |
+    (':' symbol_chars spacing '=>' spacing arg){
+      [ self[:symbol_chars].last.value, self[:arg].last.value ]
+    }
   end
 
   rule symbol_chars
