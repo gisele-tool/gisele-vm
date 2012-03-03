@@ -1,0 +1,22 @@
+main: then :s0
+s0:   push []
+      push :hello
+      then :s1
+s1:   cont :rs1
+      save
+      pop
+      event
+rs1:  push {ping: :s2, goodbye: :s3}
+      flip
+      get
+      skipnil
+      then
+s2:   push []
+      push :pong
+      then :s1
+s3:   end
+      save
+
+
+__END__
+{:puid => 0, :parent => 0, :pc => :rs1, :wait => [], :progress => false, :input => []}
