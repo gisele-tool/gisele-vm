@@ -9,9 +9,7 @@ start:   fork
 #
 # Run indefinitely picks a scheduled Prog and runs it
 #
-run:     pick                       # get a Prog
-         be                         # bound the VM to it
-         get :pc
+run:     get :pc
          then                       # enqueue instruction at program counter
          get :input
          flip                       # [ Prog, [ input... ] ] -> [ [ input... ], Prog ]
@@ -20,7 +18,6 @@ run:     pick                       # get a Prog
          save
          pop
          unfold                     # [ input... ]
-         then :run                  # enqueue run instructions again
 
 #
 # Resume expects a puid on the stack and an input array. It fetches the corresponding Prog # and schedules it with the given input

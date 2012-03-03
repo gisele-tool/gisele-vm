@@ -13,15 +13,23 @@ module Gisele
       end
 
       def start(label)
-        vm.run(:start, [ label ])
+        vm(nil).run(:start, [ label ])
       end
 
       def run
-        vm.run(:run, [ ])
+        @run = true
+        while run?
+          prog = @proglist.pick
+          vm(prog.puid).run(:run, [ prog ])
+        end
       end
 
       def resume(puid, input = [])
-        vm.run(:resume, [ input, puid ])
+        vm(nil).run(:resume, [ input, puid ])
+      end
+
+      def stop
+        @run = false
       end
 
       def dump
@@ -30,8 +38,12 @@ module Gisele
 
     private
 
-      def vm
-        VM.new nil, @bytecode, @proglist, @event_interface
+      def run?
+        @run
+      end
+
+      def vm(puid = nil)
+        VM.new puid, @bytecode, @proglist, @event_interface
       end
 
     end # class Agent
