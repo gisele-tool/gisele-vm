@@ -11,3 +11,4 @@ Dir["**/*.rb"].each{|file| clean_file(file)}
 Dir["**/*.gis"].each{|file| clean_file(file)}
 Dir["**/*.yml"].each{|file| clean_file(file)}
 Dir["**/*.md"].each{|file| clean_file(file)}
+Dir["**/*.gts"].each{|file| clean_file(file)}
