@@ -18,6 +18,9 @@ module Gisele
         opt.on('-i', '--interactive', 'Start the interactive mode') do
           @mode = :interactive
         end
+        opt.on('-c', '--compile', 'Compile the input file') do
+          @mode = :compile
+        end
         @truncate = false
         opt.on('-t', '--truncate', 'Truncate process instances first') do
           @truncate = true
@@ -38,11 +41,9 @@ module Gisele
           raise Quickl::IOAccessError, "File does not exists: #{file}"
         end
 
-        list  = ProgList.end_of_file(file, @truncate).threadsafe
-        agent = VM::Agent.new(file, list)
-
         case @mode
-        when :interactive then start_interactive(agent)
+        when :interactive then interactive(file)
+        when :compile     then compile(file)
         else
           puts "You didn't specify a mode."
         end
@@ -50,8 +51,14 @@ module Gisele
 
     private
 
-      def start_interactive(agent)
+      def compile(file)
+        puts Bytecode::Compiler.from_adl(file)
+      end
+
+      def interactive(file)
         require_relative 'command/interactive'
+        list  = ProgList.end_of_file(file, @truncate).threadsafe
+        agent = VM::Agent.new(file, list)
         Interactive.new(agent).run!
       end
 
