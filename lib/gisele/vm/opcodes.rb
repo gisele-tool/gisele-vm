@@ -6,13 +6,6 @@ module Gisele
 
       ### GENERIC OPCODES ################################################################
 
-      # Bind this VM to the Prog on top the stack
-      def op_be
-        be(peek)
-      end
-
-      ### GENERIC OPCODES ################################################################
-
       # Pops a method name on the stack unless `method` is specified. Pops an array of
       # argument `args`. Pops an object `receiver`. Invoke `method` on `receiver`, passing
       # arguments `args`. Push the result back on the stack.

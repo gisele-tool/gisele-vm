@@ -40,12 +40,6 @@ module Gisele
       $stderr.puts "code:   #{opcodes.inspect}"
     end
 
-  private
-
-    def be(prog)
-      @puid = prog.puid
-    end
-
   private ### lifecycle
 
     def current_prog(with = nil)

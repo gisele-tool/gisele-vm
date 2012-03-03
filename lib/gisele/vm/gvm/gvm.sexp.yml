@@ -9,8 +9,6 @@ rules:
     - '::Integer'
     - '::Symbol'
   instruction:
-    # kernel
-    - be
     # generic
     - send
     - invoke
@@ -41,9 +39,6 @@ rules:
     # code
     - then
     - skipnil
-  # kernel
-  be:
-    - []
   # generic
   send:
     - [ 'symbol_arg?' ]
