@@ -6,6 +6,7 @@ SYNOPSIS
   gvm GVM_FILE [PUID]
 
 OPTIONS
+  -c, --compile                    Compile the input file
   -i, --interactive                Start the interactive mode
   -t, --truncate                   Truncate process instances first
       --help                       Show this help message

@@ -15,11 +15,11 @@ module Gisele
       # Install options
       options do |opt|
         @mode = nil
-        opt.on('-i', '--interactive', 'Start the interactive mode') do
-          @mode = :interactive
-        end
         opt.on('-c', '--compile', 'Compile the input file') do
           @mode = :compile
+        end
+        opt.on('-i', '--interactive', 'Start the interactive mode') do
+          @mode = :interactive
         end
         @truncate = false
         opt.on('-t', '--truncate', 'Truncate process instances first') do
