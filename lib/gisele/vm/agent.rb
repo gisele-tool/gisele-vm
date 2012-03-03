@@ -18,10 +18,7 @@ module Gisele
 
       def run
         @run = true
-        while run?
-          prog = @proglist.pick
-          vm(prog.puid).run(:run, [ prog ])
-        end
+        run_one(@proglist.pick) while run?
       end
 
       def resume(puid, input = [])
@@ -37,6 +34,14 @@ module Gisele
       end
 
     private
+
+      def run_one(prog)
+        vm(prog.puid).run(:run, [ prog ])
+      rescue Interrupt
+      rescue Exception => ex
+        $stderr.puts "Fatal exception (#{prog.puid}): #{ex.message}"
+        $stderr.puts ex.backtrace.join("\n")
+      end
 
       def run?
         @run

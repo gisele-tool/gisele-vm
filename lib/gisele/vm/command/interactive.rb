@@ -7,8 +7,9 @@ module Gisele
 
         def initialize(agent)
           require 'logger'
-          @agent = agent
-          @log   = Logger.new($stdout)
+          @agent  = agent
+          @runner = nil
+          @log    = Logger.new($stdout)
           agent.event_interface = self
         end
 
@@ -17,19 +18,13 @@ module Gisele
         end
 
         def stop!
+          @agent.stop  if @agent
+          @runner.join if @runner
           @stop = true
         end
 
         def run!
-          runner = Thread.new{
-            begin
-              @agent.run
-            rescue Exception => ex
-              $stderr.puts "Fatal exception: #{ex.message}"
-              $stderr.puts ex.backtrace.join("\n")
-              stop!
-            end
-          }
+          @runner = Thread.new{ @agent.run }
           run_one until stop?
         end
 
