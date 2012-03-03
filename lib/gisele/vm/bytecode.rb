@@ -24,8 +24,10 @@ module Gisele
         else
           raise ArgumentError
         end
-      rescue Stamina::StaminaError, ArgumentError
-        raise InvalidBytecodeError, "Invalid bytecode source: #{arg}"
+      rescue Stamina::StaminaError, ArgumentError => ex
+        msg = "Invalid bytecode source: #{arg}"
+        msg << " (#{ex.message})" if ex.message
+        raise InvalidBytecodeError, msg
       end
       extend Source
 

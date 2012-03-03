@@ -14,11 +14,6 @@ module Gisele
           bytecode.to_a
         }
 
-        context 'on a .adl file' do
-          let(:input){ fixtures/'ts.adl' }
-          it{ should eq(expected) }
-        end
-
         context 'on a .gts file' do
           let(:input){ fixtures/'ts.gts' }
           it{ should eq(expected) }

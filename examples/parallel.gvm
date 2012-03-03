@@ -23,6 +23,8 @@ B_start:  push 'Task B'
 A_end:    push 'Task A'
           fold 1
           event :end
+          end
+          save
           notify
           save
 

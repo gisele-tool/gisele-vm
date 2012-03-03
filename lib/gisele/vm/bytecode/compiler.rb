@@ -36,6 +36,16 @@ module Gisele
           Bytecode.coerce(builder.to_a)
         end
 
+        def on_nop(state)
+          unless state.out_edges.size == 1
+            raise ArgumentError, "Invalid :nop state"
+          end
+          edge = state.out_edges.first
+          at(:"entry#{state.index}") do |b|
+            b.then :"entry#{edge.target.index}"
+          end
+        end
+
         def on_event(state)
           unless state.out_edges.size == 1
             raise ArgumentError, "Invalid :event state"
@@ -69,6 +79,30 @@ module Gisele
             b.get       # lookup target state
             b.skipnil   # do nothing if no such event
             b.then      # mark continuation at that state
+          end
+        end
+
+        def on_fork(state)
+          at(:"entry#{state.index}") do |b|
+            targets = state.out_adjacent_states
+            size    = targets.size
+            targets.each do |target|
+              b.fork :"entry#{target.index}"
+            end
+            b.save size
+            b.wait size
+            b.push :"entry#{state[:join]}"
+            b.set  :pc
+            b.save
+          end
+        end
+
+        def on_join(state)
+          at(:"entry#{state.index}") do |b|
+            b.end
+            b.save
+            b.notify
+            b.save
           end
         end
 
