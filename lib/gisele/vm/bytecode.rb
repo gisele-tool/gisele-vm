@@ -1,3 +1,4 @@
+require_relative 'bytecode/source'
 require_relative 'bytecode/builder'
 require_relative 'bytecode/compiler'
 require_relative 'bytecode/printer'
@@ -12,11 +13,24 @@ module Gisele
       def self.coerce(arg)
         case arg
         when Bytecode     then arg
-        when Path, String then parse(arg)
+        when String       then gvm(arg)
+        when Path
+          case arg.extname
+          when ".gvm"     then gvm(arg)
+          when ".gts"     then gts(arg)
+          when ".adl"     then adl(arg)
+          end
         when Gvm          then Bytecode.new(arg)
         else
-          raise InvalidBytecodeError, "Invalid bytecode: #{arg}"
+          raise ArgumentError
         end
+      rescue Stamina::StaminaError, ArgumentError
+        raise InvalidBytecodeError, "Invalid bytecode source: #{arg}"
+      end
+      extend Source
+
+      def self.parse(source)
+        gvm(source)
       end
 
       def self.kernel
@@ -31,10 +45,6 @@ module Gisele
         builder = builder(namespace)
         yield(builder)
         Bytecode.new(builder.to_a)
-      end
-
-      def self.parse(source)
-        Bytecode.new(Gvm.sexpr(source))
       end
 
       def +(other)

@@ -3,30 +3,44 @@ module Gisele
   class VM
     describe Bytecode, '.coerce' do
 
-      it 'coerces bytecode' do
-        b = Bytecode.new [:gvm]
-        Bytecode.coerce(b).should eq(b)
+      def coerce(source)
+        @result = Bytecode.coerce(source)
       end
 
-      it 'coerces a Path' do
-        Bytecode.coerce(Path.dir/'bytecode.gvm').should be_a(Bytecode)
+      after do
+        @result.should be_a(Bytecode) if @result
+      end
+
+      it 'coerces bytecode' do
+        coerce(Bytecode.new [:gvm])
       end
 
       it 'coerces a String' do
-        Bytecode.coerce("s0: push 12").should be_a(Bytecode)
+        coerce("s0: push 12")
+      end
+
+      it 'coerces a .gvm Path' do
+        coerce(fixtures/'ts.gvm')
+      end
+
+      it 'coerces a .adl Path' do
+        coerce(fixtures/'ts.adl')
+      end
+
+      it 'coerces a .gts Path' do
+        coerce(fixtures/'ts.gts')
       end
 
       it 'coerces a valid Gvm parse result' do
-        sexpr = Gvm.sexpr(Path.dir/'bytecode.gvm')
-        Bytecode.coerce(sexpr).should be_a(Bytecode)
+        coerce(Gvm.sexpr(fixtures/'ts.gvm'))
       end
 
       it 'raises an InvalidBytecodeError when not recognized' do
         lambda{
-          Bytecode.coerce(self)
+          coerce(self)
         }.should raise_error(InvalidBytecodeError)
         lambda{
-          Bytecode.coerce([:gvm, [:block, :s0, [:puts]]])
+          coerce([:gvm, [:block, :s0, [:puts]]])
         }.should raise_error(InvalidBytecodeError)
       end
 

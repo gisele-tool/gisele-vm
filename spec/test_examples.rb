@@ -26,7 +26,7 @@ module Gisele
       end
     end
 
-    fixtures_path.glob("**/*.gvm").each do |file|
+    fixtures.glob("**/*.gvm").each do |file|
       describe "the fixture #{file.basename}" do
         subject{file}
         it_behaves_like "A valid example file"

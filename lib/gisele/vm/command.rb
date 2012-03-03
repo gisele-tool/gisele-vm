@@ -52,7 +52,7 @@ module Gisele
     private
 
       def compile(file)
-        puts Bytecode::Compiler.from_adl(file)
+        puts Bytecode.coerce(file)
       end
 
       def interactive(file)

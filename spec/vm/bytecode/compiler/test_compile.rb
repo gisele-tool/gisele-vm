@@ -4,16 +4,24 @@ module Gisele
     class Bytecode
       describe Compiler, ".compile" do
 
-        subject{
-          Compiler.compile(ts)
+        let(:expected){
+          Gvm.sexpr fixtures/'ts.gvm'
         }
 
-        it 'returns Bytecode' do
-          subject.should be_a(Bytecode)
+        subject{
+          bytecode = Bytecode.coerce(input)
+          bytecode.should be_a(Bytecode)
+          bytecode.to_a
+        }
+
+        context 'on a .adl file' do
+          let(:input){ fixtures/'ts.adl' }
+          it{ should eq(expected) }
         end
 
-        it 'returns expected bytecode' do
-          subject.to_s.should eq((fixtures_path/'ts.gvm').read)
+        context 'on a .gts file' do
+          let(:input){ fixtures/'ts.gts' }
+          it{ should eq(expected) }
         end
 
       end
