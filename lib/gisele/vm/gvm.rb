@@ -12,14 +12,6 @@ module Gisele
         gvm["rules"]["instruction"].map(&:to_sym)
       end
 
-      def self.bytecode(arg)
-        body, h = sexpr(arg).sexpr_body, Hash.new
-        body.each do |block|
-          h[block[1]] = block[2..-1]
-        end
-        h
-      end
-
     end # module Gvm
   end # class VM
 end # module Gisele

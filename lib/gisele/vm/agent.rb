@@ -7,7 +7,7 @@ module Gisele
       attr_accessor :event_interface
 
       def initialize(bytecode, proglist = nil, event_interface = nil)
-        @bytecode        = load(bytecode)
+        @bytecode        = Bytecode.coerce(bytecode) + Bytecode.kernel
         @proglist        = proglist || ProgList.memory.threadsafe
         @event_interface = event_interface
       end
@@ -29,16 +29,6 @@ module Gisele
       end
 
     private
-
-      def load(bytecode)
-        bytecode = Gvm.bytecode(bytecode) unless Hash===bytecode
-        bytecode.merge!(kernel)
-        bytecode
-      end
-
-      def kernel
-        @kernel ||= Gvm.bytecode(Path.dir/'kernel.gvm')
-      end
 
       def vm
         VM.new nil, @bytecode, @proglist, @event_interface
