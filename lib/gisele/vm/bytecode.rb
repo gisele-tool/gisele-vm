@@ -1,4 +1,5 @@
 require_relative 'bytecode/builder'
+require_relative 'bytecode/printer'
 module Gisele
   class VM
     class Bytecode
@@ -48,6 +49,10 @@ module Gisele
 
       def to_a
         @sexpr
+      end
+
+      def to_s
+        Printer.call(to_a)
       end
 
     private
