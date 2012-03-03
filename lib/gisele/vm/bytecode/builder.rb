@@ -18,12 +18,30 @@ module Gisele
           @current_block
         end
 
-        def at(label)
-          @current_block = [:block, label(label)]
-          yield(self)
-          @bytecode << @current_block
+        def at(label, auto=true)
+          raise BadUsageError, "Previous block not dumped." if @current_block
+          label = label(label) if auto
+          @current_block = [:block, label]
+          if block_given?
+            yield(self)
+            end_block
+          end
+        end
+
+        def end_block
           bl, @current_block = @current_block, nil
+          @bytecode << bl
           bl
+        end
+
+        def instruction(which, args)
+          instr = [which] + args
+          if Gvm[which] === instr
+            current_block << instr
+            instr
+          else
+            raise InvalidBytecodeError, "Invalid instruction: #{instr.inspect}"
+          end
         end
 
         def to_a
@@ -31,14 +49,15 @@ module Gisele
         end
 
         Gvm.instructions.each do |iname|
-          rule = Gvm[iname]
           define_method(iname) do |*args|
-            instr = [iname] + args
-            unless rule === instr
-              raise InvalidBytecodeError, "Invalid instruction: #{instr.inspect}"
-            end
-            current_block << instr
-            instr
+            instruction(iname, args)
+          end
+        end
+
+        [ :then, :cont, :fork ].each do |iname|
+          define_method(iname) do |label, auto=true|
+            label = label(label) if auto
+            instruction(iname, [ label ])
           end
         end
 

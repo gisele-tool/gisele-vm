@@ -36,8 +36,8 @@ module Gisele
 
           it 'uses namespaced labels' do
             expected = [ :gvm,
-              [:block, :"Somewhere_s0", [:then, :s1]],
-              [:block, :"Somewhere_s1", [:push, 12 ]],
+              [:block, :Somewhere_s0, [:then, :Somewhere_s1]],
+              [:block, :Somewhere_s1, [:push, 12 ]],
             ]
             builder.to_a.should eq(expected)
           end
