@@ -23,13 +23,21 @@ module Gisele
       @event_interface = event_interface
     end
 
-    def run(at = nil, stack = [])
+    def run(at = nil, stack = [], trace = false)
       @stack = stack
       enlist_bytecode_at(at) if at
       until @opcodes.empty?
         op = @opcodes.shift
+        trace(op) if trace
         send :"op_#{op.first}", *op[1..-1]
       end
+    end
+
+    def trace(op)
+      $stderr.puts "-"*20
+      $stderr.puts "opcode: #{op.inspect}"
+      $stderr.puts "stack:  #{stack.inspect}"
+      $stderr.puts "code:   #{opcodes.inspect}"
     end
 
   private
