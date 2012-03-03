@@ -64,7 +64,6 @@ module Gisele
 
         def call(puid, kind, args) ### event interface
           @log.info "Process(#{puid}): #{kind}(#{args.join(', ')})"
-          puts agent.dump
         end
 
       end # class Interactive
