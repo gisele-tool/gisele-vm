@@ -55,9 +55,9 @@ module Gisele
         end
 
         [ :then, :cont, :fork ].each do |iname|
-          define_method(iname) do |label, auto=true|
-            label = label(label) if auto
-            instruction(iname, [ label ])
+          define_method(iname) do |label=nil, auto=true|
+            label = label(label) if label and auto
+            instruction(iname, label ? [ label ] : [ ])
           end
         end
 

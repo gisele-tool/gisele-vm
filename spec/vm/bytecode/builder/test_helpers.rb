@@ -26,6 +26,10 @@ module Gisele
           builder.then(:s1, false).should eq([:then, :s1])
         end
 
+        it 'allows a O-adic :then' do
+          builder.then.should eq([:then])
+        end
+
       end
     end
   end
