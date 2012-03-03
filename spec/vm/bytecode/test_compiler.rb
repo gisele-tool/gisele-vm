@@ -13,9 +13,7 @@ module Gisele
         end
 
         it 'returns expected bytecode' do
-          pending {
-            subject.to_s.should eq((fixtures_path/'ts.gvm').read)
-          }
+          subject.to_s.should eq((fixtures_path/'ts.gvm').read)
         end
 
       end

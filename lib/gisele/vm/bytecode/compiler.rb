@@ -16,7 +16,7 @@ module Gisele
 
         def compile(ts)
           builder.at do |b|
-            b.then label(ts.initial_state)
+            b.then "entry#{ts.initial_state.index}"
           end
           ts.each_state do |s|
             send "on_#{s[:kind]}", s
@@ -29,9 +29,14 @@ module Gisele
             raise ArgumentError, "Invalid :event state"
           end
           edge = state.out_edges.first
-          at(state) do |b|
-            b.cont label(edge.target)
-            b.save
+          at(:"entry#{state.index}") do |b|
+            b.then :"state#{state.index}"
+          end
+          at("state#{state.index}") do |b|
+            b.then :"entry#{edge.target.index}"
+            b.then :"edge#{edge.index}"
+          end
+          at(:"edge#{edge.index}") do |b|
             b.push  []
             b.event edge.symbol
           end
@@ -40,15 +45,18 @@ module Gisele
         def on_listen(state)
           h = {}
           state.out_edges.each do |edge|
-            h[edge.symbol] = label(edge.target)
+            h[edge.symbol] = :"entry#{edge.target.index}"
           end
-          at(state) do |b|
+          at(:"entry#{state.index}") do |b|
+            b.cont :"state#{state.index}"
+            b.save
+          end
+          at("state#{state.index}") do |b|
             b.push h    # push the transition system on the stack
             b.flip      # [ event, {...} ] -> [ {...}, event ]
             b.get       # lookup target state
             b.skipnil   # do nothing if no such event
-            b.cont      # mark continuation at that state
-            b.save
+            b.then      # mark continuation at that state
           end
         end
 
@@ -56,7 +64,7 @@ module Gisele
           unless state.out_edges.size == 0
             raise ArgumentError, "Invalid :end state"
           end
-          at(state) do |b|
+          at(:"entry#{state.index}") do |b|
             b.end
             b.save
           end
@@ -65,11 +73,7 @@ module Gisele
       private
 
         def at(state, &bl)
-          builder.at(label(state), &bl)
-        end
-
-        def label(state)
-          Symbol===state ? state : "s#{state.index}".to_sym
+          builder.at(state, &bl)
         end
 
       end # class Compiler
