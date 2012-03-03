@@ -20,6 +20,11 @@ module Gisele
         (Gvm === [:gvm, [:block, 0, [:push, 12]]]).should be_true
       end
 
+      it 'provides the list of instruction names' do
+        Gvm.instructions.should be_a(Array)
+        Gvm.instructions.include?(:push).should be_true
+      end
+
     end
   end
 end
