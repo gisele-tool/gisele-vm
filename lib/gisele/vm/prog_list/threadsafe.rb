@@ -8,6 +8,7 @@ module Gisele
           super(delegate)
           @mutex    = Mutex.new
           @cv       = ConditionVariable.new
+          @released = false
         end
 
         def fetch(puid)
@@ -24,8 +25,18 @@ module Gisele
 
         def pick(&bl)
           synchronize do
-            wait!(bl) while (prog = super).nil?
+            while (prog = super).nil?
+              wait!(bl)
+              break if @released
+            end
             prog
+          end
+        end
+
+        def release
+          synchronize do
+            @released = true
+            notify!
           end
         end
 

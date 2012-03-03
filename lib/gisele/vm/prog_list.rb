@@ -19,6 +19,9 @@ module Gisele
         ProgList::EndOfFile.new(file, truncate)
       end
 
+      def release
+      end
+
       def threadsafe
         Threadsafe.new(self)
       end

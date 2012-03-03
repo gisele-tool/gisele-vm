@@ -18,7 +18,10 @@ module Gisele
 
       def run
         @run = true
-        run_one(@proglist.pick) while run?
+        while run?
+          prog = @proglist.pick          # blocking call
+          run_one(prog) if prog and run? # prog may be nil at release time
+        end
       end
 
       def resume(puid, input = [])
@@ -27,6 +30,7 @@ module Gisele
 
       def stop
         @run = false
+        @proglist.release
       end
 
       def dump
@@ -38,6 +42,7 @@ module Gisele
       def run_one(prog)
         vm(prog.puid).run(:run, [ prog ])
       rescue Interrupt
+        stop
       rescue Exception => ex
         $stderr.puts "Fatal exception (#{prog.puid}): #{ex.message}"
         $stderr.puts ex.backtrace.join("\n")
