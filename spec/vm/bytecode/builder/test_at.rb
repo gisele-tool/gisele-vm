@@ -19,6 +19,11 @@ module Gisele
           builder.end_block.should eq([:block, :s0, [:push, 12]])
         end
 
+        it 'allows no arg for main' do
+          builder.at
+          builder.end_block.should eq([:block, :main])
+        end
+
         it 'raises a BadUsageError if the previous block has not been dumped' do
           builder.at(:s0)
           lambda{
@@ -39,6 +44,10 @@ module Gisele
             builder.end_block.should eq([:block, :s0])
           end
 
+          it 'uses the namespace for main' do
+            builder.at
+            builder.end_block.should eq([:block, :Somewhere])
+          end
         end
 
       end

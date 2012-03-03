@@ -18,9 +18,13 @@ module Gisele
           @current_block
         end
 
-        def at(label, auto=true)
+        def at(label = nil, auto=true)
           raise BadUsageError, "Previous block not dumped." if @current_block
-          label = label(label) if auto
+          if label
+            label = label(label) if auto
+          else
+            label = (namespace || "main").to_s.to_sym
+          end
           @current_block = [:block, label]
           if block_given?
             yield(self)
