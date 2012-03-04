@@ -15,6 +15,10 @@ module Gisele
         coerce(Bytecode.new [:gvm])
       end
 
+      it 'coerces a .gts Automaton' do
+        coerce(Kernel.eval (fixtures/'ts.gts').read)
+      end
+
       it 'coerces a String' do
         coerce("s0: push 12")
       end

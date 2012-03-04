@@ -12,15 +12,16 @@ module Gisele
 
       def self.coerce(arg)
         case arg
-        when Bytecode     then arg
-        when String       then gvm(arg)
+        when Bytecode           then arg
+        when String             then gvm(arg)
+        when Stamina::Automaton then gts(arg)
         when Path
           case arg.extname
           when ".gvm"     then gvm(arg)
           when ".gts"     then gts(arg)
           when ".adl"     then adl(arg)
           end
-        when Gvm          then Bytecode.new(arg)
+        when Gvm                then Bytecode.new(arg)
         else
           raise ArgumentError
         end
