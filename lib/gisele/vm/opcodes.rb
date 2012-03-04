@@ -52,7 +52,7 @@ module Gisele
         elsif receiver.respond_to?(:"#{attrname}=")
           receiver.send(:"#{attrname}=", attrvalue)
         else
-          raise Error, "Unable to set #{attrname} on #{receiver}"
+          raise Error, "Unable to set #{attrname} on #{receiver.inspect}"
         end
       end
 

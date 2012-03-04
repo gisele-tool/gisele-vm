@@ -94,3 +94,16 @@ join:    self                       # [ {evt...}, Prog ]
          ifenil                     # ...
          then :sleep
          then :schedat
+
+# End the current Prog. Remove its puid from the parent waitlist and schedules the
+# later.
+#                                   # [ ]
+notify:  parent                     # [ Prog ]
+         get :waitlist              # [ Prog, waitlist ]
+         end                        # [ Prog, waitlist, Prog ]
+         save                       # [ Prog, waitlist, puid ]
+         del                        # [ Prog, waitlist ]
+         set :waitlist              # [ Prog ]
+         schedule                   # [ Prog ]
+         save                       # [ puid ]
+         pop
