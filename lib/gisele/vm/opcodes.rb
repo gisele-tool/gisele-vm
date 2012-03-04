@@ -116,6 +116,13 @@ module Gisele
         push fork(at || pop)
       end
 
+      # Expects an array of labels on the stack. Same as +fork+ but in array version.
+      # A resulting array of unsaved Prog is put back on the stack.
+      def op_forka(at = nil)
+        at ||= pop
+        push at.map{|l| fork(l)}
+      end
+
       # Sets the program counter of the current Prog to `at` (taken from the stack if not
       # specified). Unschedule it. Push the unsaved Prog on the stack.
       def op_cont(at = nil)

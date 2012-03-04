@@ -26,6 +26,7 @@ rules:
     - fetch
     - pick
     - fork
+    - forka
     - cont
     - end
     - schedule
@@ -72,6 +73,8 @@ rules:
     - []
   fork:
     - [ 'label_arg?' ]
+  forka:
+    - [ ]
   cont:
     - [ 'label_arg?' ]
   end:
