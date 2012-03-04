@@ -45,7 +45,5 @@
    end
    pick
    flip
-   skipnil
-   skipnil 2
    nop
    ifenil

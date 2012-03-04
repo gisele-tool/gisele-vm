@@ -17,7 +17,6 @@ rules:
     # control
     - nop
     - then
-    - skipnil
     - ifenil
     # lifecycle
     - puid
@@ -53,8 +52,6 @@ rules:
   # control
   nop:
     - []
-  skipnil:
-    - [ 'integer_arg?' ]
   then:
     - [ 'label_arg?' ]
   ifenil:
