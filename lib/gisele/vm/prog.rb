@@ -4,7 +4,7 @@ module Gisele
       attr_accessor :puid
       attr_accessor :parent
       attr_accessor :pc
-      attr_accessor :waitlist
+      attr_reader   :waitlist
       attr_accessor :progress
       attr_accessor :input
 
@@ -15,6 +15,11 @@ module Gisele
         @waitlist = attrs[:waitlist] || {}
         @progress = attrs[:progress] || false
         @input    = attrs[:input]    || []
+      end
+
+      def waitlist=(wlist)
+        wlist = Hash[wlist.map{|x| [x,true]}] unless Hash===wlist
+        @waitlist = wlist
       end
 
       def to_hash
