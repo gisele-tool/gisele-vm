@@ -63,3 +63,15 @@ react:   self                       # [ event, Prog ]
          ifenil                     # ...
          then :sleep
          then :schedat
+
+# Expects a label `joinat` and an array `forkat` of labels on the stack. Fork one
+# child for each label in `forkat` and save them. Wait for forked children at `at`.
+#                                   # [ joinat, [ forkat... ] ]
+fork:    forka                      # [ joinat, [ Prog, ... ] ]
+         savea                      # [ joinat, [ puid, ... ] ]
+         self                       # [ joinat, [ puid, ... ], Prog ]
+         flip                       # [ joinat, Prog, [ puid, ... ] ]
+         set :waitlist              # [ joinat, Prog ]
+         flip                       # [ Prog, joinat ]
+         set :pc                    # [ Prog ]
+         then :sleepit
