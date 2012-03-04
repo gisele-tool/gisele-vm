@@ -26,6 +26,7 @@ module Gisele
            :op_fork,
            :op_cont,
            :op_get,
+           :op_getr,
            :op_set,
            :op_self,
            :op_end,

@@ -24,9 +24,9 @@ module Gisele
 
       # Push the value of the attribute `attrname` of the top object. If `attrname` is not
       # specified, pops it from the stack first.
-      def op_get(attrname = nil)
+      def op_get(attrname = nil, remove=false)
         attrname ||= pop
-        receiver = peek
+        receiver = remove ? pop : peek
         if receiver.respond_to?(:[])
           push receiver[attrname]
         elsif receiver.respond_to?(attrname)
@@ -34,6 +34,11 @@ module Gisele
         else
           raise Error, "Unable to get #{attrname} on #{receiver}"
         end
+      end
+
+      # Same as +get+ but removes the original receiver from the stack.
+      def op_getr(attrname = nil)
+        op_get(attrname, true)
       end
 
       # If `attrname` is unspecified, pops it from the stack first. Pops a value `val`

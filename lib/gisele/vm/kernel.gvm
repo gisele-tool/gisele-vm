@@ -46,22 +46,20 @@ sleep:   self
 
 # Given an event Hash on the stack. Registers it as waitlist. Unschedule the
 # current prog for continuation at :react.
-listen:  self                       # take the current Prog
-         flip                       #
-         set  :waitlist             # events Hash as waitlist
-         push :react                #
-         set  :pc                   # program counter to :wakeup
+listen:  self                       # [ events, Prog ]
+         flip                       # [ Prog, events ]
+         set  :waitlist             # [ Prog ]
+         push :react                # [ Prog, :react ]
+         set  :pc                   # [ Prog ]
          then :sleepit
 
-# Given an event on the stack.
+# Given an event on the stack. Get the current Prog. Check if it waits for this
+# particular event. If yes, schedule the Prog as specified in its wait list.
+# Otherwise, return to sleep.
 react:   self                       # [ event, Prog ]
-         get :waitlist              # [ event, Prog, waitlist ]
-         flip                       # [ event, waitlist, Prog ]
-         pop                        # [ event, waitlist ]
+         getr :waitlist             # [ event, waitlist ]
          flip                       # [ waitlist, event ]
-         get                        # [ wailist, pc/nil ]
-         flip                       # [ pc/nil, wailist ]
-         pop                        # [ pc/nil ]
-         ifenil
+         getr                       # [ pc/nil ]
+         ifenil                     # ...
          then :sleep
          then :schedat

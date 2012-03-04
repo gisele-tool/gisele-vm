@@ -13,6 +13,7 @@ rules:
     - send
     - invoke
     - get
+    - getr
     - set
     # control
     - nop
@@ -46,6 +47,8 @@ rules:
   invoke:
     - [ 'symbol_arg?' ]
   get:
+    - [ 'symbol_arg?' ]
+  getr:
     - [ 'symbol_arg?' ]
   set:
     - [ 'symbol_arg?' ]

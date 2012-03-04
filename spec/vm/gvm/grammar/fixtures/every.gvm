@@ -39,6 +39,8 @@
    event :hello
    get
    get :attrname
+   getr
+   getr :attrname
    set
    set :attrname
    self
