@@ -34,6 +34,7 @@ rules:
     - wait
     - notify
     - save
+    - savea
     # events
     - event
     # stack
@@ -89,6 +90,8 @@ rules:
     - []
   save:
     - [ 'integer_arg?' ]
+  savea:
+    - []
   # stack
   pop:
     - [ 'integer_arg?' ]

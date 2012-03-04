@@ -171,6 +171,12 @@ module Gisele
         puids.reverse.each{|puid| push(puid)}
       end
 
+      # Expects an array of Progs on the stack. Similar to +save+ but in array version.
+      # Push the resulting puids back on the stack in an array.
+      def op_savea
+        push save(pop)
+      end
+
       ### DATA STACK MANAGEMENT ##########################################################
 
       # Pushes `arg` on the data stack.
