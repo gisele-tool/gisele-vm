@@ -51,6 +51,42 @@ module Gisele
         end
       end
 
+      ### CONTROL ########################################################################
+
+      # Does nothing at all
+      def op_nop
+      end
+
+      # If the top element is nil, pops it and skips `n` instructions (defaults
+      # to 1). Otherwise do nothing.
+      def op_skipnil(n = nil)
+        n ||= 1
+        if peek.nil?
+          pop
+          n.times do
+            opcodes.shift
+          end
+        end
+      end
+
+      # Pushes opcodes at label `at` on the code queue. If `at` is unspecified, it it
+      # poped from the stack first
+      def op_then(at = nil)
+        enlist_bytecode_at(at || pop)
+      end
+
+      # If the peek object is nil, flip top operations and skip the first one. Otherwise
+      # skip the top operation.
+      def op_ifenil
+        if peek.nil?
+          t = opcodes.shift
+          opcodes.shift
+          opcodes.unshift t
+        else
+          opcodes.shift
+        end
+      end
+
       ### LIFECYCLE ######################################################################
 
       # Puts the puid of the executing Prog on the stack
@@ -164,26 +200,6 @@ module Gisele
         pop.each do |elm|
           push elm
         end
-      end
-
-      ### CODE MANAGEMENT ###############################################################
-
-      # If the top element is nil, pops it and skips `n` instructions (defaults
-      # to 1). Otherwise do nothing.
-      def op_skipnil(n = nil)
-        n ||= 1
-        if peek.nil?
-          pop
-          n.times do
-            opcodes.shift
-          end
-        end
-      end
-
-      # Pushes opcodes at label `at` on the code queue. If `at` is unspecified, it it
-      # poped from the stack first
-      def op_then(at = nil)
-        enlist_bytecode_at(at || pop)
       end
 
       ### EVENT HANDLING #################################################################

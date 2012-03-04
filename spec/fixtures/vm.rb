@@ -31,7 +31,9 @@ module Gisele
            :op_end,
            :op_pick,
            :op_flip,
-           :op_skipnil
+           :op_skipnil,
+           :op_nop,
+           :op_ifenil
 
   end
 end

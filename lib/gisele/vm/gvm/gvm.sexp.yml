@@ -14,6 +14,11 @@ rules:
     - invoke
     - get
     - set
+    # control
+    - nop
+    - then
+    - skipnil
+    - ifenil
     # lifecycle
     - puid
     - self
@@ -36,9 +41,6 @@ rules:
     - flip
     - fold
     - unfold
-    # code
-    - then
-    - skipnil
   # generic
   send:
     - [ 'symbol_arg?' ]
@@ -48,6 +50,15 @@ rules:
     - [ 'symbol_arg?' ]
   set:
     - [ 'symbol_arg?' ]
+  # control
+  nop:
+    - []
+  skipnil:
+    - [ 'integer_arg?' ]
+  then:
+    - [ 'label_arg?' ]
+  ifenil:
+    - []
   # lifecycle
   puid:
     - []
@@ -86,11 +97,6 @@ rules:
     - [ 'integer_arg?' ]
   unfold:
     - []
-  # code
-  skipnil:
-    - [ 'integer_arg?' ]
-  then:
-    - [ 'label_arg?' ]
   # events
   event:
     - [ 'symbol_arg?' ]
