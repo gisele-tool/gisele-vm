@@ -144,16 +144,10 @@ module Gisele
         push at.map{|l| fork(l)}
       end
 
-      # Sets the program counter of the current Prog to `at` (taken from the stack if not
-      # specified). Unschedule it. Push the unsaved Prog on the stack.
-      def op_cont(at = nil)
-        push current_prog(:pc => at || pop, :progress => false)
-      end
-
       # Sets the program counter of the current Prog to `-1`. Unschedule it. Push the
       # unsaved Prog on the stack.
       def op_end
-        op_cont(-1)
+        push current_prog(:pc => -1, :progress => false)
       end
 
       # Set the `progress` attribute to true on the top program

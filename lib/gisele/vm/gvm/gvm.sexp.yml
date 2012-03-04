@@ -29,7 +29,6 @@ rules:
     - pick
     - fork
     - forka
-    - cont
     - end
     - schedule
     - unschedule
@@ -80,8 +79,6 @@ rules:
     - [ 'label_arg?' ]
   forka:
     - [ ]
-  cont:
-    - [ 'label_arg?' ]
   end:
     - []
   schedule:

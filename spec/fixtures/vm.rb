@@ -24,7 +24,6 @@ module Gisele
            :op_event,
            :op_fork,
            :op_forka,
-           :op_cont,
            :op_get,
            :op_getr,
            :op_set,
