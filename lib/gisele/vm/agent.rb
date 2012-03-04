@@ -24,6 +24,10 @@ module Gisele
         end
       end
 
+      def runone(puid)
+        vm(puid).run(:run, [ ])
+      end
+
       def resume(puid, input = [])
         vm(puid).run(:resume, [ input ])
       end
