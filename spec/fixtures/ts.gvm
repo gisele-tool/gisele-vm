@@ -1,29 +1,20 @@
 main: then :s0
 s0:   push {:ping=>:s1, :exit=>:s7}
       then :listen
-s1:   fork :s2
-      fork :s4
-      save 2
-      wait 2
-      push :s6
-      set :pc
-      save
+s1:   push :s6
+      push [:s2, :s4]
+      then :fork
 s2:   then :s3
       then :e2
 e2:   push []
       event :pong
-s3:   end
-      save
-      notify
-      save
+s3:   then :notify
 s4:   then :s5
       then :e4
 e4:   push []
       event :pang
-s5:   end
-      save
-      notify
-      save
-s6:   then :s0
+s5:   then :notify
+s6:   push {:wake => :s0}
+      then :join
 s7:   end
       save

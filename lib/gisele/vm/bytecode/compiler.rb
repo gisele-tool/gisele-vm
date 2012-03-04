@@ -73,26 +73,31 @@ module Gisele
         end
 
         def on_fork(state)
+          targets = state.out_adjacent_states
           at(:"s#{state.index}") do |b|
-            targets = state.out_adjacent_states
-            size    = targets.size
-            targets.each do |target|
-              b.fork :"s#{target.index}"
-            end
-            b.save size
-            b.wait size
             b.push :"s#{state[:join]}"
-            b.set  :pc
-            b.save
+            b.push targets.map{|t| :"s#{t.index}"}
+            b.then :fork
           end
         end
 
         def on_join(state)
+          unless state.out_edges.size == 1
+            raise ArgumentError, "Invalid :join state"
+          end
+          target = state.out_edges.first.target
           at(:"s#{state.index}") do |b|
-            b.end
-            b.save
-            b.notify
-            b.save
+            b.push :wake => :"s#{target.index}"
+            b.then :join
+          end
+        end
+
+        def on_notify(state)
+          unless state.out_edges.size == 1
+            raise ArgumentError, "Invalid :notify state"
+          end
+          at(:"s#{state.index}") do |b|
+            b.then :notify
           end
         end
 

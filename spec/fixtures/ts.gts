@@ -2,10 +2,10 @@ Stamina::Automaton.new do
   add_state :kind => :listen, :initial => true
   add_state :kind => :fork,   :join => 6
   add_state :kind => :event
-  add_state :kind => :join
+  add_state :kind => :notify
   add_state :kind => :event
+  add_state :kind => :notify
   add_state :kind => :join
-  add_state :kind => :nop
   add_state :kind => :end
   connect 0, 1, :symbol => :ping
   connect 1, 2, nil
