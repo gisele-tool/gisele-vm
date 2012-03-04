@@ -36,7 +36,8 @@ module Gisele
            :op_pick,
            :op_flip,
            :op_nop,
-           :op_ifenil
+           :op_ifenil,
+           :op_ifezero
 
   end
 end

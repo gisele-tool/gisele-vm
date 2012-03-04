@@ -20,6 +20,7 @@ rules:
     - nop
     - then
     - ifenil
+    - ifezero
     # lifecycle
     - puid
     - self
@@ -63,6 +64,8 @@ rules:
   then:
     - [ 'label_arg?' ]
   ifenil:
+    - []
+  ifezero:
     - []
   # lifecycle
   puid:

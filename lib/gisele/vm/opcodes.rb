@@ -77,16 +77,28 @@ module Gisele
         enlist_bytecode_at(at || pop)
       end
 
-      # If the peek object is nil, flip top operations and skip the first one. Otherwise
-      # skip the top operation.
-      def op_ifenil
-        if peek.nil?
+      # If the peek object is equal to `val`, flip top operations and skip the first one.
+      # Otherwise skip the top operation.
+      def op_ifeeq(val = nil)
+        if peek == val
           t = opcodes.shift
           opcodes.shift
           opcodes.unshift t
         else
           opcodes.shift
         end
+      end
+
+      # If the peek object is nil, flip top operations and skip the first one. Otherwise
+      # skip the top operation.
+      def op_ifenil
+        op_ifeeq(nil)
+      end
+
+      # If the peek object is zero, flip top operations and skip the first one. Otherwise
+      # skip the top operation.
+      def op_ifezero
+        op_ifeeq(0)
       end
 
       ### LIFECYCLE ######################################################################
