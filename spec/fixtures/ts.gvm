@@ -1,37 +1,29 @@
-main:   then :entry0
-entry0: cont :state0
-        save
-state0: push {:ping=>:entry1, :exit=>:entry7}
-        flip
-        get
-        ifenil
-        then :sleep
-        then
-entry1: fork :entry2
-        fork :entry4
-        save 2
-        wait 2
-        push :entry6
-        set :pc
-        save
-entry2: then :state2
-state2: then :entry3
-        then :edge2
-edge2:  push []
-        event :pong
-entry3: end
-        save
-        notify
-        save
-entry4: then :state4
-state4: then :entry5
-        then :edge4
-edge4:  push []
-        event :pang
-entry5: end
-        save
-        notify
-        save
-entry6: then :entry0
-entry7: end
-        save
+main: then :s0
+s0:   push {:ping=>:s1, :exit=>:s7}
+      then :listen
+s1:   fork :s2
+      fork :s4
+      save 2
+      wait 2
+      push :s6
+      set :pc
+      save
+s2:   then :s3
+      then :e2
+e2:   push []
+      event :pong
+s3:   end
+      save
+      notify
+      save
+s4:   then :s5
+      then :e4
+e4:   push []
+      event :pang
+s5:   end
+      save
+      notify
+      save
+s6:   then :s0
+s7:   end
+      save
