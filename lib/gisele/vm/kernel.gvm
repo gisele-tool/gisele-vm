@@ -31,3 +31,39 @@ sleepit: unschedule
          pop
 sleep:   self
          then :sleepit
+
+# Given an event Hash on the stack. Registers it as waitlist. Unschedule the
+# current prog for continuation at :react.
+listen:  self                       # take the current Prog
+         flip                       #
+         set  :waitlist             # events Hash as waitlist
+         push :react                #
+         set  :pc                   # program counter to :wakeup
+         unschedule                 #
+         save                       # progress to false
+         pop
+
+# Given an event on the stack.
+react:   self                       # [ event, Prog ]
+         get :waitlist              # [ event, Prog, waitlist ]
+         flip                       # [ event, waitlist, Prog ]
+         pop                        # [ event, waitlist ]
+         flip                       # [ waitlist, event ]
+         get                        # [ wailist, pc/nil ]
+         flip                       # [ pc/nil, wailist ]
+         pop                        # [ pc/nil ]
+         ifenil
+         then :sleep
+         then :schedat
+
+# Given a label on the stack, schedule the current Prog for execution there.
+# The effective execution will only take place when the Prog will be selected
+# for running.
+schedat: self                       # [ pc, Prog ]
+         flip                       # [ Prog, pc ]
+         set :pc                    # [ Prog ]
+         schedule                   # [ Prog ]
+         push {}                    # [ Prog, {} ]
+         set :waitlist              # [ Prog ]
+         save                       # [ puid ]
+         pop                        # [ ]
