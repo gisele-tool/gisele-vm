@@ -32,7 +32,7 @@ module Gisele
         elsif receiver.respond_to?(attrname)
           push receiver.send(attrname)
         else
-          raise Error, "Unable to get #{attrname} on #{receiver}"
+          raise Error, "Unable to get #{attrname} on #{receiver.inspect}"
         end
       end
 

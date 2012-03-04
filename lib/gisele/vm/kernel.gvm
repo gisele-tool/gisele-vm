@@ -75,3 +75,22 @@ fork:    forka                      # [ joinat, [ Prog, ... ] ]
          flip                       # [ Prog, joinat ]
          set :pc                    # [ Prog ]
          then :sleepit
+
+# Expects an Hash `evt` of events. If the waitlist of the current prog is empty,
+# schedule execution at `wake` in this event map. Otherwise simply returns asleep.
+#                                   # [ {evt...} ]
+join:    self                       # [ {evt...}, Prog ]
+         getr :waitlist             # [ {evt...}, waitlist ]
+         push []
+         send :size                 # [ {evt...}, size ]
+         ifezero
+         push :wake
+         push :wait                 # [ {evt...}, size, wake/wait ]
+         flip                       # [ {evt...}, wake/wait, size ]
+         pop                        # [ {evt...}, wake/wait ]
+         get                        # [ {evt...}, label/nil ]
+         flip                       # [ label/nil, {evt...} ]
+         pop                        # [ label/nil ]
+         ifenil                     # ...
+         then :sleep
+         then :schedat
