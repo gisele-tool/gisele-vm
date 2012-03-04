@@ -19,7 +19,7 @@ module Gisele
 
         before do
           @at0 = list.fetch(@puid0)
-          @at0.waitlist = [ 12, 16, @puid1 ]
+          @at0.waitlist = {12 => true, 16 => true, @puid1 => true}
           list.save(@at0)
           vm.stack = [ ]
           vm.op_notify
@@ -31,7 +31,7 @@ module Gisele
         end
 
         it 'removes the child puid from its wait list' do
-          subject.waitlist.should eq([ 12, 16 ])
+          subject.waitlist.should eq({12 => true, 16 => true, @puid1 => false})
         end
 
         it 'does not schedule the parent' do
@@ -44,7 +44,7 @@ module Gisele
 
         before do
           @at0 = list.fetch(@puid0)
-          @at0.waitlist = [ @puid1 ]
+          @at0.waitlist = { @puid1 => true }
           list.save(@at0)
           vm.stack = [ ]
           vm.op_notify
@@ -56,7 +56,7 @@ module Gisele
         end
 
         it 'removes the child puid from its wait list' do
-          subject.waitlist.should eq([ ])
+          subject.waitlist.should eq({ @puid1 => false })
         end
 
         it 'schedules the parent' do

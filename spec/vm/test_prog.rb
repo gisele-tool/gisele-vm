@@ -6,7 +6,7 @@ class Gisele::VM
       { :puid     => "puid",
         :parent   => "parent",
         :pc       => 12,
-        :waitlist => [:a],
+        :waitlist => {:a => true},
         :progress => true,
         :input    => [ :event ] }
     }
@@ -16,7 +16,7 @@ class Gisele::VM
       s.puid.should     be_nil
       s.parent.should   be_nil
       s.pc.should       eq(0)
-      s.waitlist.should eq([])
+      s.waitlist.should eq({})
       s.progress.should eq(false)
       s.input.should    eq([])
     end
@@ -26,7 +26,7 @@ class Gisele::VM
       s.puid.should     eq("puid")
       s.parent.should   eq("parent")
       s.pc.should       eq(12)
-      s.waitlist.should eq([:a])
+      s.waitlist.should eq({:a => true})
       s.progress.should eq(true)
       s.input.should    eq([:event])
     end
@@ -37,15 +37,15 @@ class Gisele::VM
     end
 
     it 'provides value-equal duplication' do
-      s = Prog.new(:puid => 12, :waitlist => [:a])
+      s = Prog.new(:puid => 12, :waitlist => {:a => true})
       s.dup.object_id.should_not eq(s.object_id)
       s.dup.should eq(s)
     end
 
     it 'duplicates deeply' do
       s = Prog.new(h)
-      s.dup.waitlist << :b
-      s.waitlist.should eq([:a])
+      s.dup.waitlist[:b] = false
+      s.waitlist.should eq({:a => true})
       s.dup.input << :blih
       s.input.should eq([:event])
     end

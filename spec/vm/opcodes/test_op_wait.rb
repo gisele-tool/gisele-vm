@@ -31,7 +31,7 @@ module Gisele
         end
 
         it 'puts the last puid in the wait list' do
-          subject.waitlist.should eq([ @puid2 ])
+          subject.waitlist.should eq({ @puid2 => true })
         end
 
         it 'unschedules the parent' do
@@ -51,7 +51,7 @@ module Gisele
         end
 
         it 'puts the poped puids in the wait list' do
-          subject.waitlist.should eq([ @puid2, @puid1 ])
+          subject.waitlist.should eq({ @puid2 => true, @puid1 => true })
         end
 
         it 'unschedules the parent' do
@@ -71,7 +71,7 @@ module Gisele
         end
 
         it 'puts the poped puids in the wait list' do
-          subject.waitlist.should eq([ ])
+          subject.waitlist.should eq({})
         end
 
         it 'schedules the parent' do

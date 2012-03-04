@@ -12,7 +12,7 @@ module Gisele
         @puid     = attrs[:puid]     || nil
         @parent   = attrs[:parent]   || @puid
         @pc       = attrs[:pc]       || 0
-        @waitlist = attrs[:waitlist] || []
+        @waitlist = attrs[:waitlist] || {}
         @progress = attrs[:progress] || false
         @input    = attrs[:input]    || []
       end
@@ -28,7 +28,7 @@ module Gisele
 
       def merge(with)
         merged = to_hash.merge(with.to_hash){|k,v1,v2|
-          k == :waitlist ? (v1 | v2) : v2
+          k == :waitlist ? v1.merge(v2) : v2
         }
         Prog.new(merged)
       end
