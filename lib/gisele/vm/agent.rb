@@ -25,7 +25,7 @@ module Gisele
       end
 
       def resume(puid, input = [])
-        vm(nil).run(:resume, [ input, puid ])
+        vm(puid).run(:resume, [ input ])
       end
 
       def stop
@@ -40,7 +40,7 @@ module Gisele
     private
 
       def run_one(prog)
-        vm(prog.puid).run(:run, [ prog ])
+        vm(prog.puid).run(:run, [ ])
       rescue Interrupt
         stop
       rescue Exception => ex
@@ -52,7 +52,7 @@ module Gisele
         @run
       end
 
-      def vm(puid = nil)
+      def vm(puid)
         VM.new puid, @bytecode, @proglist, @event_interface
       end
 

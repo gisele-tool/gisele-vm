@@ -1,15 +1,12 @@
-#
 # Start expects a label on top of the stack. It forks a new child process and schedules
 # it for running at that label
-#
 start:   fork
          save
          pop
 
-#
-# Run indefinitely picks a scheduled Prog and runs it
-#
-run:     get :pc
+# Run starts running the current prog at its program counter.
+run:     self
+         get :pc
          then                       # enqueue instruction at program counter
          get :input
          flip                       # [ Prog, [ input... ] ] -> [ [ input... ], Prog ]
@@ -19,12 +16,16 @@ run:     get :pc
          pop
          unfold                     # [ input... ]
 
-#
-# Resume expects a puid on the stack and an input array. It fetches the corresponding Prog # and schedules it with the given input
-#
-resume:  fetch                      # pop the uuid and fetch the corresponding Prog
+# Resume expects an input array on the stack. It fetches the current Prog and schedules
+# it with the given input
+resume:  self                       # take the current Prog
          schedule                   # schedule it
          flip                       # [ input, prog ] -> [ prog, input ]
          set :input                 # prog.input = input
+         save
+         pop
+
+sleep:   self
+         unschedule
          save
          pop
