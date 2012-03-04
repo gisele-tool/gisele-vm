@@ -26,7 +26,8 @@ resume:  self                       # take the current Prog
          pop
 
 # Puts the current Prog on the stack. Unschedules and saves it.
-sleep:   self
-         unschedule
+sleepit: unschedule
          save
          pop
+sleep:   self
+         then :sleepit

@@ -14,7 +14,7 @@ module Gisele
     attr_reader :proglist
     attr_reader :event_interface
 
-    def initialize(puid, bytecode, proglist = nil, event_interface = nil)
+    def initialize(puid, bytecode = [], proglist = nil, event_interface = nil)
       @puid     = puid
       @bytecode = bytecode
       @proglist = proglist || ProgList.memory
