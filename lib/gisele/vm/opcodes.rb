@@ -166,24 +166,6 @@ module Gisele
         peek.progress = false
       end
 
-      # Pops `n` (defaults to 1) puids from the stack. Add them to the wait list of the
-      # current Prog. Put the later on the stack, unsaved.
-      def op_wait(n = nil)
-        wlist = Hash[pop(n || 1).map{|x| [x, true] }]
-        prog  = current_prog(:waitlist => wlist)
-        prog.progress = prog.waitlist.values.all?{|x| !x }
-        push prog
-      end
-
-      # Find the parent Prog. Remove the current puid from its wait list. Push it unsaved
-      # on the stack.
-      def op_notify
-        parent = fetch(current_prog.parent)
-        parent.waitlist[puid] = false
-        parent.progress = parent.waitlist.values.all?{|x| !x }
-        push parent
-      end
-
       # Pops `n` programs from the stack and save them. Pushes their puid back on
       # the stack after saving, in the original order. `n` is considered 1 if unspecified.
       def op_save(n = nil)

@@ -15,8 +15,6 @@ module Gisele
            :op_unschedule,
            :op_save,
            :op_savea,
-           :op_wait,
-           :op_notify,
            :op_pop,
            :op_push,
            :op_send,

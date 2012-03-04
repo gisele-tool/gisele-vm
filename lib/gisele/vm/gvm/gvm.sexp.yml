@@ -33,8 +33,6 @@ rules:
     - end
     - schedule
     - unschedule
-    - wait
-    - notify
     - save
     - savea
     # events
@@ -89,10 +87,6 @@ rules:
   schedule:
     - []
   unschedule:
-    - []
-  wait:
-    - [ 'integer_arg?' ]
-  notify:
     - []
   save:
     - [ 'integer_arg?' ]

@@ -9,7 +9,6 @@
    fork :a_label
    forka
    invoke
-   notify
    parent
    pop
    pop 2
@@ -35,7 +34,6 @@
    unfold
    schedule
    unschedule
-   wait
    event
    event :hello
    get
