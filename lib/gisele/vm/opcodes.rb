@@ -136,8 +136,8 @@ module Gisele
       # Pops `n` (defaults to 1) puids from the stack. Add them to the wait list of the
       # current Prog. Put the later on the stack, unsaved.
       def op_wait(n = nil)
-        prog = current_prog(:wait => pop(n || 1))
-        prog.progress = prog.wait.empty?
+        prog = current_prog(:waitlist => pop(n || 1))
+        prog.progress = prog.waitlist.empty?
         push prog
       end
 
@@ -145,8 +145,8 @@ module Gisele
       # on the stack.
       def op_notify
         parent = fetch(current_prog.parent)
-        parent.wait.delete puid
-        parent.progress = true if parent.wait.empty?
+        parent.waitlist.delete puid
+        parent.progress = true if parent.waitlist.empty?
         push parent
       end
 

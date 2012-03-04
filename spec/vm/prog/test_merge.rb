@@ -4,10 +4,10 @@ module Gisele
     describe Prog, 'merge' do
 
       let(:left){
-        Prog.new(:puid => 17, :parent => 1, :wait => [ 12, 28 ])
+        Prog.new(:puid => 17, :parent => 1, :waitlist => [ 12, 28 ])
       }
       let(:right){
-        {:puid => 18, :wait => [ 12, 17 ]}
+        {:puid => 18, :waitlist => [ 12, 17 ]}
       }
 
       subject{ left.merge(right) }
@@ -23,7 +23,7 @@ module Gisele
       it 'sets the attributes correctly' do
         subject.puid.should eq(18)
         subject.parent.should eq(1)
-        subject.wait.should eq([12, 28, 17])
+        subject.waitlist.should eq([12, 28, 17])
       end
 
     end

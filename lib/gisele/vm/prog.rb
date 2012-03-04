@@ -4,7 +4,7 @@ module Gisele
       attr_accessor :puid
       attr_accessor :parent
       attr_accessor :pc
-      attr_accessor :wait
+      attr_accessor :waitlist
       attr_accessor :progress
       attr_accessor :input
 
@@ -12,7 +12,7 @@ module Gisele
         @puid     = attrs[:puid]     || nil
         @parent   = attrs[:parent]   || @puid
         @pc       = attrs[:pc]       || 0
-        @wait     = attrs[:wait]     || []
+        @waitlist = attrs[:waitlist] || []
         @progress = attrs[:progress] || false
         @input    = attrs[:input]    || []
       end
@@ -21,22 +21,22 @@ module Gisele
         { :puid     => puid,
           :parent   => parent,
           :pc       => pc,
-          :wait     => wait,
+          :waitlist => waitlist,
           :progress => progress,
           :input    => input }
       end
 
       def merge(with)
         merged = to_hash.merge(with.to_hash){|k,v1,v2|
-          k == :wait ? (v1 | v2) : v2
+          k == :waitlist ? (v1 | v2) : v2
         }
         Prog.new(merged)
       end
 
       def dup
         super.tap do |c|
-          c.wait  = wait.dup
-          c.input = input.dup
+          c.waitlist = waitlist.dup
+          c.input    = input.dup
         end
       end
 
