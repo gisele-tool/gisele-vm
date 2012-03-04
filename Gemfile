@@ -10,4 +10,5 @@ group :development do
   gem "rake", "~> 0.9.2"
   gem "rspec", "~> 2.8"
   gem "wlang", "~> 0.10.2"
+  gem "ruby-prof", "~> 0.10.8"
 end

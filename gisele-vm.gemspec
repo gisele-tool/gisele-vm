@@ -126,6 +126,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rake", "~> 0.9.2")
   s.add_development_dependency("rspec", "~> 2.8")
   s.add_development_dependency("wlang", "~> 0.10.2")
+  s.add_development_dependency("ruby-prof", "~> 0.10.8")
   s.add_dependency("gisele", "~> 0.5.0")
   s.add_dependency("alf", "~> 0.11.0")
 
