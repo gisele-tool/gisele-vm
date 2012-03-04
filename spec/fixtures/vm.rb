@@ -30,6 +30,7 @@ module Gisele
            :op_get,
            :op_getr,
            :op_set,
+           :op_del,
            :op_self,
            :op_end,
            :op_pick,

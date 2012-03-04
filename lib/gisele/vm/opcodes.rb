@@ -56,6 +56,15 @@ module Gisele
         end
       end
 
+      # If `attrname` is unspecified, pops it from the stack first. Expects an object
+      # responding to :delete on top of the stack. Pops it, call `delete(attrname)` on
+      # a duplicate and push the later back on the stack.
+      def op_del(attrname = nil)
+        attrname ||= pop
+        push pop.dup
+        peek.delete(attrname)
+      end
+
       ### CONTROL ########################################################################
 
       # Does nothing at all

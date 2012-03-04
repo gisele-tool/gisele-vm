@@ -15,6 +15,7 @@ rules:
     - get
     - getr
     - set
+    - del
     # control
     - nop
     - then
@@ -53,6 +54,8 @@ rules:
   getr:
     - [ 'symbol_arg?' ]
   set:
+    - [ 'symbol_arg?' ]
+  del:
     - [ 'symbol_arg?' ]
   # control
   nop:

@@ -44,6 +44,8 @@
    getr :attrname
    set
    set :attrname
+   del
+   del :attrname
    self
    end
    pick
