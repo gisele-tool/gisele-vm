@@ -74,11 +74,12 @@ module Gisele
             b.save
           end
           at("state#{state.index}") do |b|
-            b.push h    # push the transition system on the stack
-            b.flip      # [ event, {...} ] -> [ {...}, event ]
-            b.get       # lookup target state
-            b.skipnil   # do nothing if no such event
-            b.then      # mark continuation at that state
+            b.push h       # push the transition system on the stack
+            b.flip         # [ event, {...} ] -> [ {...}, event ]
+            b.get          # lookup target state
+            b.ifenil       # if no such event...
+            b.then :sleep  #   then sleep
+            b.then         #   else continue there
           end
         end
 

@@ -25,6 +25,7 @@ resume:  self                       # take the current Prog
          save
          pop
 
+# Puts the current Prog on the stack. Unschedules and saves it.
 sleep:   self
          unschedule
          save

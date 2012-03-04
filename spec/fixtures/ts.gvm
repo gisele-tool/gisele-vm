@@ -4,7 +4,8 @@ entry0: cont :state0
 state0: push {:ping=>:entry1, :exit=>:entry7}
         flip
         get
-        skipnil
+        ifenil
+        then :sleep
         then
 entry1: fork :entry2
         fork :entry4
