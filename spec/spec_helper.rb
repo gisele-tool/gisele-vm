@@ -14,3 +14,10 @@ end
 def fixtures
   Path.dir/:fixtures
 end
+
+def measure
+  t1 = Time.now
+  yield
+  t2 = Time.now
+  puts "It took #{(t2-t1)} ms."
+end

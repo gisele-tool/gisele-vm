@@ -37,7 +37,7 @@ module Gisele
       end
 
       def self.kernel
-        Bytecode.parse(Path.dir/'kernel.gvm')
+        @kernel ||= Bytecode.parse(Path.dir/'kernel.gvm')
       end
 
       def self.builder(namespace = nil)
@@ -82,6 +82,8 @@ module Gisele
         end
       end
 
+      # Force loading the kernel as it might take time.
+      Bytecode.kernel
     end # class Bytecode
   end # class VM
 end # module Gisele
