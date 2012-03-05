@@ -115,7 +115,8 @@ module Gisele
 
       # Pushes the parent Prog of the executing program.
       def op_parent
-        push fetch(current_prog.parent)
+        cur = current_prog
+        push(cur.parent==cur.puid ? nil : fetch(current_prog.parent))
       end
 
       # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
