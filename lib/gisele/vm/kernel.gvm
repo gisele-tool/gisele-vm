@@ -25,17 +25,24 @@ resume:  self                       # take the current Prog
          save
          pop
 
-# Given a label on the stack, schedule the current Prog for execution there.
-# The effective execution will only take place when the Prog will be selected
-# for running.
-schedat: self                       # [ pc, Prog ]
-         flip                       # [ Prog, pc ]
-         set :pc                    # [ Prog ]
-         schedule                   # [ Prog ]
-         push {}                    # [ Prog, {} ]
-         set :waitlist              # [ Prog ]
-         save                       # [ puid ]
-         pop                        # [ ]
+# Given a label on the stack, schedule the current Prog for execution there. The effective
+# execution will only take place when the Prog will be selected for running.
+#
+# INPUT:  [ `at` ]
+# OUTPUT: [ ]
+# PRE:    - `at` must be a valid label
+# POST:   - the current Prog is scheduled and its program counter set to `at` (and it is
+#           saved)
+#         - its waiting list is empty
+#
+schedule_at: self                       # [ pc, Prog ]
+             flip                       # [ Prog, pc ]
+             set :pc                    # [ Prog ]
+             schedule                   # [ Prog ]
+             push {}                    # [ Prog, {} ]
+             set :waitlist              # [ Prog ]
+             save                       # [ puid ]
+             pop                        # [ ]
 
 # Given a Prog on the stack, unschedule and saves it.
 #
@@ -91,7 +98,7 @@ react:   self                       # [ event, Prog ]
          getr                       # [ pc/nil ]
          ifenil                     #
          then :sleep                # [ nil ]
-         then :schedat              # [ ]
+         then :schedule_at          # [ ]
 
 # Fork a list of children at specified locations. Wait for joining them at a label
 # `joinat` specified through the stack as well.
@@ -137,7 +144,7 @@ join:    self                       # [ {evt...}, Prog ]
          pop                        # [ label/nil ]
          ifenil                     # ...
          then :sleep
-         then :schedat
+         then :schedule_at
 
 # Expects a Prog on the stack (typically the parent). Remove the current puid from its
 # waitlist and schedule it.
