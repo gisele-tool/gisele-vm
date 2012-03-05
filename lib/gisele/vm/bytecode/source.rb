@@ -16,9 +16,9 @@ module Gisele
             raise ArgumentError unless Stamina::Automaton===fa
             gts(fa)
           when Stamina::Automaton
-            arg.states.each{|s| s[:kind] = Compiler.infer_state_kind(s) }
+            arg.states.each{|s| s[:kind] = Compiling::Gts2Bytecode.infer_state_kind(s) }
             arg.edges.each {|e| e.symbol = e.symbol.to_sym if e.symbol  }
-            Compiler.compile arg
+            Compiling::Gts2Bytecode.call arg
           else
             raise ArgumentError
           end

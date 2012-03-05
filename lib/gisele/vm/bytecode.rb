@@ -1,7 +1,6 @@
 require_relative 'bytecode/grammar'
 require_relative 'bytecode/source'
 require_relative 'bytecode/builder'
-require_relative 'bytecode/compiler'
 require_relative 'bytecode/printer'
 module Gisele
   class VM
