@@ -55,7 +55,8 @@ module Gisele
 
         def resume_action(args)
           puid, *input = args.split(/\s+/)
-          agent.resume(puid, input.map{|x| Gvm.parse(x, :root => :arg).value})
+          input = input.map{|x| Bytecode::Grammar.parse(x, :root => :arg).value}
+          agent.resume(puid, input)
         end
 
         def stop_action

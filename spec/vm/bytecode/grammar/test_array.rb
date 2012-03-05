@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "array" do
+    describe Bytecode::Grammar, "array" do
 
       def parse(src)
-        Gvm.parse(src, :root => :array)
+        Bytecode::Grammar.parse(src, :root => :array)
       end
 
       it 'parses empty arrays correctly' do

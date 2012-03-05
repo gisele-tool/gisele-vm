@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "string" do
+    describe Bytecode::Grammar, "string" do
 
       def parse(src)
-        Gvm.parse(src, :root => :string)
+        Bytecode::Grammar.parse(src, :root => :string)
       end
 
       it 'parses single quoted strings' do

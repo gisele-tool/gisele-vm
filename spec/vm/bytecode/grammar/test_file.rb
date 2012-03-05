@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "file" do
+    describe Bytecode::Grammar, "file" do
 
       def parse(src)
-        Gvm.parse(src)
+        Bytecode::Grammar.parse(src)
       end
 
       it 'returns a [:gvm] array' do
@@ -21,14 +21,14 @@ module Gisele
 
       (Path.dir/'fixtures').glob('*.gvm').each do |file|
         context "the fixture #{File.basename(file)}" do
-          let(:sexpr){ Gvm.sexpr(file) }
+          let(:sexpr){ Bytecode::Grammar.sexpr(file) }
 
           it "is parsed correctly" do
             sexpr.should be_a(Array)
           end
 
           it "respects the grammar" do
-            (Gvm === sexpr).should be_true
+            (Bytecode::Grammar === sexpr).should be_true
           end
         end
       end

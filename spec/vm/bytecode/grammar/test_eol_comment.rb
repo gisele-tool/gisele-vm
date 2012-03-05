@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "eol_comment" do
+    describe Bytecode::Grammar, "eol_comment" do
 
       def parse(src)
-        Gvm.parse(src, :root => :eol_comment)
+        Bytecode::Grammar.parse(src, :root => :eol_comment)
       end
 
       it 'parses a comment, including the \n' do

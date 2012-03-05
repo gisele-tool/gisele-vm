@@ -1,5 +1,5 @@
 parser:
-  gvm.citrus
+  grammar.citrus
 rules:
   gvm:
     - [ block+ ]

@@ -6,7 +6,7 @@ module Gisele
       private
 
         def gvm(source)
-          Bytecode.new(Gvm.sexpr(source))
+          Bytecode.new(Grammar.sexpr(source))
         end
 
         def gts(arg)

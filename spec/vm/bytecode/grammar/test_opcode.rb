@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "opcode" do
+    describe Bytecode::Grammar, "opcode" do
 
       def parse(src)
-        Gvm.parse(src, :root => :opcode)
+        Bytecode::Grammar.parse(src, :root => :opcode)
       end
 
       it 'parses typical opcodes' do

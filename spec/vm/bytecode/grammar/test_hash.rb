@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "hash" do
+    describe Bytecode::Grammar, "hash" do
 
       def parse(src)
-        Gvm.parse(src, :root => :hash)
+        Bytecode::Grammar.parse(src, :root => :hash)
       end
 
       it 'parses empty hashes correctly' do

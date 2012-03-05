@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "symbol" do
+    describe Bytecode::Grammar, "symbol" do
 
       def parse(src)
-        Gvm.parse(src, :root => :symbol)
+        Bytecode::Grammar.parse(src, :root => :symbol)
       end
 
       it 'parses alphabetic symbols' do

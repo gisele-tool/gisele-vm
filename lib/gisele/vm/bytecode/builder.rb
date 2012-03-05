@@ -40,7 +40,7 @@ module Gisele
 
         def instruction(which, args)
           instr = [which] + args
-          if Gvm[which] === instr
+          if Grammar[which] === instr
             current_block << instr
             instr
           else
@@ -52,7 +52,7 @@ module Gisele
           @bytecode
         end
 
-        Gvm.instructions.each do |iname|
+        Grammar.instructions.each do |iname|
           define_method(iname) do |*args|
             instruction(iname, args)
           end

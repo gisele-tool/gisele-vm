@@ -1,4 +1,4 @@
-grammar Gisele::VM::GvmFile
+grammar Gisele::VM::Bytecode::Grammar::Parser
 
   rule file
     ((trailing_space block)+ end_of_file?){

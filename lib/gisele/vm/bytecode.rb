@@ -1,3 +1,4 @@
+require_relative 'bytecode/grammar'
 require_relative 'bytecode/source'
 require_relative 'bytecode/builder'
 require_relative 'bytecode/compiler'
@@ -21,7 +22,7 @@ module Gisele
           when ".gts"     then gts(arg)
           when ".adl"     then adl(arg)
           end
-        when Gvm                then Bytecode.new(arg)
+        when Grammar            then Bytecode.new(arg)
         else
           raise ArgumentError
         end

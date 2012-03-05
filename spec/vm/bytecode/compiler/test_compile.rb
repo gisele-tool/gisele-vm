@@ -5,7 +5,7 @@ module Gisele
       describe Compiler, ".compile" do
 
         let(:expected){
-          Gvm.sexpr fixtures/'ts.gvm'
+          Grammar.sexpr fixtures/'ts.gvm'
         }
 
         subject{

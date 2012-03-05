@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "block" do
+    describe Bytecode::Grammar, "block" do
 
       def parse(src)
-        Gvm.parse(src, :root => :block)
+        Bytecode::Grammar.parse(src, :root => :block)
       end
 
       it 'parses a block with one instruction' do

@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "int" do
+    describe Bytecode::Grammar, "int" do
 
       def parse(src)
-        Gvm.parse(src, :root => :int)
+        Bytecode::Grammar.parse(src, :root => :int)
       end
 
       it 'parses integers correctly' do

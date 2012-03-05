@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "label" do
+    describe Bytecode::Grammar, "label" do
 
       def parse(src)
-        Gvm.parse(src, :root => :label)
+        Bytecode::Grammar.parse(src, :root => :label)
       end
 
       it 'parses a label, including the :' do

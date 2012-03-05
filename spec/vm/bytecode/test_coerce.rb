@@ -35,8 +35,8 @@ module Gisele
         coerce(fixtures/'ts.gts')
       end
 
-      it 'coerces a valid Gvm parse result' do
-        coerce(Gvm.sexpr(fixtures/'ts.gvm'))
+      it 'coerces a valid parse result' do
+        coerce(Bytecode::Grammar.sexpr(fixtures/'ts.gvm'))
       end
 
       it 'raises an InvalidBytecodeError when not recognized' do

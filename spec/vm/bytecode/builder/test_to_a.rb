@@ -27,7 +27,7 @@ module Gisele
           end
 
           it 'returns valid bytecode' do
-            (Gvm === builder.to_a).should be_true
+            (Grammar === builder.to_a).should be_true
           end
         end
 
@@ -43,7 +43,7 @@ module Gisele
           end
 
           it 'returns valid bytecode' do
-            (Gvm === builder.to_a).should be_true
+            (Grammar === builder.to_a).should be_true
           end
         end
 

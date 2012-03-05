@@ -5,12 +5,12 @@ module Gisele
     shared_examples_for "A valid example file" do
 
       it 'respect the .gvm grammar' do
-        sexpr = Gvm.sexpr(subject)
-        unless (Gvm === sexpr)
+        sexpr = Bytecode::Grammar.sexpr(subject)
+        unless (Bytecode::Grammar === sexpr)
           sexpr.sexpr_body.each do |block|
-            next if Gvm[:block]===block
+            next if Bytecode::Grammar[:block]===block
             block.sexpr_body[1..-1].each do |i|
-              raise "Bad instruction: #{i}" unless Gvm[:instruction]===i
+              raise "Bad instruction: #{i}" unless Bytecode::Grammar[:instruction]===i
             end
           end
         end

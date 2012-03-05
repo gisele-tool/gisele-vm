@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe Gvm, "constant" do
+    describe Bytecode::Grammar, "constant" do
 
       def parse(src)
-        Gvm.parse(src, :root => :constant)
+        Bytecode::Grammar.parse(src, :root => :constant)
       end
 
       it 'parses single constants correctly' do
