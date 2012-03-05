@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source :rubygems
 
 group :runtime do
   gem "sexpr", :git => "git://github.com/blambeau/sexpr.git"
