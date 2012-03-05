@@ -37,12 +37,26 @@ schedat: self                       # [ pc, Prog ]
          save                       # [ puid ]
          pop                        # [ ]
 
-# Puts the current Prog on the stack. Unschedules and saves it.
-sleepit: unschedule
-         save
-         pop
+# Given a Prog on the stack, unschedule and saves it.
+#
+# INPUT:  [ Prog ] (aka `peek`)
+# OUTPUT: [ ]
+# PRE:    - `peek` should be current scheduled
+# POST:   - `peek` is not scheduled (and saved)
+#
+sleep_it: unschedule
+          save
+          pop
+
+# Let the current program fall asleep.
+#
+# INPUT:  [ ]
+# OUTPUT: [ ]  (i.e. no changes)
+# PRE:    - the current program should be progressing
+# POST:   - the current program is unscheduled (program counter unchanged)
+#
 sleep:   self
-         then :sleepit
+         then :sleep_it
 
 # Given an event Hash on the stack. Registers it as waitlist. Unschedule the current prog
 # for continuation at :react.
@@ -58,7 +72,7 @@ listen:  self                       # [ events, Prog ]
          set  :waitlist             # [ Prog ]
          push :react                # [ Prog, :react ]
          set  :pc                   # [ Prog ]
-         then :sleepit              # [ ]
+         then :sleep_it             # [ ]
 
 # Given an event on the stack, get the current Prog, check if it waits for this particular
 # event. If yes, schedule the Prog as specified in its wait list. Otherwise, return to
@@ -97,7 +111,7 @@ fork:    forka                      # [ joinat, [ Prog, ... ] ]
          set :waitlist              # [ joinat, Prog ]
          flip                       # [ Prog, joinat ]
          set :pc                    # [ Prog ]
-         then :sleepit              # [ ]
+         then :sleep_it             # [ ]
 
 # Given a Hash of events, if the waitlist of the current prog is empty, schedule execution
 # at the label associated to the `wake` event. Otherwise simply return asleep.

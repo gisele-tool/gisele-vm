@@ -3,20 +3,25 @@ module Gisele
   class VM
     describe "kernel::sleep" do
 
-      let(:vm){ VM.new 0, Bytecode.kernel }
+      let(:list)  { ProgList.memory                       }
+      let(:vm)    { VM.new @parent, Bytecode.kernel, list }
+      let(:parent){ list.fetch(@parent)                   }
 
       before do
-        @puid = vm.proglist.save Prog.new(:progress => true)
+        @parent = list.save Prog.new(:progress => true)
+        subject
       end
 
-      subject{
-        vm.run(:sleep, [ 12 ])
-        vm.stack
-      }
+      subject do
+        vm.run(:sleep, [ ])
+      end
+
+      after do
+        vm.stack.should be_empty
+      end
 
       it 'sleeps the current Prog' do
-        subject.should eq([12])
-        vm.proglist.fetch(@puid).progress.should be_false
+        parent.progress.should be_false
       end
 
     end
