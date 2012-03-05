@@ -106,8 +106,7 @@ module Gisele
             raise ArgumentError, "Invalid :end state"
           end
           at(:"s#{state.index}") do |b|
-            b.end
-            b.save
+            b.then :notify
           end
         end
 

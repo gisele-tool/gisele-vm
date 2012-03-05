@@ -16,5 +16,4 @@ e4:   push []
 s5:   then :notify
 s6:   push {:wake => :s0}
       then :join
-s7:   end
-      save
+s7:   then :notify
