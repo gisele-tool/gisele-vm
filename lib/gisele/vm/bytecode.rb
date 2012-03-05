@@ -17,6 +17,7 @@ module Gisele
         when Stamina::Automaton then gts(arg)
         when Path
           case arg.extname
+          when ".gis"     then gis(arg)
           when ".gvm"     then gvm(arg)
           when ".gts"     then gts(arg)
           when ".adl"     then adl(arg)

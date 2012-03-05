@@ -1,0 +1,40 @@
+require 'spec_helper'
+module Gisele
+  module Compiling
+    describe Gisele2Gts, "on_task_def" do
+
+      let(:gts)     { Stamina::Automaton.new      }
+      let(:compiler){ Gisele2Gts.new(:gts => gts) }
+
+      before do
+        subject
+      end
+
+      subject do
+        code = <<-GIS.strip
+          task Main
+            Hello
+          end
+        GIS
+        compiler.call(Gisele.sexpr(Gisele.parse(code, :root => :task_def)))
+      end
+
+      it 'returns a pair of states' do
+        subject.should be_a(Array)
+        subject.size.should eq(2)
+        subject.each{|s| s.should be_a(Stamina::Automaton::State) }
+      end
+
+      it 'should generate valid task states' do
+        entry, exit = subject
+        entry[:kind].should eq(:event)
+         exit[:kind].should  eq(:end)
+      end
+
+      it 'should actually generate 9 states' do
+        gts.states.size.should eq(9)
+      end
+
+    end
+  end
+end

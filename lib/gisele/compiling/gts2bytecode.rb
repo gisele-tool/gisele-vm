@@ -101,7 +101,7 @@ module Gisele
       end
 
       def on_end(state)
-        unless state.out_edges.size == 0
+        unless state.out_edges.size <= 1
           raise ArgumentError, "Invalid :end state"
         end
         at(:"s#{state.index}") do |b|
