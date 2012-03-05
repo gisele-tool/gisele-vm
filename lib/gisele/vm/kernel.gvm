@@ -84,9 +84,16 @@ fork:    forka                      # [ joinat, [ Prog, ... ] ]
          set :pc                    # [ Prog ]
          then :sleepit              # [ ]
 
-# Expects an Hash `evt` of events. If the waitlist of the current prog is empty,
-# schedule execution at `wake` in this event map. Otherwise simply returns asleep.
-#                                   # [ {evt...} ]
+# Given a Hash of events, if the waitlist of the current prog is empty, schedule execution
+# at the label associated to the `wake` event. Otherwise simply return asleep.
+#
+# INPUT:  [ {:wake => `wakeat`} ] (aka `events`)
+# OUTPUT: [ ] or [ nil ]
+# PRE:    - `events` must include a :wake key
+#         - `wakeat` must be an existing label
+# POST:   - if the waitlist of the current prog is empty, it is scheduled at `wakeat`
+#         - if ... is not empty, it is unscheduled (program counter unchanged)
+#
 join:    self                       # [ {evt...}, Prog ]
          getr :waitlist             # [ {evt...}, waitlist ]
          push []
