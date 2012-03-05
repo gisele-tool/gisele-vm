@@ -3,32 +3,34 @@ module Gisele
   class VM
     describe "kernel::fork" do
 
-      let(:vm) { VM.new 0, Bytecode.kernel }
+      let(:list)  { ProgList.memory                       }
+      let(:vm)    { VM.new @parent, Bytecode.kernel, list }
+      let(:parent){ list.fetch(@parent)                   }
 
       before do
-        prog  = Prog.new(:pc => :fork)
-        @puid = vm.proglist.save(prog)
+        @parent = list.save Prog.new(:pc => :fork)
+        subject
       end
 
-      subject{
+      subject do
         vm.run(:fork, [ :joinat, [ :fat1, :fat2 ] ])
+      end
+
+      after do
         vm.stack.should be_empty
-        vm.proglist.fetch(@puid)
-      }
+      end
 
       it 'sets the events as waitlist' do
-        subject.waitlist.should eq({1 => true, 2 => true})
+        parent.waitlist.should eq({1 => true, 2 => true})
       end
 
       it 'fork and schedules self and children correctly' do
-        subject
         expected = Relation([
           {:puid => 0, :pc => :joinat, :parent => 0, :progress => false},
           {:puid => 1, :pc => :fat1,   :parent => 0, :progress => true},
           {:puid => 2, :pc => :fat2,   :parent => 0, :progress => true}
         ])
-        rel = vm.proglist.to_relation.project([:puid, :pc, :parent, :progress])
-        rel.should eq(expected)
+        list.to_relation.project([:puid, :pc, :parent, :progress]).should eq(expected)
       end
 
     end

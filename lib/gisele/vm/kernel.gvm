@@ -64,9 +64,17 @@ react:   self                       # [ event, Prog ]
          then :sleep
          then :schedat
 
-# Expects a label `joinat` and an array `forkat` of labels on the stack. Fork one
-# child for each label in `forkat` and save them. Wait for forked children at `at`.
-#                                   # [ joinat, [ forkat... ] ]
+# Fork a list of children at specified locations. Wait for joining them at a label
+# `joinat` specified through the stack as well.
+#
+# INPUT:  [ joinat, [ forkat... ] ]
+# OUTPUT: [ Prog ]  (the current prog)
+# PRE:    - `joinat` is an existing label
+#         - `forkat` is an array of existing labels.
+# POST:   - a child Prog has been created for each label in `forkat`
+#         - those children are all scheduled
+#         - the current Prog waits for them all at `joinat` (not scheduled)
+#
 fork:    forka                      # [ joinat, [ Prog, ... ] ]
          savea                      # [ joinat, [ puid, ... ] ]
          self                       # [ joinat, [ puid, ... ], Prog ]
@@ -74,7 +82,7 @@ fork:    forka                      # [ joinat, [ Prog, ... ] ]
          set :waitlist              # [ joinat, Prog ]
          flip                       # [ Prog, joinat ]
          set :pc                    # [ Prog ]
-         then :sleepit
+         then :sleepit              # [ ]
 
 # Expects an Hash `evt` of events. If the waitlist of the current prog is empty,
 # schedule execution at `wake` in this event map. Otherwise simply returns asleep.
