@@ -3,29 +3,53 @@ module Gisele
   class VM
     describe "kernel::notify" do
 
-      let(:vm) { VM.new 1, Bytecode.kernel }
+      let(:list)  { ProgList.memory                      }
+      let(:vm)    { VM.new @child, Bytecode.kernel, list }
+      let(:parent){ list.fetch(@parent)                  }
+      let(:child) { list.fetch(@child)                   }
 
-      before do
-        @parent = vm.proglist.save Prog.new(:waitlist => {1 => true, 2 => true})
-        @child  = vm.proglist.save Prog.new(:parent => @parent)
-      end
-
-      subject{
+      subject do
         vm.run(:notify, [ ])
-        vm.proglist.fetch(@child)
-      }
-
-      it 'ends the child' do
-        subject.pc.should eq(-1)
-        subject.progress.should be_false
       end
 
-      it 'resumes the parent on a reduced waitlist' do
-        subject
-        parent = vm.proglist.fetch(@parent)
-        parent.waitlist.should eq(2 => true)
-        parent.progress.should be_true
+      after do
+        vm.stack.should be_empty
       end
+
+      context 'when the child has a parent' do
+
+        before do
+          @parent = list.save Prog.new(:waitlist => {1 => true, 2 => true})
+          @child  = list.save Prog.new(:parent => @parent)
+          subject
+        end
+
+        it 'ends the child' do
+          child.pc.should eq(-1)
+          child.progress.should be_false
+        end
+
+        it 'resumes the parent on a reduced waitlist' do
+          parent.waitlist.should eq(2 => true)
+          parent.progress.should be_true
+        end
+
+      end # with a parent
+
+      context 'when the child has no parent' do
+
+        before do
+          @child = list.save Prog.new
+          subject
+        end
+
+        it 'ends the child' do
+          child.pc.should eq(-1)
+          child.waitlist.should eq({})
+          child.progress.should be_false
+        end
+
+      end # withoutb a parent
 
     end
   end
