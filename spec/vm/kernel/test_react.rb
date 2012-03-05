@@ -3,27 +3,31 @@ module Gisele
   class VM
     describe "kernel::react" do
 
-      let(:vm)   { VM.new 0, Bytecode.kernel          }
-      let(:wlist){ {:ping => :sPing, :pong => :sPong} }
+      let(:list)  { ProgList.memory                       }
+      let(:vm)    { VM.new @parent, Bytecode.kernel, list }
+      let(:parent){ list.fetch(@parent)                   }
+      let(:wlist) { {:ping => :sPing, :pong => :sPong}    }
 
       before do
-        prog  = Prog.new(:pc => :react, :waitlist => wlist)
-        @puid = vm.proglist.save(prog)
+        @parent = list.save Prog.new(:pc => :react, :waitlist => wlist)
+        subject
       end
 
-      subject{
+      subject do
         vm.run(:react, [ event ])
-        vm.proglist.fetch(@puid)
-      }
+      end
 
       context 'when a recognized event' do
         let(:event){ :ping }
 
-        it 'schedules the current Prog correctly' do
-          subject.pc.should eq(:sPing)
-          subject.progress.should be_true
-          subject.waitlist.should eq({})
+        after do
           vm.stack.should be_empty
+        end
+
+        it 'schedules the current Prog correctly' do
+          parent.pc.should eq(:sPing)
+          parent.progress.should be_true
+          parent.waitlist.should eq({})
         end
       end
 
@@ -31,10 +35,10 @@ module Gisele
         let(:event){ :pang }
 
         it 'sleeps the current Prog' do
-          subject.pc.should eq(:react)
-          subject.progress.should be_false
-          subject.waitlist.should eq(wlist)
-          vm.stack.should eq([nil])
+          parent.pc.should eq(:react)
+          parent.progress.should be_false
+          parent.waitlist.should eq(wlist)
+          pending{ vm.stack.should be_empty }
         end
       end
 

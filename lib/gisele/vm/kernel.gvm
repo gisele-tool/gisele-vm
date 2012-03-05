@@ -53,16 +53,24 @@ listen:  self                       # [ events, Prog ]
          set  :pc                   # [ Prog ]
          then :sleepit
 
-# Given an event on the stack. Get the current Prog. Check if it waits for this
-# particular event. If yes, schedule the Prog as specified in its wait list.
-# Otherwise, return to sleep.
+# Given an event on the stack, get the current Prog, check if it waits for this particular
+# event. If yes, schedule the Prog as specified in its wait list. Otherwise, return to
+# sleep.
+#
+# INPUT:  [ `event` ]
+# OUTPUT: [ ] or [ nil ]
+# PRE:    - the current Prog should be waiting for events (in its waitlist)
+# POST:   - if `event` is waited for, the current Prog is scheduled at the corresponding
+#           location.
+#         - otherwise, the current Prog falls alsleep (program counter unchanged)
+#
 react:   self                       # [ event, Prog ]
          getr :waitlist             # [ event, waitlist ]
          flip                       # [ waitlist, event ]
          getr                       # [ pc/nil ]
-         ifenil                     # ...
-         then :sleep
-         then :schedat
+         ifenil                     #
+         then :sleep                # [ nil ]
+         then :schedat              # [ ]
 
 # Fork a list of children at specified locations. Wait for joining them at a label
 # `joinat` specified through the stack as well.
