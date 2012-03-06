@@ -50,11 +50,11 @@ module Gisele
         exit  = add_state(:join)
         connect(entry, exit, :"(wait)")
 
-        sexpr.sexpr_body.each do |child|
+        sexpr.sexpr_body.each_with_index do |child,idx|
           c_entry, c_exit = apply(child)
           c_end = add_state(:end)
-          connect(entry,  c_entry, :"(forked)")
-          connect(c_exit, c_end)
+          connect(entry,  c_entry, :"(forked##{idx})")
+          connect(c_exit, c_end, :joined)
           connect(c_end, exit,  :"(notify)")
         end
 

@@ -1,13 +1,14 @@
 require 'spec_helper'
 module Gisele
   module Compiling
-    describe Gisele2Gts, "on_task_def" do
+    describe Gisele2Gts, "on_seq_def" do
 
       let(:compiler){ Gisele2Gts.new }
       let(:gts)     { compiler.gts   }
 
       before do
         subject
+        gts.ith_state(0).initial!
       end
 
       subject do
@@ -26,32 +27,46 @@ module Gisele
         subject.each{|s| s.should be_a(Stamina::Automaton::State) }
       end
 
-      it 'generates valid task states' do
-        entry, exit = subject
-        entry[:kind].should eq(:nop)
-         exit[:kind].should eq(:nop)
-      end
+      let :expected do
+        VM::Gts.new do
+          add_state :kind => :fork
+          add_state :kind => :event
+          add_state :kind => :listen, :accepting => true
+          add_state :kind => :event
+          add_state :kind => :end,    :accepting => true
+          add_state :kind => :join,   :accepting => true
+          connect 0, 1, :symbol => :"(forked)"
+          connect 1, 2, :symbol => :start, :event_args => [ "Ping" ]
+          connect 2, 3, :symbol => :ended
+          connect 3, 4, :symbol => :end,   :event_args => [ "Ping" ]
+          connect 4, 5, :symbol => :"(notify)"
+          connect 0, 5, :symbol => :"(wait)"
 
-      it 'parses a trace that waits twice' do
-        trace = [:"(wait)", :"(wait)"]
-        gts.parse?(trace, 0).should be_true
-      end
+          add_state :kind => :fork
+          add_state :kind => :event
+          add_state :kind => :listen, :accepting => true
+          add_state :kind => :event
+          add_state :kind => :end,    :accepting => true
+          add_state :kind => :join,   :accepting => true
+          connect 6, 7, :symbol => :"(forked)"
+          connect 7, 8, :symbol => :start, :event_args => [ "Pong" ]
+          connect 8, 9, :symbol => :ended
+          connect 9, 10, :symbol => :end,   :event_args => [ "Pong" ]
+          connect 10, 11, :symbol => :"(notify)"
+          connect 6, 11, :symbol => :"(wait)"
 
-      it 'waits in wait states' do
-        gts.accept?([:"(wait)"], 0).should be_true
-        gts.accept?([:"(wait)", :"(wait)"], 0).should be_true
-      end
-
-      it 'parses a trace that forks twice' do
-        trace = [:"(forked)", :"start", :ended, :"end", :"(notify)"]
-        trace += trace
-        gts.parse?(trace, 0).should be_true
-      end
-
-      it 'adds event arguments on :start and :end' do
-        gts.edges.select{|s| [:start, :end].include?(s.symbol)}.each do |e|
-          e[:event_args].should be_a(Array)
+          add_state :kind => :nop, :initial => true
+          add_state :kind => :nop
+          connect(12, 0,  :symbol => nil)
+          connect(11, 13, :symbol => nil)
+          connect(5, 6,   :symbol => nil)
         end
+      end
+
+      it 'generates an equivalent transition system' do
+        # (Path.pwd/'examples/gts.dot').write gts.to_dot
+        # (Path.pwd/'examples/expected.dot').write expected.to_dot
+        gts.bytecode_equivalent!(expected).should be_true
       end
 
     end

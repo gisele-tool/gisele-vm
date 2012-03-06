@@ -21,6 +21,30 @@ module Gisele
         super(&dotter)
       end
 
+      def bytecode_equivalent!(other)
+        raise "Not DFA equivalent" unless equivalent?(other, nil, :equiv)
+        same_state_data = lambda{|mine, other|
+          unless mine.data.dup.tap{|d| d.delete(:equiv)} == other.data
+            raise "#{raw_data} != #{other.data} (#{mine.index}, #{other.index})"
+          end
+          true
+        }
+        same_edge_data = lambda{|mine,other|
+          m_edges =  mine.out_edges.sort{|e1,e2| e1.target[:equiv] <=> e2.target[:equiv] }
+          o_edges = other.out_edges.sort{|e1,e2| e1.target.index   <=> e2.target.index   }
+          m_edges.zip(o_edges) do |e1,e2|
+            unless e1.data == e2.data
+              raise "#{e1.data.inspect} != #{e2.data.inspect} (#{e1.index}, #{e2.index})"
+            end
+          end
+          true
+        }
+        states.all? do |s|
+          equiv = other.ith_state(s[:equiv])
+          same_state_data[s, equiv] && same_edge_data[s, equiv]
+        end
+      end
+
     private
 
       def state_label(state)
