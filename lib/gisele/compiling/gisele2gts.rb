@@ -3,22 +3,29 @@ module Gisele
     class Gisele2Gts < Sexpr::Rewriter
       grammar Language
 
+      def self.compile(sexpr)
+        compiler = new
+        compiler.call(sexpr)
+        compiler.gts
+      end
+
       # if/elsif/else -> guarded commands
       use Language::IfToCase
 
-      def gts
-        options[:gts] ||= VM::Gts.new
-      end
-
       def on_unit_def(sexpr)
-        sexpr.
-          sexpr_body.
-          select{|n| n.first == :task_def}.
-          map{|taskdef| apply(taskdef) }
+        entry = add_state(:event, :initial => true)
+        exit  = add_state(:end)
+        tasks = sexpr.sexpr_body.select{|n| n.first == :task_def}
+        tasks.each do |task|
+          c_entry, c_exit = apply(task)
+          connect(entry, c_entry, task[1].to_sym)
+          connect(c_exit, exit)
+        end
+        [entry, exit]
       end
 
       def on_task_def(sexpr)
-        entry  = add_state(:event, :initial => true)
+        entry  = add_state(:event)
         exit   = add_state(:end)
         endevt = add_state(:event)
 
@@ -71,6 +78,10 @@ module Gisele
         connect(c_exit, exit, :"(notify)")
 
         [entry, exit]
+      end
+
+      def gts
+        options[:gts] ||= VM::Gts.new
       end
 
     private
