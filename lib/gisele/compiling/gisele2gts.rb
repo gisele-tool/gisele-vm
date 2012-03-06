@@ -17,9 +17,9 @@ module Gisele
         entry_and_exit(:task) do |entry, exit|
           entry.initial!
           endevt = add_state(:event)
-          connect(endevt, exit, :symbol => :"#{sexpr[1]}_end")
+          connect(endevt, exit, :symbol => :end)
           apply(sexpr.last).tap do |c_entry, c_exit|
-            connect(entry, c_entry, :symbol => :"#{sexpr[1]}_start")
+            connect(entry, c_entry, :symbol => :start)
             connect(c_exit, endevt)
           end
         end
@@ -52,8 +52,8 @@ module Gisele
       def on_task_call_st(sexpr)
         entry_and_exit(:forkjoin) do |entry,exit|
           task_nodes(sexpr) do |c_entry,c_exit|
-            connect(entry, c_entry)
-            connect(c_exit, exit)
+            connect(entry, c_entry, :symbol => :forked)
+            connect(c_exit, exit,   :symbol => :notify)
           end
         end
       end
@@ -62,11 +62,11 @@ module Gisele
 
       def task_nodes(sexpr)
         entry_and_exit(:task) do |entry,exit|
-          listen = add_state(:listen)
+          listen = add_state(:listen, :accepting => true)
           endevt = add_state(:event)
-          connect(entry, listen,  :symbol => :"#{sexpr.last}_start")
+          connect(entry, listen,  :symbol => :start)
           connect(listen, endevt, :symbol => :ended)
-          connect(endevt, exit,   :symbol => :"#{sexpr.last}_end")
+          connect(endevt, exit,   :symbol => :end)
           yield(entry, exit) if block_given?
         end
       end
@@ -75,8 +75,8 @@ module Gisele
         options[:gts] ||= Stamina::Automaton.new
       end
 
-      def add_state(kind = :nop)
-        gts.add_state(:kind => kind)
+      def add_state(kind = :nop, attrs = {})
+        gts.add_state({:kind => kind}.merge(attrs))
       end
 
       def entry_and_exit(kind = :nop)
@@ -97,6 +97,7 @@ module Gisele
           when :forkjoin
             entry[:kind] = :fork
              exit[:kind] = :join
+             exit[:accepting] = true
             entry[:join] = exit.index
           else
             raise ArgumentError, "Unknown state kind: #{kind}"

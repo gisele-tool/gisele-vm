@@ -6,6 +6,10 @@ module Gisele
       let(:gts)     { Stamina::Automaton.new      }
       let(:compiler){ Gisele2Gts.new(:gts => gts) }
 
+      def s(str)
+        str.split(" ").map(&:to_sym)
+      end
+
       before do
         subject
       end
@@ -29,6 +33,12 @@ module Gisele
 
       it 'should actually generate 6 states' do
         gts.states.size.should eq(6)
+      end
+
+      it 'accepts typical traces' do
+        gts.parse?(s("forked start ended end notify"), 0).should be_true
+        gts.accept?(s("forked start"), 0).should be_true
+        gts.accept?(s("forked start ended end notify"), 0).should be_true
       end
 
     end
