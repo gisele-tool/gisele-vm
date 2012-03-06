@@ -1,5 +1,4 @@
 require_relative 'bytecode/grammar'
-require_relative 'bytecode/source'
 require_relative 'bytecode/builder'
 require_relative 'bytecode/printer'
 module Gisele
@@ -13,28 +12,15 @@ module Gisele
       def self.coerce(arg)
         case arg
         when Bytecode           then arg
-        when String             then gvm(arg)
-        when Stamina::Automaton then gts(arg)
-        when Path
-          case arg.extname
-          when ".gis"     then gis(arg)
-          when ".gvm"     then gvm(arg)
-          when ".gts"     then gts(arg)
-          when ".adl"     then adl(arg)
-          end
+        when String, Path       then parse(arg)
         when Grammar            then Bytecode.new(arg)
         else
-          raise ArgumentError
+          raise ArgumentError, "Invalid bytecode source: #{arg}"
         end
-      rescue Stamina::StaminaError, ArgumentError => ex
-        msg = "Invalid bytecode source: #{arg}"
-        msg << " (#{ex.message})" if ex.message
-        raise InvalidBytecodeError, msg
       end
-      extend Source
 
       def self.parse(source)
-        gvm(source)
+        Bytecode.new(Grammar.sexpr(source))
       end
 
       def self.kernel

@@ -15,24 +15,12 @@ module Gisele
         coerce(Bytecode.new [:gvm])
       end
 
-      it 'coerces a .gts Automaton' do
-        coerce(Kernel.eval (fixtures/'ts.gts').read)
-      end
-
       it 'coerces a String' do
         coerce("s0: push 12")
       end
 
       it 'coerces a .gvm Path' do
         coerce(fixtures/'ts.gvm')
-      end
-
-      it 'coerces a .adl Path' do
-        coerce(fixtures/'ts.adl')
-      end
-
-      it 'coerces a .gts Path' do
-        coerce(fixtures/'ts.gts')
       end
 
       it 'coerces a valid parse result' do
@@ -42,10 +30,10 @@ module Gisele
       it 'raises an InvalidBytecodeError when not recognized' do
         lambda{
           coerce(self)
-        }.should raise_error(InvalidBytecodeError)
+        }.should raise_error(ArgumentError)
         lambda{
           coerce([:gvm, [:block, :s0, [:puts]]])
-        }.should raise_error(InvalidBytecodeError)
+        }.should raise_error(ArgumentError)
       end
 
     end

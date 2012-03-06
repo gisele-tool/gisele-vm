@@ -46,8 +46,8 @@ module Gisele
 
         case @mode
         when :interactive then interactive(file)
-        when :compile     then compile(file)
-        when :gts         then gts(file)
+        when :compile     then puts compile(file)
+        when :gts         then puts gts(file).to_dot
         else
           puts "You didn't specify a mode."
         end
@@ -59,11 +59,13 @@ module Gisele
         sexpr    = Gisele.sexpr(file)
         compiler = Compiling::Gisele2Gts.new
         compiler.call(sexpr)
-        puts compiler.gts.to_dot
+        compiler.gts
       end
 
       def compile(file)
-        puts Bytecode.coerce(file)
+        gts = gts(file)
+        compiler = Compiling::Gts2Bytecode.new
+        puts compiler.call(gts)
       end
 
       def interactive(file)
