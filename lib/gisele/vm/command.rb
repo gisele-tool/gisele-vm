@@ -18,6 +18,9 @@ module Gisele
         opt.on('-c', '--compile', 'Compile the input file') do
           @mode = :compile
         end
+        opt.on('-g', '--gts', 'Outputs a gisele transition system') do
+          @mode = :gts
+        end
         opt.on('-i', '--interactive', 'Start the interactive mode') do
           @mode = :interactive
         end
@@ -44,12 +47,20 @@ module Gisele
         case @mode
         when :interactive then interactive(file)
         when :compile     then compile(file)
+        when :gts         then gts(file)
         else
           puts "You didn't specify a mode."
         end
       end
 
     private
+
+      def gts(file)
+        sexpr = Gisele.sexpr(file)
+        gts   = Stamina::Automaton.new
+        Compiling::Gisele2Gts.new(:gts => gts).call(sexpr)
+        puts gts.to_dot
+      end
 
       def compile(file)
         puts Bytecode.coerce(file)
