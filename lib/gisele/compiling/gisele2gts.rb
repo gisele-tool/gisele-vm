@@ -29,16 +29,22 @@ module Gisele
       end
 
       def on_task_def(sexpr)
-        entry  = add_state(:event)
-        exit   = add_state(:end)
-        endevt = add_state(:event)
+        registry[sexpr[1]] ||= begin
+          entry  = add_state(:event)
+          exit   = add_state(:end)
+          endevt = add_state(:event)
 
-        c_entry, c_exit = apply(sexpr.last)
-        connect(entry, c_entry, start_event(sexpr))
-        connect(c_exit, endevt)
-        connect(endevt, exit, end_event(sexpr))
+          sexpr[2...-1].each do |s|
+            apply(s)
+          end
 
-        [entry, exit]
+          c_entry, c_exit = apply(sexpr.last)
+          connect(entry, c_entry, start_event(sexpr))
+          connect(c_exit, endevt)
+          connect(endevt, exit, end_event(sexpr))
+
+          [entry, exit]
+        end
       end
 
       def on_seq_st(sexpr)
@@ -90,17 +96,21 @@ module Gisele
 
     private
 
+      def registry
+        @registry ||= {}
+      end
+
       def task_nodes(sexpr)
-        entry  = add_state(:event)
-        listen = add_state(:listen)
-        endevt = add_state(:event)
-        exit   = add_state(:end)
-
-        connect(entry, listen, start_event(sexpr))
-        connect(listen, endevt, :ended)
-        connect(endevt, exit, end_event(sexpr))
-
-        [ entry, exit ]
+        registry[sexpr.last] ||= begin
+          entry  = add_state(:event)
+          listen = add_state(:listen)
+          endevt = add_state(:event)
+          exit   = add_state(:end)
+          connect(entry, listen, start_event(sexpr))
+          connect(listen, endevt, :ended)
+          connect(endevt, exit, end_event(sexpr))
+          [ entry, exit ]
+        end
       end
 
       def start_event(sexpr)
