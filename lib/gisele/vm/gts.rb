@@ -8,7 +8,7 @@ module Gisele
             when :automaton
               { :rankdir => "LR" }
             when :state
-              { :shape     => (elm.accepting? ? "doublecircle" : "circle"),
+              { :shape     => state_shape(elm),
                 :size      => "fixed",
                 :width     => "0.5",
                 :style     => "filled",
@@ -21,6 +21,15 @@ module Gisele
       end
 
     private
+
+      def state_shape(state)
+        case state[:kind]
+        when :fork then "octagon"
+        when :join then "doubleoctagon"
+        else
+          state.accepting? ? "doublecircle" : "circle"
+        end
+      end
 
       def edge_label(edge)
         if args=edge[:event_args]
