@@ -56,10 +56,10 @@ module Gisele
     private
 
       def gts(file)
-        sexpr = Gisele.sexpr(file)
-        gts   = Stamina::Automaton.new
-        Compiling::Gisele2Gts.new(:gts => gts).call(sexpr)
-        puts gts.to_dot
+        sexpr    = Gisele.sexpr(file)
+        compiler = Compiling::Gisele2Gts.new
+        compiler.call(sexpr)
+        puts compiler.gts.to_dot
       end
 
       def compile(file)

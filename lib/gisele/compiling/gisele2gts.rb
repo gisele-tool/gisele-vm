@@ -6,6 +6,10 @@ module Gisele
       # if/elsif/else -> guarded commands
       use Language::IfToCase
 
+      def gts
+        options[:gts] ||= VM::Gts.new
+      end
+
       def on_unit_def(sexpr)
         sexpr.
           sexpr_body.
@@ -69,10 +73,6 @@ module Gisele
           connect(endevt, exit,   :symbol => :end)
           yield(entry, exit) if block_given?
         end
-      end
-
-      def gts
-        options[:gts] ||= Stamina::Automaton.new
       end
 
       def add_state(kind = :nop, attrs = {})

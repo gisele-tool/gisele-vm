@@ -3,8 +3,8 @@ module Gisele
   module Compiling
     describe Gisele2Gts, "on_task_def" do
 
-      let(:gts)     { Stamina::Automaton.new      }
-      let(:compiler){ Gisele2Gts.new(:gts => gts) }
+      let(:compiler){ Gisele2Gts.new }
+      let(:gts)     { compiler.gts   }
 
       before do
         subject
@@ -25,14 +25,15 @@ module Gisele
         subject.each{|s| s.should be_a(Stamina::Automaton::State) }
       end
 
-      it 'should generate valid task states' do
+      it 'generates valid task states' do
         entry, exit = subject
         entry[:kind].should eq(:event)
          exit[:kind].should  eq(:end)
       end
 
-      it 'should actually generate 9 states' do
-        gts.states.size.should eq(9)
+      it 'parses typical traces' do
+        trace = [:start, :forked, :start, :ended, :end, :notify, :end]
+        gts.parse?(trace).should be_true
       end
 
     end
