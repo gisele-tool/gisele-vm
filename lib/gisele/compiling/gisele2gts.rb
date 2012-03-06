@@ -41,8 +41,10 @@ module Gisele
         entry_and_exit(:forkjoin) do |entry, exit|
           sexpr.sexpr_body.each do |child|
             c_entry, c_exit = apply(child)
+            c_end = add_state(:end)
             connect(entry,  c_entry)
-            connect(c_exit, exit)
+            connect(c_exit, c_end)
+            connect(c_end, exit)
           end
         end
       end
