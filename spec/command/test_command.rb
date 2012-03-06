@@ -12,7 +12,9 @@ module Gisele
 
         out, err = capture_io do
           begin
-            VM::Command.run(argv)
+            Dir.chdir Path.dir/'../fixtures' do
+              VM::Command.run(argv)
+            end
           rescue SystemExit
             puts "SystemExit"
           end

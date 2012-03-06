@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/blambeau/alf.git
-  revision: 39dbd2943005460d65056b3e5d972ce29d7cd527
+  revision: db41353209bd9e21d246fd6af91db0dc660efca8
   specs:
     alf (0.12.0)
       backports (~> 2.3.0)
@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/blambeau/stamina.git
-  revision: 1984805f9de64c88160d2335818dcd6e5ac9aec5
+  revision: 337ea1ac876a720b0e177c501b9b31bb59f0d8af
   specs:
     stamina-core (0.5.3)
       quickl (~> 0.4.3)

@@ -18,7 +18,7 @@ module Gisele
               { :label => edge_label(elm) }
           end
         }
-        super(&dotter)
+        super(false, &dotter)
       end
 
       def bytecode_equivalent!(other)

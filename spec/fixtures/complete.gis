@@ -1,0 +1,13 @@
+task Main
+  par
+    Sort
+    seq
+      Hello
+      par
+        Ping
+        Pong
+      end
+      Goodbye
+    end
+  end
+end
