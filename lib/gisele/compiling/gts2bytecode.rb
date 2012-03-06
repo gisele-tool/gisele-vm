@@ -50,12 +50,12 @@ module Gisele
           raise ArgumentError, "Invalid :event state"
         end
         edge = state.out_edges.first
-        at("s#{state.index}") do |b|
+        at(:"s#{state.index}") do |b|
           b.then :"s#{edge.target.index}"
           b.then :"e#{edge.index}"
         end
         at(:"e#{edge.index}") do |b|
-          b.push  []
+          b.push  edge[:event_args] || []
           b.event edge.symbol
         end
       end
@@ -72,9 +72,14 @@ module Gisele
       end
 
       def on_fork(state)
-        targets = state.out_adjacent_states
+        join_edges = state.out_edges.select{|e| e.symbol == :"(wait)"}
+        unless join_edges.size == 1
+          raise ArgumentError, "Invalid :fork state"
+        end
+        join_state = join_edges.first.target
+        targets = state.out_adjacent_states - [ join_state ]
         at(:"s#{state.index}") do |b|
-          b.push :"s#{state[:join]}"
+          b.push :"s#{join_state.index}"
           b.push targets.map{|t| :"s#{t.index}"}
           b.then :fork
         end
@@ -88,15 +93,6 @@ module Gisele
         at(:"s#{state.index}") do |b|
           b.push :wake => :"s#{target.index}"
           b.then :join
-        end
-      end
-
-      def on_notify(state)
-        unless state.out_edges.size == 1
-          raise ArgumentError, "Invalid :notify state"
-        end
-        at(:"s#{state.index}") do |b|
-          b.then :notify
         end
       end
 
