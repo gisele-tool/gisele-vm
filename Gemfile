@@ -1,6 +1,7 @@
 source :rubygems
 
 group :runtime do
+  gem "stamina-core", :git => "git://github.com/blambeau/stamina.git"
   gem "sexpr", :git => "git://github.com/blambeau/sexpr.git"
   gem "gisele", "~> 0.5.0"
   gem "alf", :git => "git://github.com/blambeau/alf.git"
