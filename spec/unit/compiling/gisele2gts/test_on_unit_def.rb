@@ -19,7 +19,7 @@ module Gisele
         ping = Gisele2Gts.compile("task Ping Helli end", :root => :task_def)
         pong = Gisele2Gts.compile("task Pong Hello end", :root => :task_def)
         VM::Gts.new do
-          s0 = add_state :kind => :event, :initial => true
+          s0 = add_state :kind => :listen, :initial => true, :accepting => true
           s1 = add_state :kind => :end, :accepting => true
           ping.dup(self) do |source,target|
             connect(s0, target, :symbol => :Ping) if source.in_edges.empty?

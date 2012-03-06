@@ -1,8 +1,6 @@
 main: then :s0
-s0:   then :s2
-      then :e51
-e51:  push []
-      event :Main
+s0:   push {:Main=>:s2}
+      then :listen
 s1:   then :notify
 s2:   then :s5
       then :e48

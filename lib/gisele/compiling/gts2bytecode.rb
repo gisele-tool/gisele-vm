@@ -35,7 +35,7 @@ module Gisele
 
       def on_event(state)
         unless state.out_edges.size == 1
-          raise ArgumentError, "Invalid :event state"
+          raise ArgumentError, "Invalid :event state #{state.inspect}"
         end
         edge = state.out_edges.first
         at(state) do |b|
