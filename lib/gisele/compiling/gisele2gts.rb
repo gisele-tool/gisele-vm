@@ -105,33 +105,6 @@ module Gisele
         gts.add_state(attrs)
       end
 
-      def entry_and_exit(kind = :nop)
-        gts.add_n_states(2).tap do |entry, exit|
-          case kind
-          when :nop
-            entry[:kind] = :nop
-            exit[:kind]  = :nop
-          when :task
-            entry[:kind] = :event
-             exit[:kind] = :end
-          when :event
-            entry[:kind] = :event
-            exit[:kind]  = :event
-          when :startend
-            entry[:kind] = :nop
-             exit[:kind] = :end
-          when :forkjoin
-            entry[:kind] = :fork
-             exit[:kind] = :join
-             exit[:accepting] = true
-            entry[:join] = exit.index
-          else
-            raise ArgumentError, "Unknown state kind: #{kind}"
-          end
-          yield(entry, exit) if block_given?
-        end
-      end
-
       def connect(source, target, attrs={})
         attrs = {:symbol => attrs} if Symbol===attrs
         gts.connect(source, target, {:symbol => nil}.merge(attrs))
