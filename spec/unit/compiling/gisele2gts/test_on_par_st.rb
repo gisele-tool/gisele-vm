@@ -3,12 +3,8 @@ module Gisele
   module Compiling
     describe Gisele2Gts, "on_par_st" do
 
-      let(:compiler){ Gisele2Gts.new }
-      let(:gts)     { compiler.gts   }
-
       before do
-        subject
-        gts.ith_state(0).initial!
+        subject.ith_state(0).initial!
       end
 
       subject do
@@ -18,62 +14,36 @@ module Gisele
             Pong
           end
         GIS
-        compiler.call(Gisele.sexpr(Gisele.parse(code, :root => :par_st)))
-      end
-
-      it 'returns a pair of states' do
-        subject.should be_a(Array)
-        subject.size.should eq(2)
-        subject.each{|s| s.should be_a(Stamina::Automaton::State) }
+        Gisele2Gts.compile code.strip, :root => :par_st
       end
 
       let :expected do
+        ping = Gisele2Gts.compile("Ping", :root => :task_call_st)
+        pong = Gisele2Gts.compile("Pong", :root => :task_call_st)
         VM::Gts.new do
-          add_state :kind => :fork
-          add_state :kind => :event
-          add_state :kind => :listen, :accepting => true
-          add_state :kind => :event
-          add_state :kind => :end,    :accepting => true
-          add_state :kind => :join,   :accepting => true
-          connect 0, 1, :symbol => :"(forked)"
-          connect 1, 2, :symbol => :start, :event_args => [ "Ping" ]
-          connect 2, 3, :symbol => :ended
-          connect 3, 4, :symbol => :end,   :event_args => [ "Ping" ]
-          connect 4, 5, :symbol => :"(notify)"
-          connect 0, 5, :symbol => :"(wait)"
+          s0 = add_state :kind => :fork, :initial => true
+          s1 = add_state :kind => :end, :accepting => true
+          s2 = add_state :kind => :end, :accepting => true
+          s3 = add_state :kind => :join, :accepting => true
+          connect(s0, s3, :symbol => :"(wait)")
 
-          add_state :kind => :fork
-          add_state :kind => :event
-          add_state :kind => :listen, :accepting => true
-          add_state :kind => :event
-          add_state :kind => :end,    :accepting => true
-          add_state :kind => :join,   :accepting => true
-          connect 6, 7, :symbol => :"(forked)"
-          connect 7, 8, :symbol => :start, :event_args => [ "Pong" ]
-          connect 8, 9, :symbol => :ended
-          connect 9, 10, :symbol => :end,   :event_args => [ "Pong" ]
-          connect 10, 11, :symbol => :"(notify)"
-          connect 6, 11, :symbol => :"(wait)"
-
-          add_state :kind => :fork, :initial => true   # 12
-          add_state :kind => :end, :accepting => true  # 13
-          add_state :kind => :end, :accepting => true  # 14
-          add_state :kind => :join, :accepting => true # 15
-
-          connect(12, 15,  :symbol => :"(wait)")
-          connect(12, 0,   :symbol => :"(forked#0)")
-          connect(12, 6,   :symbol => :"(forked#1)")
-          connect(11, 13,  :symbol => :joined)
-          connect(5,  14,  :symbol => :joined)
-          connect(13, 15,  :symbol => :"(notify)")
-          connect(14, 15,  :symbol => :"(notify)")
+          ping.dup(self) do |source,target|
+            connect(s0, target, :symbol => :"(forked#0)") if source.in_edges.empty?
+            connect(target, s1, :symbol => :"(joined)")   if source.out_edges.empty?
+          end
+          pong.dup(self) do |source,target|
+            connect(s0, target, :symbol => :"(forked#1)") if source.in_edges.empty?
+            connect(target, s2, :symbol => :"(joined)")   if source.out_edges.empty?
+          end
+          connect(s1, s3, :symbol => :"(notify)")
+          connect(s2, s3, :symbol => :"(notify)")
         end
       end
 
       it 'generates an equivalent transition system' do
-        # (Path.pwd/'examples/gts.dot').write gts.to_dot
+        # (Path.pwd/'examples/gts.dot').write subject.to_dot
         # (Path.pwd/'examples/expected.dot').write expected.to_dot
-        gts.bytecode_equivalent!(expected).should be_true
+        subject.bytecode_equivalent!(expected).should be_true
       end
 
     end

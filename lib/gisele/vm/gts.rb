@@ -64,12 +64,8 @@ module Gisele
       end
 
       def state_shape(state)
-        case state[:kind]
-        when :fork then "octagon"
-        when :join then "doubleoctagon"
-        else
-          state.accepting? ? "doublecircle" : "circle"
-        end
+        s = [:fork, :join].include?(state[:kind]) ? "octagon" : "circle"
+        state.accepting? ? "double#{s}" : s
       end
 
       def edge_label(edge)

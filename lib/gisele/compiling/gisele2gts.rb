@@ -3,10 +3,14 @@ module Gisele
     class Gisele2Gts < Sexpr::Rewriter
       grammar Language
 
-      def self.compile(sexpr)
-        compiler = new
-        compiler.call(sexpr)
-        compiler.gts
+      def self.compile(arg, parse_options = {})
+        case arg
+        when String, Path then compile(Gisele.sexpr(Gisele.parse(arg, parse_options)))
+        else
+          compiler = new
+          compiler.call(arg)
+          compiler.gts
+        end
       end
 
       # if/elsif/else -> guarded commands
@@ -61,7 +65,7 @@ module Gisele
           c_entry, c_exit = apply(child)
           c_end = add_state(:end)
           connect(entry,  c_entry, :"(forked##{idx})")
-          connect(c_exit, c_end, :joined)
+          connect(c_exit, c_end, :"(joined)")
           connect(c_end, exit,  :"(notify)")
         end
 

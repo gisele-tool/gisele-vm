@@ -3,12 +3,9 @@ module Gisele
   module Compiling
     describe Gisele2Gts, "on_task_def" do
 
-      let(:compiler){ Gisele2Gts.new }
-      let(:gts)     { compiler.gts   }
-
       before do
         subject
-        gts.ith_state(0).initial!
+        subject.ith_state(0).initial!
       end
 
       subject do
@@ -17,13 +14,7 @@ module Gisele
             Hello
           end
         GIS
-        compiler.call(Gisele.sexpr(Gisele.parse(code, :root => :task_def)))
-      end
-
-      it 'returns a pair of states' do
-        subject.should be_a(Array)
-        subject.size.should eq(2)
-        subject.each{|s| s.should be_a(Stamina::Automaton::State) }
+        Gisele2Gts.compile(code, :root => :task_def)
       end
 
       let :expected do
@@ -50,7 +41,7 @@ module Gisele
       end
 
       it 'generates an equivalent transition system' do
-        gts.bytecode_equivalent!(expected).should be_true
+        subject.bytecode_equivalent!(expected).should be_true
       end
 
     end
