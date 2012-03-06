@@ -36,6 +36,12 @@ module Gisele
         gts.parse?(trace).should be_true
       end
 
+      it 'adds event arguments on :start and :end' do
+        gts.edges.select{|s| [:start, :end].include?(s.symbol)}.each do |e|
+          e[:event_args].should be_a(Array)
+        end
+      end
+
     end
   end
 end

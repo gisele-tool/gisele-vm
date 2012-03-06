@@ -21,11 +21,11 @@ module Gisele
         entry_and_exit(:task) do |entry, exit|
           entry.initial!
           endevt = add_state(:event)
-          connect(endevt, exit, :symbol => :end)
           apply(sexpr.last).tap do |c_entry, c_exit|
-            connect(entry, c_entry, :symbol => :start)
+            connect(entry, c_entry, start_event(sexpr))
             connect(c_exit, endevt)
           end
+          connect(endevt, exit, end_event(sexpr))
         end
       end
 
@@ -68,11 +68,19 @@ module Gisele
         entry_and_exit(:task) do |entry,exit|
           listen = add_state(:listen, :accepting => true)
           endevt = add_state(:event)
-          connect(entry, listen,  :symbol => :start)
+          connect(entry, listen, start_event(sexpr))
           connect(listen, endevt, :symbol => :ended)
-          connect(endevt, exit,   :symbol => :end)
+          connect(endevt, exit, end_event(sexpr))
           yield(entry, exit) if block_given?
         end
+      end
+
+      def start_event(sexpr)
+        {:symbol => :start, :event_args => [ sexpr[1] ]}
+      end
+
+      def end_event(sexpr)
+        {:symbol => :end, :event_args => [ sexpr[1] ]}
       end
 
       def add_state(kind = :nop, attrs = {})

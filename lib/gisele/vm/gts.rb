@@ -14,10 +14,20 @@ module Gisele
                 :style     => "filled",
                 :fillcolor => (elm.initial? ? "green" : "white") }
             when :edge
-              { :label => elm.symbol.to_s }
+              { :label => edge_label(elm) }
           end
         }
         super(&dotter)
+      end
+
+    private
+
+      def edge_label(edge)
+        if args=edge[:event_args]
+          "#{edge.symbol}(#{args.join ', '})"
+        else
+          edge.symbol || ""
+        end
       end
 
     end # class Gts
