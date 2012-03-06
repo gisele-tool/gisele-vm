@@ -12,11 +12,12 @@ module Gisele
 
       subject do
         code = <<-GIS.strip
-          task Main
-            Hello
+          seq
+            Ping
+            Pong
           end
         GIS
-        compiler.call(Gisele.sexpr(Gisele.parse(code, :root => :task_def)))
+        compiler.call(Gisele.sexpr(Gisele.parse(code, :root => :seq_st)))
       end
 
       it 'returns a pair of states' do
@@ -27,23 +28,24 @@ module Gisele
 
       it 'generates valid task states' do
         entry, exit = subject
-        entry[:kind].should eq(:event)
-         exit[:kind].should eq(:end)
+        entry[:kind].should eq(:nop)
+         exit[:kind].should eq(:nop)
       end
 
-      it 'parses typical traces' do
-        trace = [:start, :"(wait)", :end]
-        gts.parse?(trace).should be_true
+      it 'parses a trace that waits twice' do
+        trace = [:"(wait)", :"(wait)"]
+        gts.parse?(trace, 0).should be_true
       end
 
-      it 'waits in wait state' do
-        trace = [:start, :"(wait)"]
-        gts.accept?(trace).should be_true
+      it 'waits in wait states' do
+        gts.accept?([:"(wait)"], 0).should be_true
+        gts.accept?([:"(wait)", :"(wait)"], 0).should be_true
       end
 
-      it 'waits at the end' do
-        trace = [:start, :"(wait)", :end]
-        gts.accept?(trace).should be_true
+      it 'parses a trace that forks twice' do
+        trace = [:"(forked)", :"start", :ended, :"end", :"(notify)"]
+        trace += trace
+        gts.parse?(trace, 0).should be_true
       end
 
       it 'adds event arguments on :start and :end' do

@@ -24,8 +24,7 @@ module Gisele
       it 'generates valid fork/join pairs' do
         entry, exit = subject
         entry[:kind].should eq(:fork)
-        exit[:kind].should  eq(:join)
-        entry[:join].should eq(exit.index)
+         exit[:kind].should eq(:join)
       end
 
       it 'generates 6 states' do
@@ -33,15 +32,15 @@ module Gisele
       end
 
       it 'parses a whole trace' do
-        gts.parse?([:forked, :start, :ended, :end, :notify], 0).should be_true
+        gts.parse?([:"(forked)", :start, :ended, :end, :"(notify)"], 0).should be_true
       end
 
       it 'waits in listen states' do
-        gts.accept?([:forked, :start], 0).should be_true
+        gts.accept?([:"(forked)", :start], 0).should be_true
       end
 
       it 'waits at the end' do
-        gts.accept?([:forked, :start, :ended, :end, :notify], 0).should be_true
+        gts.accept?([:"(forked)", :start, :ended, :end, :"(notify)"], 0).should be_true
       end
 
       it 'adds event arguments on :start and :end' do

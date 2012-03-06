@@ -18,61 +18,74 @@ module Gisele
       end
 
       def on_task_def(sexpr)
-        entry_and_exit(:task) do |entry, exit|
-          entry.initial!
-          endevt = add_state(:event)
-          apply(sexpr.last).tap do |c_entry, c_exit|
-            connect(entry, c_entry, start_event(sexpr))
-            connect(c_exit, endevt)
-          end
-          connect(endevt, exit, end_event(sexpr))
-        end
+        entry  = add_state(:event, :initial => true)
+        exit   = add_state(:end)
+        endevt = add_state(:event)
+
+        c_entry, c_exit = apply(sexpr.last)
+        connect(entry, c_entry, start_event(sexpr))
+        connect(c_exit, endevt)
+        connect(endevt, exit, end_event(sexpr))
+
+        [entry, exit]
       end
 
       def on_seq_st(sexpr)
-        entry_and_exit do |entry, exit|
-          current = entry
-          sexpr.sexpr_body.each do |child|
-            c_entry, c_exit = apply(child)
-            connect(current, c_entry)
-            current = c_exit
-          end
-          connect(current, exit)
+        entry = add_state(:nop)
+        exit  = add_state(:nop)
+
+        current = entry
+        sexpr.sexpr_body.each do |child|
+          c_entry, c_exit = apply(child)
+          connect(current, c_entry)
+          current = c_exit
         end
+        connect(current, exit)
+
+        [entry, exit]
       end
 
       def on_par_st(sexpr)
-        entry_and_exit(:forkjoin) do |entry, exit|
-          sexpr.sexpr_body.each do |child|
-            c_entry, c_exit = apply(child)
-            c_end = add_state(:end)
-            connect(entry,  c_entry)
-            connect(c_exit, c_end)
-            connect(c_end, exit)
-          end
+        entry = add_state(:fork)
+        exit  = add_state(:join)
+        connect(entry, exit, :"(wait)")
+
+        sexpr.sexpr_body.each do |child|
+          c_entry, c_exit = apply(child)
+          c_end = add_state(:end)
+          connect(entry,  c_entry, :"(forked)")
+          connect(c_exit, c_end)
+          connect(c_end, exit,  :"(notify)")
         end
+
+        [entry,exit]
       end
 
       def on_task_call_st(sexpr)
-        entry_and_exit(:forkjoin) do |entry,exit|
-          task_nodes(sexpr) do |c_entry,c_exit|
-            connect(entry, c_entry, :symbol => :forked)
-            connect(c_exit, exit,   :symbol => :notify)
-          end
-        end
+        entry = add_state(:fork)
+        exit  = add_state(:join)
+        connect(entry, exit, :"(wait)")
+
+        c_entry, c_exit = task_nodes(sexpr)
+        connect(entry, c_entry, :"(forked)")
+        connect(c_exit, exit, :"(notify)")
+
+        [entry, exit]
       end
 
     private
 
       def task_nodes(sexpr)
-        entry_and_exit(:task) do |entry,exit|
-          listen = add_state(:listen, :accepting => true)
-          endevt = add_state(:event)
-          connect(entry, listen, start_event(sexpr))
-          connect(listen, endevt, :symbol => :ended)
-          connect(endevt, exit, end_event(sexpr))
-          yield(entry, exit) if block_given?
-        end
+        entry  = add_state(:event)
+        listen = add_state(:listen)
+        endevt = add_state(:event)
+        exit   = add_state(:end)
+
+        connect(entry, listen, start_event(sexpr))
+        connect(listen, endevt, :ended)
+        connect(endevt, exit, end_event(sexpr))
+
+        [ entry, exit ]
       end
 
       def start_event(sexpr)
@@ -84,7 +97,12 @@ module Gisele
       end
 
       def add_state(kind = :nop, attrs = {})
-        gts.add_state({:kind => kind}.merge(attrs))
+        attrs = attrs.merge(:kind => kind)
+        case kind
+        when :join, :end, :listen
+          attrs[:accepting] = true
+        end
+        gts.add_state(attrs)
       end
 
       def entry_and_exit(kind = :nop)
@@ -115,6 +133,7 @@ module Gisele
       end
 
       def connect(source, target, attrs={})
+        attrs = {:symbol => attrs} if Symbol===attrs
         gts.connect(source, target, {:symbol => nil}.merge(attrs))
       end
 

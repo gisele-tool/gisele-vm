@@ -8,11 +8,12 @@ module Gisele
             when :automaton
               { :rankdir => "LR" }
             when :state
-              { :shape     => state_shape(elm),
-                :size      => "fixed",
-                :width     => "0.5",
+              { :label     => state_label(elm),
+                :shape     => state_shape(elm),
+                :fixedsize => "true",
+                :width     => "0.6",
                 :style     => "filled",
-                :fillcolor => (elm.initial? ? "green" : "white") }
+                :fillcolor => state_color(elm) }
             when :edge
               { :label => edge_label(elm) }
           end
@@ -21,6 +22,22 @@ module Gisele
       end
 
     private
+
+      def state_label(state)
+        case state[:kind]
+        when :event then "EVT"
+        else
+          state[:kind].to_s[0, 1].capitalize
+        end
+      end
+
+      def state_color(state)
+        case state[:kind]
+        when :end then "grey"
+        else
+          state.initial? ? "green" : "white"
+        end
+      end
 
       def state_shape(state)
         case state[:kind]
