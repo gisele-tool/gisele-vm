@@ -8,18 +8,6 @@ module Gisele
         @builder = builder
       end
 
-      def self.infer_state_kind(state)
-        if state[:kind]
-          state[:kind]
-        elsif state.out_edges.empty?
-          :end
-        elsif state.accepting?
-          :listen
-        else
-          :event
-        end
-      end
-
       def self.call(ts, namespace = nil)
         builder = VM::Bytecode::Builder.new(namespace)
         Gts2Bytecode.new(builder).call(ts)
@@ -27,10 +15,10 @@ module Gisele
 
       def call(ts)
         builder.at do |b|
-          b.then "s#{ts.initial_state.index}"
+          b.then label(ts.initial_state)
         end
         ts.each_state do |s|
-          send "on_#{s[:kind]}", s
+          send :"on_#{s[:kind]}", s
         end
         VM::Bytecode.coerce(builder.to_a)
       end
@@ -40,8 +28,8 @@ module Gisele
           raise ArgumentError, "Invalid :nop state"
         end
         edge = state.out_edges.first
-        at(:"s#{state.index}") do |b|
-          b.then :"s#{edge.target.index}"
+        at(state) do |b|
+          b.then label(edge.target)
         end
       end
 
@@ -50,11 +38,11 @@ module Gisele
           raise ArgumentError, "Invalid :event state"
         end
         edge = state.out_edges.first
-        at(:"s#{state.index}") do |b|
-          b.then :"s#{edge.target.index}"
-          b.then :"e#{edge.index}"
+        at(state) do |b|
+          b.then label(edge.target)
+          b.then label(edge)
         end
-        at(:"e#{edge.index}") do |b|
+        at(edge) do |b|
           b.push  edge[:event_args] || []
           b.event edge.symbol
         end
@@ -63,9 +51,9 @@ module Gisele
       def on_listen(state)
         h = {}
         state.out_edges.each do |edge|
-          h[edge.symbol] = :"s#{edge.target.index}"
+          h[edge.symbol] = label(edge.target)
         end
-        at(:"s#{state.index}") do |b|
+        at(state) do |b|
           b.push h
           b.then :listen
         end
@@ -78,9 +66,9 @@ module Gisele
         end
         join_state = join_edges.first.target
         targets = state.out_adjacent_states - [ join_state ]
-        at(:"s#{state.index}") do |b|
-          b.push :"s#{join_state.index}"
-          b.push targets.map{|t| :"s#{t.index}"}
+        at(state) do |b|
+          b.push label(join_state)
+          b.push targets.map{|t| label(t)}
           b.then :fork
         end
       end
@@ -90,8 +78,8 @@ module Gisele
           raise ArgumentError, "Invalid :join state"
         end
         target = state.out_edges.first.target
-        at(:"s#{state.index}") do |b|
-          b.push :wake => :"s#{target.index}"
+        at(state) do |b|
+          b.push :wake => label(target)
           b.then :join
         end
       end
@@ -100,15 +88,25 @@ module Gisele
         unless state.out_edges.size <= 1
           raise ArgumentError, "Invalid :end state"
         end
-        at(:"s#{state.index}") do |b|
+        at(state) do |b|
           b.then :notify
         end
       end
 
     private
 
+      def label(arg)
+        case arg
+        when Symbol                    then arg
+        when Stamina::Automaton::State then :"s#{arg.index}"
+        when Stamina::Automaton::Edge  then :"e#{arg.index}"
+        else
+          raise ArgumentError, "Unexpected argument: #{arg.inspect}"
+        end
+      end
+
       def at(state, &bl)
-        builder.at(state, &bl)
+        builder.at(label(state), &bl)
       end
 
     end # class Gts2Bytecode
