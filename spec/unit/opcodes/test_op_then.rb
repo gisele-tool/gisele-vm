@@ -3,14 +3,47 @@ module Gisele
   class VM
     describe Kernel, "op_then" do
 
-      it 'pushes opcodes on the code stack' do
-        kernel.bytecode = [ [:at_0], [:hello, :world] ]
-        kernel.opcodes  = [ :begin ]
-        kernel.stack    = [ :prev, 1 ]
-        kernel.op_then
-        kernel.opcodes.should eq([:begin, :hello, :world])
-        kernel.stack.should eq([:prev])
+      let(:bc){
+        Bytecode.coerce <<-BC.gsub(/^\s*/, '').strip
+          hello: push 12
+        BC
+      }
+      let(:kern){ VM.new(bc).kernel }
+
+      before do
+        kern.opcodes  = [ [:nop] ]
       end
+
+      after do
+        kern.opcodes.should eq([[:nop], [:push, 12]])
+        kern.stack.should eq([:prev])
+      end
+
+      context 'without argument' do
+
+        subject do
+          kern.op_then
+        end
+
+        it 'pushes opcodes on the code stack' do
+          kern.stack = [ :prev, :hello ]
+          subject
+        end
+
+      end # without argument
+
+      context 'without an argument' do
+
+        subject do
+          kern.op_then(:hello)
+        end
+
+        it 'pushes opcodes on the code stack' do
+          kern.stack = [ :prev ]
+          subject
+        end
+
+      end # with an argument
 
     end
   end

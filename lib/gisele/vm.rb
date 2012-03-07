@@ -12,6 +12,9 @@ module Gisele
   class VM
     extend Forwardable
 
+    # The executed bytecode
+    attr_reader :bytecode
+
     # A Logger instance
     attr_reader :logger
 
@@ -33,6 +36,7 @@ module Gisele
 
     def bytecode=(bytecode)
       @bytecode = Kernel.bytecode + Bytecode.coerce(bytecode)
+      @bytecode.verify!
     end
 
     ### Logging
@@ -70,8 +74,8 @@ module Gisele
 
   private
 
-    def kernel(puid)
-      Kernel.new(self, @bytecode, puid)
+    def kernel(puid = nil)
+      Kernel.new(self, puid)
     end
 
   end

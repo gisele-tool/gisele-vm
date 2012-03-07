@@ -6,9 +6,8 @@ module Gisele
       attr_reader :vm
       attr_reader :puid
 
-      def initialize(vm = VM.new, bytecode = [], puid = nil)
+      def initialize(vm = VM.new, puid = nil)
         @vm       = vm
-        @bytecode = bytecode
         @puid     = puid
         @stack    = []
         @opcodes  = []
@@ -50,7 +49,7 @@ module Gisele
       ### code
 
       def enlist_bytecode_at(label)
-        @opcodes += @bytecode[label]
+        @opcodes += vm.bytecode[label]
       end
 
       include Opcodes

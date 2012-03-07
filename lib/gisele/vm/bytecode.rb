@@ -62,7 +62,7 @@ module Gisele
             raise InvalidBytecodeError, "Bad instruction: #{invalid}"
           end
         end
-        true
+        self
       end
 
     private
