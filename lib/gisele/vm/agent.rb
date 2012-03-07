@@ -10,6 +10,7 @@ module Gisele
         @bytecode        = Bytecode.coerce(bytecode) + Bytecode.kernel
         @proglist        = proglist || ProgList.memory.threadsafe
         @event_interface = event_interface
+        @bytecode.verify!
       end
 
       def start(label)

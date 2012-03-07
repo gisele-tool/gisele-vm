@@ -56,6 +56,19 @@ module Gisele
         Printer.call(to_a)
       end
 
+      def verify!
+        unless (Bytecode::Grammar === @sexpr)
+          sexpr.sexpr_body.each do |block|
+            next if Bytecode::Grammar[:block] === block
+            invalid = block.sexpr_body[1..-1].find{|i|
+              !(Bytecode::Grammar[:instruction]===i)
+            }
+            raise InvalidBytecodeError, "Bad instruction: #{invalid}"
+          end
+        end
+        true
+      end
+
     private
 
       def index
