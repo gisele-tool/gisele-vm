@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_event" do
+    describe Kernel, "op_event" do
 
-      let(:vm){ VM.new 17, [], ProgList.memory, self }
+      let(:vm){ Kernel.new 17, [], ProgList.memory, self }
 
       def call(puid, kind, args)
         @called = [puid, kind, args]

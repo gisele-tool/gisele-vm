@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_parent" do
+    describe Kernel, "op_parent" do
 
       let(:list){ ProgList.memory         }
-      let(:vm)  { VM.new @child, [], list }
+      let(:vm)  { Kernel.new @child, [], list }
 
       context 'with a parent' do
 

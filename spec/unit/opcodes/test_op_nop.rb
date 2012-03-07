@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_nop" do
+    describe Kernel, "op_nop" do
 
-      let(:vm){ VM.new(nil, []) }
+      let(:vm){ Kernel.new(nil, []) }
 
       subject{
         vm.op_nop

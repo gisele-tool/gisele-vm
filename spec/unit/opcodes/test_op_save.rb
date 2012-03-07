@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_save" do
+    describe Kernel, "op_save" do
 
-      let(:vm){ VM.new 0, [] }
+      let(:vm){ Kernel.new 0, [] }
 
       before do
         @puid0 = vm.proglist.save Prog.new

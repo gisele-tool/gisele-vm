@@ -1,12 +1,12 @@
 require 'spec_helper'
 module Gisele
   class VM
-    public :pop
-    describe 'pop' do
+    describe Kernel, 'pop' do
 
-      let(:vm){ VM.new 5, [] }
+      let(:vm){ Kernel.new 5, [] }
 
       before do
+        class Kernel; public :pop; end
         vm.stack = [:a, :b, :c, :d]
       end
 

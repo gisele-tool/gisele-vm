@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_get" do
+    describe Kernel, "op_get" do
 
-      let(:vm){ VM.new 0, [] }
+      let(:vm){ Kernel.new 0, [] }
 
       before do
         vm.stack = [ receiver ]

@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_end" do
+    describe Kernel, "op_end" do
 
       let(:list){ ProgList.memory        }
-      let(:vm)  { VM.new @puid, [], list }
+      let(:vm)  { Kernel.new @puid, [], list }
 
       before {
         @puid = list.save Prog.new(:parent => 17, :progress => true)

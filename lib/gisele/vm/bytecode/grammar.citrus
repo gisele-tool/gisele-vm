@@ -54,7 +54,7 @@ grammar Gisele::VM::Bytecode::Grammar::Parser
 
   rule constant
     ([A-Z][A-Za-z]* ('::' [A-Z][A-Za-z]*)*){
-      strip.split('::').inject(Kernel){|cur,c| cur.const_get(c)}
+      strip.split('::').inject(::Kernel){|cur,c| cur.const_get(c)}
     }
   end
 

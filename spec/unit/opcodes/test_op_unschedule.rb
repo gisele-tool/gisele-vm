@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_unschedule" do
+    describe Kernel, "op_unschedule" do
 
-      let(:vm){ VM.new 0, [] }
+      let(:vm){ Kernel.new 0, [] }
 
       before do
         vm.proglist.save Prog.new(:progress => true)

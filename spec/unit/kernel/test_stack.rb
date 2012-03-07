@@ -1,9 +1,13 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "the operand stack" do
+    describe Kernel, "stack" do
 
-      let(:vm){ VM.new :test_stack, [] }
+      let(:vm){ Kernel.new :test_stack, [] }
+
+      before do
+        class Kernel; public :stack; end
+      end
 
       it 'pushes at the end' do
         vm.stack = [:hello]

@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_schedule" do
+    describe Kernel, "op_schedule" do
 
-      let(:vm){ VM.new 0, [] }
+      let(:vm){ Kernel.new 0, [] }
 
       before do
         vm.proglist.save Prog.new

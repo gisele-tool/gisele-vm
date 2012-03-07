@@ -8,7 +8,7 @@ module Gisele
       end
 
       it 'parses single constants correctly' do
-        parse("Kernel").value.should eq(Kernel)
+        parse("Integer").value.should eq(Integer)
       end
 
       it 'parses qualified constants correctly' do

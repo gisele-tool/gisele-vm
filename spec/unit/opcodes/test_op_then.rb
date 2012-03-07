@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_then" do
+    describe Kernel, "op_then" do
 
-      let(:vm){ VM.new :test_then, [[:at_0], [:hello, :world]] }
+      let(:vm){ Kernel.new :test_then, [[:at_0], [:hello, :world]] }
 
       it 'pushes opcodes on the code stack' do
         vm.opcodes = [:begin]

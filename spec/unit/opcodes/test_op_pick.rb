@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe 'op_pick' do
+    describe Kernel, 'op_pick' do
 
-      let(:vm){ VM.new 0, [], ProgList::Threadsafe.new(ProgList.memory) }
+      let(:vm){ Kernel.new 0, [], ProgList::Threadsafe.new(ProgList.memory) }
 
       context 'when a scheduled Prog exists' do
 

@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_send" do
+    describe Kernel, "op_send" do
 
-      let(:vm){ VM.new 0, [] }
+      let(:vm){ Kernel.new 0, [] }
 
       it 'pushes the result on the stack' do
         vm.stack = [ 1, [ 2 ] ]

@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_unfold" do
+    describe Kernel, "op_unfold" do
 
-      let(:vm){ VM.new 0, [] }
+      let(:vm){ Kernel.new 0, [] }
 
       it 'unfolds the op array' do
         vm.stack = [ :a, [:b, :c] ]

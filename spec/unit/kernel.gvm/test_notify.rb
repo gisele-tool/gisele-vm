@@ -1,12 +1,12 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "kernel::notify" do
+    describe Kernel, "notify macro" do
 
-      let(:list)  { ProgList.memory                      }
-      let(:vm)    { VM.new @child, Bytecode.kernel, list }
-      let(:parent){ list.fetch(@parent)                  }
-      let(:child) { list.fetch(@child)                   }
+      let(:list)  { ProgList.memory                           }
+      let(:vm)    { Kernel.new @child, Bytecode.kernel, list  }
+      let(:parent){ list.fetch(@parent)                       }
+      let(:child) { list.fetch(@child)                        }
 
       subject do
         vm.run(:notify, [ ])

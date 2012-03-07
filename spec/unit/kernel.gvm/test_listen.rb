@@ -1,11 +1,11 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "kernel::listen" do
+    describe Kernel, "listen macro" do
 
-      let(:list)  { ProgList.memory                       }
-      let(:vm)    { VM.new @parent, Bytecode.kernel, list }
-      let(:parent){ list.fetch(@parent)                   }
+      let(:list)  { ProgList.memory                           }
+      let(:vm)    { Kernel.new @parent, Bytecode.kernel, list }
+      let(:parent){ list.fetch(@parent)                       }
       let(:wlist) { {:ping => :sPing, :pong => :sPong}    }
 
       before do

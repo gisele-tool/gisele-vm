@@ -1,11 +1,11 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "kernel::join" do
+    describe Kernel, "join macro" do
 
-      let(:list)  { ProgList.memory                       }
-      let(:vm)    { VM.new @parent, Bytecode.kernel, list }
-      let(:parent){ list.fetch(@parent)                   }
+      let(:list)  { ProgList.memory                           }
+      let(:vm)    { Kernel.new @parent, Bytecode.kernel, list }
+      let(:parent){ list.fetch(@parent)                       }
 
       before do
         @parent = list.save Prog.new(:pc => :join, :waitlist => wlist)

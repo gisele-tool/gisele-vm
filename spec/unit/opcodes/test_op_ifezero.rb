@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_ifezero" do
+    describe Kernel, "op_ifezero" do
 
-      let(:vm){ VM.new(nil, []) }
+      let(:vm){ Kernel.new(nil, []) }
 
       subject{
         vm.opcodes = [ [:ifezero], [:push, 12], [:push, 24] ]

@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe "op_fork" do
+    describe Kernel, "op_fork" do
 
-      let(:vm){ VM.new 17, [] }
+      let(:vm){ Kernel.new 17, [] }
 
       context 'with a label' do
 

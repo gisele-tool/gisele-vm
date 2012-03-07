@@ -1,4 +1,5 @@
 def clean_file(file)
+  return unless File.file?(file)
   c = File.read(file)
   c.gsub!(/[ \t]+\n/, "\n")
   c.gsub!(/\Z/, "\n") unless c =~ /\n\Z/

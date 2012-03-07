@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'gisele-vm'
-require_relative 'fixtures/vm'
+require_relative 'fixtures/kernel'
 
 def capture_io
   stdout, stderr = $stdout, $stderr

@@ -57,7 +57,7 @@ module Gisele
       end
 
       def vm(puid)
-        VM.new puid, @bytecode, @proglist, @event_interface
+        Kernel.new puid, @bytecode, @proglist, @event_interface
       end
 
     end # class Agent
