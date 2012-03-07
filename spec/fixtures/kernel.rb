@@ -30,7 +30,6 @@ module Gisele
              :op_set,
              :op_del,
              :op_self,
-             :op_pick,
              :op_flip,
              :op_nop,
              :op_ifenil,

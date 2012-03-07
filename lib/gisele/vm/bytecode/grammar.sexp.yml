@@ -26,7 +26,6 @@ rules:
     - self
     - parent
     - fetch
-    - pick
     - fork
     - forka
     - schedule
@@ -72,8 +71,6 @@ rules:
     - []
   fetch:
     - [ 'argument?' ]
-  pick:
-    - []
   fork:
     - [ 'label_arg?' ]
   forka:

@@ -42,7 +42,6 @@
    del
    del :attrname
    self
-   pick
    flip
    nop
    ifenil

@@ -73,10 +73,6 @@ module Gisele
         end
       end
 
-      def pick(&bl)
-        @proglist.pick(&bl)
-      end
-
       include Opcodes
     end # class Kernel
   end # class VM
