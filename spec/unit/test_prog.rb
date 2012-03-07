@@ -6,6 +6,7 @@ class Gisele::VM
       { :puid     => "puid",
         :parent   => "parent",
         :pc       => 12,
+        :waitfor => :enacter,
         :waitlist => {:a => true},
         :progress => true,
         :input    => [ :event ] }
@@ -16,16 +17,18 @@ class Gisele::VM
       s.puid.should     be_nil
       s.parent.should   be_nil
       s.pc.should       eq(0)
+      s.waitfor.should  eq(:none)
       s.waitlist.should eq({})
       s.progress.should eq(false)
       s.input.should    eq([])
     end
 
-    it 'understand options' do
+    it 'understands options' do
       s = Prog.new(h)
       s.puid.should     eq("puid")
       s.parent.should   eq("parent")
       s.pc.should       eq(12)
+      s.waitfor.should  eq(:enacter)
       s.waitlist.should eq({:a => true})
       s.progress.should eq(true)
       s.input.should    eq([:event])

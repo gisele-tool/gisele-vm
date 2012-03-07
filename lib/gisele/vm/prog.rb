@@ -4,6 +4,7 @@ module Gisele
       attr_accessor :puid
       attr_accessor :parent
       attr_accessor :pc
+      attr_accessor :waitfor
       attr_reader   :waitlist
       attr_accessor :progress
       attr_accessor :input
@@ -12,6 +13,7 @@ module Gisele
         @puid     = attrs[:puid]     || nil
         @parent   = attrs[:parent]   || @puid
         @pc       = attrs[:pc]       || 0
+        @waitfor  = attrs[:waitfor]  || :none
         @waitlist = attrs[:waitlist] || {}
         @progress = attrs[:progress] || false
         @input    = attrs[:input]    || []
@@ -26,6 +28,7 @@ module Gisele
         { :puid     => puid,
           :parent   => parent,
           :pc       => pc,
+          :waitfor  => waitfor,
           :waitlist => waitlist,
           :progress => progress,
           :input    => input }
