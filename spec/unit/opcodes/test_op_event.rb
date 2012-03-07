@@ -5,8 +5,8 @@ module Gisele
 
       let(:vm){ Kernel.new self, [], 17 }
 
-      def event(kind, args)
-        @called = [kind, args]
+      def event(event)
+        @event = event
       end
 
       before do
@@ -15,13 +15,13 @@ module Gisele
 
       it 'calls the event interface' do
         vm.op_event(:hello)
-        @called.should eq([:hello, [17, "World"]])
+        @event.should eq(Event.new(17, :hello, ["World"]))
       end
 
       it 'can take the event kind from the stack' do
         vm.op_push :hello
         vm.op_event
-        @called.should eq([:hello, [17, "World"]])
+        @event.should eq(Event.new(17, :hello, ["World"]))
       end
 
     end

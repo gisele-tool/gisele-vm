@@ -3,6 +3,8 @@ require_relative 'vm/errors'
 require_relative 'vm/gts'
 require_relative 'vm/prog'
 require_relative 'vm/prog_list'
+require_relative 'vm/event'
+require_relative 'vm/event_manager'
 require_relative 'vm/bytecode'
 require_relative 'vm/opcodes'
 require_relative 'vm/kernel'
@@ -22,11 +24,7 @@ module Gisele
     def initialize
       self.logger         = Logger.new($stdout)
       self.proglist       = ProgList.memory.threadsafe
-      self.event_manager  = Proc.new do |kind,args|
-        if logger
-          logger.info("Process(#{args.first}): #{kind}(#{args[1..-1].join(',')})")
-        end
-      end
+      self.event_manager  = EventManager.new
       yield(self) if block_given?
     end
 
@@ -69,8 +67,8 @@ module Gisele
       @event_manager = arg
     end
 
-    def event(kind, args)
-      @event_manager.call(kind, args)
+    def event(event)
+      @event_manager.call(event)
     end
 
   end

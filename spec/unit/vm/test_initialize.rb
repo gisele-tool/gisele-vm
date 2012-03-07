@@ -15,7 +15,7 @@ module Gisele
       end
 
       it 'installs a default event manager' do
-        vm.event_manager.should be_a(Proc)
+        vm.event_manager.should be_a(VM::EventManager)
       end
     end
 

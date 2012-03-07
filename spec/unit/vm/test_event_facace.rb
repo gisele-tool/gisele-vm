@@ -4,13 +4,14 @@ module Gisele
 
     let(:vm){
       VM.new do |vm|
-        vm.event_manager = Proc.new{|*args| @args = args}
+        vm.event_manager = Proc.new{|event| @event = event}
       end
     }
 
     it 'delegates event calls to it' do
-      vm.event(:hello, [17, "World"])
-      @args.should eq([:hello, [17, "World"]])
+      event = VM::Event.new(17, :hello, ["World"])
+      vm.event(event)
+      @event.should eq(event)
     end
 
   end

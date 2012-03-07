@@ -193,12 +193,12 @@ module Gisele
       ### EVENT HANDLING #################################################################
 
       # Pops event arguments from the stack (an array). Send an event of the specified
-      # kind on the event interface. If `kind` is not provided, it is first poped from
+      # kind on the event interface. If `type` is not provided, it is first poped from
       # the stack
-      def op_event(kind = nil)
-        kind ||= pop
+      def op_event(type = nil)
+        type ||= pop
         args = pop
-        vm.event(kind, [puid] + args)
+        vm.event(Event.new(puid, type, args))
       end
 
     end # module Opcodes
