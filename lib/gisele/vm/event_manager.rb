@@ -2,8 +2,12 @@ module Gisele
   class VM
     class EventManager
 
-      def call(event)
-        puts event.to_s
+      def initialize(&proc)
+        @proc = proc
+      end
+
+      def event(event)
+        @proc.call(event) if @proc
       rescue Exception => ex
         log_error(event, ex) if logger rescue nil
       end

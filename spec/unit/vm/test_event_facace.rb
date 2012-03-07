@@ -1,10 +1,12 @@
 require 'spec_helper'
 module Gisele
-  describe VM, "the proglist facade" do
+  describe VM, "the event facade" do
 
     let(:vm){
       VM.new do |vm|
-        vm.event_manager = Proc.new{|event| @event = event}
+        vm.event_manager = lambda{|evt|
+          @event = evt
+        }
       end
     }
 

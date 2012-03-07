@@ -20,7 +20,7 @@ module Gisele
     end
 
     context 'with a block' do
-      let(:em){ Proc.new{ } }
+      let(:em){ VM::EventManager.new }
       let(:vm){
         VM.new do |vm|
           vm.proglist      = VM::ProgList.memory
