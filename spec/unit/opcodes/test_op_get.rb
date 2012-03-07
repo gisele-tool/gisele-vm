@@ -3,38 +3,36 @@ module Gisele
   class VM
     describe Kernel, "op_get" do
 
-      let(:vm){ Kernel.new }
-
       before do
-        vm.stack = [ receiver ]
+        kernel.stack = [ receiver ]
       end
 
       after do
-        vm.stack.first.should eq(receiver)
+        kernel.stack.first.should eq(receiver)
       end
 
       context 'with a hash' do
         let(:receiver){ {:hello => "World"} }
 
         it 'pushes the result on the stack' do
-          vm.op_get(:hello)
-          vm.stack.last.should eq("World")
+          kernel.op_get(:hello)
+          kernel.stack.last.should eq("World")
         end
 
         it 'takes the attribute name from the stack if unspecified' do
-          vm.op_push :hello
-          vm.op_get
-          vm.stack.last.should eq("World")
+          kernel.op_push :hello
+          kernel.op_get
+          kernel.stack.last.should eq("World")
         end
 
         it 'supports getting nil' do
-          vm.op_get(:nosuchone)
-          vm.stack.last.should be_nil
+          kernel.op_get(:nosuchone)
+          kernel.stack.last.should be_nil
         end
 
         it 'does not try to call methods' do
-          vm.op_get(:fetch)
-          vm.stack.last.should be_nil
+          kernel.op_get(:fetch)
+          kernel.stack.last.should be_nil
         end
       end
 
@@ -42,19 +40,19 @@ module Gisele
         let(:receiver){ Prog.new(:pc => 12) }
 
         it 'pushes the result on the stack' do
-          vm.op_get(:pc)
-          vm.stack.last.should eq(12)
+          kernel.op_get(:pc)
+          kernel.stack.last.should eq(12)
         end
 
         it 'takes the attribute name from the stack if unspecified' do
-          vm.op_push :pc
-          vm.op_get
-          vm.stack.last.should eq(12)
+          kernel.op_push :pc
+          kernel.op_get
+          kernel.stack.last.should eq(12)
         end
 
         it 'raises an Error if no such method' do
           lambda{
-            vm.op_get(:nosuchone)
+            kernel.op_get(:nosuchone)
           }.should raise_error(VM::Error)
         end
       end

@@ -3,15 +3,13 @@ module Gisele
   class VM
     describe Kernel, "op_nop" do
 
-      let(:vm){ Kernel.new }
-
       subject{
-        vm.op_nop
-        vm.stack
+        kernel.op_nop
+        kernel.stack
       }
 
       it 'does nothing' do
-        vm.stack = [ 12 ]
+        kernel.stack = [ 12 ]
         subject.should eq([ 12 ])
       end
 

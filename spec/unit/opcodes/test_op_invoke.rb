@@ -3,14 +3,12 @@ module Gisele
   class VM
     describe Kernel, "op_invoke" do
 
-      let(:vm){ Kernel.new }
-
       def hello(*args)
         @args = args
       end
 
       before do
-        vm.stack = [ self, [ "world", "!" ] ]
+        kernel.stack = [ self, [ "world", "!" ] ]
       end
 
       after do
@@ -18,17 +16,17 @@ module Gisele
       end
 
       it 'invoke as expected' do
-        vm.op_invoke(:hello)
+        kernel.op_invoke(:hello)
       end
 
       it 'does not push back on the stack' do
-        vm.op_invoke(:hello)
-        vm.stack.should eq([])
+        kernel.op_invoke(:hello)
+        kernel.stack.should eq([])
       end
 
       it 'takes the method name from the stack if unspecified' do
-        vm.op_push :hello
-        vm.op_invoke
+        kernel.op_push :hello
+        kernel.op_invoke
       end
 
     end

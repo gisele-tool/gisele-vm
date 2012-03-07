@@ -3,12 +3,10 @@ module Gisele
   class VM
     describe Kernel, "op_ifenil" do
 
-      let(:vm){ Kernel.new }
-
       subject{
-        vm.opcodes = [ [:ifenil], [:push, 12], [:push, 24] ]
-        vm.run(nil, stack)
-        vm.stack
+        kernel.opcodes = [ [:ifenil], [:push, 12], [:push, 24] ]
+        kernel.run(nil, stack)
+        kernel.stack
       }
 
       context 'when nil on the stack' do

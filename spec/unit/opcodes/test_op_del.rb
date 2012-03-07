@@ -3,24 +3,22 @@ module Gisele
   class VM
     describe Kernel, "op_del" do
 
-      let(:vm){ Kernel.new }
-
       before do
-        vm.stack = [ receiver ]
+        kernel.stack = [ receiver ]
       end
 
       context 'with a hash' do
         let(:receiver){ {:hello => "World", :other => true} }
 
         it 'removes the key from the hash' do
-          vm.op_del(:hello)
-          vm.stack.should eq([ {:other => true} ])
+          kernel.op_del(:hello)
+          kernel.stack.should eq([ {:other => true} ])
         end
 
         it 'takes the attribute name from the stack if unspecified' do
-          vm.op_push :hello
-          vm.op_del
-          vm.stack.should eq([ {:other => true} ])
+          kernel.op_push :hello
+          kernel.op_del
+          kernel.stack.should eq([ {:other => true} ])
         end
       end
 
@@ -28,14 +26,14 @@ module Gisele
         let(:receiver){ [:hello, :world] }
 
         it 'pushes the result on the stack' do
-          vm.op_del(:hello)
-          vm.stack.should eq([[:world]])
+          kernel.op_del(:hello)
+          kernel.stack.should eq([[:world]])
         end
 
         it 'takes the attribute name from the stack if unspecified' do
-          vm.op_push :hello
-          vm.op_del
-          vm.stack.should eq([[:world]])
+          kernel.op_push :hello
+          kernel.op_del
+          kernel.stack.should eq([[:world]])
         end
       end
 

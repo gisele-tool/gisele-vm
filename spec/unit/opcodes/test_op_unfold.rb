@@ -3,20 +3,18 @@ module Gisele
   class VM
     describe Kernel, "op_unfold" do
 
-      let(:vm){ Kernel.new }
-
       it 'unfolds the op array' do
-        vm.stack = [ :a, [:b, :c] ]
-        vm.op_unfold
-        vm.stack.should eq([:a, :b, :c])
+        kernel.stack = [ :a, [:b, :c] ]
+        kernel.op_unfold
+        kernel.stack.should eq([:a, :b, :c])
       end
 
       it 'is the reverse of fold' do
-        vm.stack = [:a, [:b, :c] ]
-        vm.op_unfold
-        vm.stack.should eq([:a, :b, :c])
-        vm.op_fold(2)
-        vm.stack.should eq([:a, [:b, :c]])
+        kernel.stack = [:a, [:b, :c] ]
+        kernel.op_unfold
+        kernel.stack.should eq([:a, :b, :c])
+        kernel.op_fold(2)
+        kernel.stack.should eq([:a, [:b, :c]])
       end
 
     end
