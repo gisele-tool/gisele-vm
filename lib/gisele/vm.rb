@@ -72,6 +72,16 @@ module Gisele
     end
     def_delegators :event_manager, :event
 
+    ### Kernel
+
+    def start(at)
+      kernel(nil).run(:start, [ at ])
+    end
+
+    def resume(puid, input)
+      kernel(puid).run(:resume, [ input ])
+    end
+
   private
 
     def kernel(puid = nil)

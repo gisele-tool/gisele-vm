@@ -1,9 +1,3 @@
-# Start expects a label on top of the stack. It forks a new child process and schedules
-# it for running at that label
-start:   fork
-         save
-         pop
-
 # Run starts running the current prog at its program counter.
 run:     self
          get :pc
@@ -16,15 +10,31 @@ run:     self
          pop
          unfold                     # [ input... ]
 
-# Resume expects an input array on the stack. It fetches the current Prog and schedules
-# it with the given input
-resume:  self                       # take the current Prog
-         push :enacter              #
-         set :waitfor               #
-         flip                       # [ input, prog ] -> [ prog, input ]
-         set :input                 # prog.input = input
-         save
-         pop
+# Forks a fresh new process and schedules it for running at a given label.
+#
+# INPUT:  [ `startat` ]
+# OUTPUT: [ ]
+# PRE:    - true
+# POST:   - a new process has been created
+#         - it is scheduled
+#
+start:  fork                        # [ Prog ]
+        then :save_it               # [ ]
+
+# Schedule the current prog and set its input.
+#
+# INPUT:  [ [input...] ]
+# OUTPUT: [ ]
+# PRE:    - the current Prog should not be scheduled
+# POST:   - the current Prog is scheduled
+#         - its input is set to `input`
+#
+resume:  self                       # [ input, Prog ]
+         push :enacter              # [ input, Prog, :enacter ]
+         set :waitfor               # [ input, Prog ]
+         flip                       # [ input, Prog ] -> [ Prog, input ]
+         set :input                 # [ Prog ]
+         then :save_it              # [ ]
 
 # Given a Prog on the stack, simply saves it.
 #
