@@ -7,14 +7,13 @@ module Gisele
       attr_accessor :event_interface
 
       def initialize(bytecode, proglist = nil, event_interface = nil)
-        @bytecode        = Bytecode.coerce(bytecode) + Kernel.bytecode
+        @bytecode        = bytecode
         @proglist        = proglist || ProgList.memory.threadsafe
         @event_interface = event_interface
-        @bytecode.verify!
       end
 
       def start(label)
-        vm(nil).run(:start, [ label ])
+        kernel(nil).run(:start, [ label ])
       end
 
       def run
@@ -26,11 +25,11 @@ module Gisele
       end
 
       def runone(puid)
-        vm(puid).run(:run, [ ])
+        kernel(puid).run(:run, [ ])
       end
 
       def resume(puid, input = [])
-        vm(puid).run(:resume, [ input ])
+        kernel(puid).run(:resume, [ input ])
       end
 
       def stop
@@ -42,10 +41,8 @@ module Gisele
         @proglist.to_relation
       end
 
-    private
-
       def run_one(prog)
-        vm(prog.puid).run(:run, [ ])
+        kernel(prog.puid).run(:run, [ ])
       rescue Interrupt
         stop
       rescue Exception => ex
@@ -57,12 +54,15 @@ module Gisele
         @run
       end
 
-      def vm(puid)
-        machine = VM.new do |vm|
+      def vm
+        VM.new(bytecode) do |vm|
           vm.proglist      = @proglist
           vm.event_manager = @event_interface if @event_interface
         end
-        Kernel.new machine, @bytecode, puid
+      end
+
+      def kernel(puid = nil)
+        Kernel.new vm, puid
       end
 
     end # class Agent

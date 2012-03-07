@@ -3,9 +3,9 @@ module Gisele
   class VM
     describe Agent, "load" do
 
-      subject{
-        Agent.new Path.dir/'code.gvm'
-      }
+      subject do
+        Agent.new(Path.dir/'code.gvm').vm
+      end
 
       it 'loads the kernel' do
         subject.bytecode[:start].should_not be_nil
