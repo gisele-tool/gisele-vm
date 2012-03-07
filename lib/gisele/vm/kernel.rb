@@ -4,6 +4,7 @@ module Gisele
     class Kernel
 
       attr_reader :vm
+      attr_reader :opcodes
       attr_reader :puid
 
       def initialize(vm = VM.new, puid = nil)

@@ -7,7 +7,11 @@ module Gisele
       end
 
       def event(event)
-        @proc.call(event) if @proc
+        if @proc
+          @proc.call(event)
+        else
+          puts event.to_s
+        end
       rescue Exception => ex
         log_error(event, ex) if logger rescue nil
       end

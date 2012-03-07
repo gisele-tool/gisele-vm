@@ -10,7 +10,6 @@ module Gisele
           @agent  = agent
           @runner = nil
           @log    = Logger.new($stdout)
-          agent.event_interface = self
         end
 
         def stop?
