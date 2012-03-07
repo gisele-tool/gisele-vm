@@ -30,6 +30,7 @@ module Gisele
       end
 
       it 'unschedules the current Prog' do
+        parent.waitfor.should eq(:world)
         parent.progress.should be_false
       end
 

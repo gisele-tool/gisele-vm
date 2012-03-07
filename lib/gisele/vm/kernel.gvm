@@ -79,6 +79,8 @@ sleep:   self
 listen:  self                       # [ events, Prog ]
          flip                       # [ Prog, events ]
          set  :waitlist             # [ Prog ]
+         push :world                # [ Prog, :world ]
+         set  :waitfor              # [ Prog ]
          push :react                # [ Prog, :react ]
          set  :pc                   # [ Prog ]
          then :sleep_it             # [ ]
