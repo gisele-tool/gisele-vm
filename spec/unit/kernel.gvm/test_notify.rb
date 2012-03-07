@@ -26,11 +26,13 @@ module Gisele
 
         it 'ends the child' do
           child.pc.should eq(-1)
+          child.waitfor.should eq(:none)
           child.progress.should be_false
         end
 
         it 'resumes the parent on a reduced waitlist' do
           parent.waitlist.should eq(2 => true)
+          parent.waitfor.should eq(:enacter)
           parent.progress.should be_true
         end
 
@@ -46,6 +48,7 @@ module Gisele
         it 'ends the child' do
           child.pc.should eq(-1)
           child.waitlist.should eq({})
+          child.waitfor.should eq(:none)
           child.progress.should be_false
         end
 

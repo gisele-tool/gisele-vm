@@ -1,1 +1,1 @@
-A_start:       end
+A_start:       then :A_start

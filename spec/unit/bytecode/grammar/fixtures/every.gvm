@@ -42,7 +42,6 @@
    del
    del :attrname
    self
-   end
    pick
    flip
    nop

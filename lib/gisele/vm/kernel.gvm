@@ -159,6 +159,8 @@ notify_it:  get :waitlist              # [ Prog, waitlist ]
             puid                       # [ Prog, waitlist, puid ]
             del                        # [ Prog, waitlist ]
             set :waitlist              # [ Prog ]
+            push :enacter              # [ Prog, :enacter ]
+            set :waitfor               # [ Prog ]
             schedule                   # [ Prog ]
             save                       # [ puid ]
             pop                        # [ ]
@@ -169,9 +171,16 @@ notify_it:  get :waitlist              # [ Prog, waitlist ]
 # OUTPUT: [ ]
 # PRE:    - the current Prog should not be ended
 # POST:   - the program counter of the current Prog is -1
+# =>      - its waitfor attribute has been set to :none
 #         - its parent has been notified, if any (@see notify_it)
 #
-notify:     end                        # [ Prog ]
+notify:     self                       # [ Prog ]
+            push -1                    # [ Prog, -1 ]
+            set :pc                    # [ Prog ]
+            push false                 # [ Prog, false ]
+            set :progress              # [ Prog ]
+            push :none                 # [ Prog, :none ]
+            set :waitfor               # [ Prog ]
             save                       # [ puid ]
             pop                        # [ ]
             parent                     # [ Prog/nil ]
