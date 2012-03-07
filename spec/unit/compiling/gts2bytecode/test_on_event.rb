@@ -4,7 +4,7 @@ module Gisele
     describe Gts2Bytecode, "on_event" do
 
       let(:gts) do
-        VM::Gts.new do
+        Gts.new do
           add_state :kind => :event
           add_state :kind => :nop
           connect(0, 1, :symbol => :hello, :event_args => [ "world" ])

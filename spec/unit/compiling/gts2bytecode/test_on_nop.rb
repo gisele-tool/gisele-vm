@@ -4,7 +4,7 @@ module Gisele
     describe Gts2Bytecode, "on_nop" do
 
       let(:gts) do
-        VM::Gts.new do
+        Gts.new do
           add_state :kind => :nop
           add_state :kind => :nop
           connect(0, 1, :symbol => nil)

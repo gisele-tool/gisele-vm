@@ -4,7 +4,7 @@ module Gisele
     describe Gts2Bytecode, "on_join" do
 
       let(:gts) do
-        VM::Gts.new do
+        Gts.new do
           add_state :kind => :fork
           add_state :kind => :join
           add_state :kind => :event

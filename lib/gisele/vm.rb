@@ -1,6 +1,5 @@
 require 'logger'
 require_relative 'vm/errors'
-require_relative 'vm/gts'
 require_relative 'vm/prog'
 require_relative 'vm/prog_list'
 require_relative 'vm/event'

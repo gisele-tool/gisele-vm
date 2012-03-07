@@ -12,7 +12,7 @@ module Gisele
       end
 
       let :expected do
-        VM::Gts.new do
+        Gts.new do
           add_state :kind => :fork,   :initial => true
           add_state :kind => :event
           add_state :kind => :listen, :accepting => true

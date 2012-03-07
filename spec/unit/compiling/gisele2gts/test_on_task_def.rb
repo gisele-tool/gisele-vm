@@ -18,7 +18,7 @@ module Gisele
       end
 
       let :expected do
-        VM::Gts.new do
+        Gts.new do
           add_state :kind =>:event, :initial => true
           add_state :kind => :fork
           add_state :kind => :event

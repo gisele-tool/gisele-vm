@@ -4,7 +4,7 @@ module Gisele
     describe Gts2Bytecode, "on_end" do
 
       let(:gts) do
-        VM::Gts.new do
+        Gts.new do
           add_state :kind => :end
         end
       end

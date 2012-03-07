@@ -91,7 +91,7 @@ module Gisele
       end
 
       def gts
-        options[:gts] ||= VM::Gts.new
+        options[:gts] ||= Gts.new
       end
 
     private

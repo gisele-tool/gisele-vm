@@ -1,5 +1,5 @@
 module Gisele
-  class VM
+  module Compiling
     class Gts < Stamina::Automaton
 
       def to_dot
@@ -77,5 +77,5 @@ module Gisele
       end
 
     end # class Gts
-  end # class VM
+  end # module Compiling
 end # module Gisele

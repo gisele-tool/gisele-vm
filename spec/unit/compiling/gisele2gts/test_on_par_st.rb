@@ -20,7 +20,7 @@ module Gisele
       let :expected do
         ping = Gisele2Gts.compile("Ping", :root => :task_call_st)
         pong = Gisele2Gts.compile("Pong", :root => :task_call_st)
-        VM::Gts.new do
+        Gts.new do
           s0 = add_state :kind => :fork, :initial => true
           s1 = add_state :kind => :end, :accepting => true
           s2 = add_state :kind => :end, :accepting => true
