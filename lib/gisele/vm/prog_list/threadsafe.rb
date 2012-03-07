@@ -23,7 +23,7 @@ module Gisele
           end
         end
 
-        def pick(&bl)
+        def pick(waitfor, &bl)
           synchronize do
             while (prog = super).nil?
               wait!(bl)

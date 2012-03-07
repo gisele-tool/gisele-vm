@@ -6,16 +6,16 @@ class Gisele::VM
     context 'when a scheduled Prog exists' do
 
       before do
-        @puid0 = list.save(Prog.new(:progress => true))
-        @puid1 = list.save(Prog.new(:progress => false))
+        @puid0 = list.save(Prog.new(:waitfor => :world))
+        @puid1 = list.save(Prog.new(:waitfor => :enacter))
       end
 
       it 'returns a Prog' do
-        list.pick.should be_a(Prog)
+        list.pick(:enacter).should be_a(Prog)
       end
 
       it 'returns a scheduled Prog' do
-        list.pick.progress.should be_true
+        list.pick(:enacter).waitfor.should eq(:enacter)
       end
 
     end
@@ -23,13 +23,13 @@ class Gisele::VM
     context 'when no scheduled Prog exists' do
 
       before do
-        @puid0 = list.save(Prog.new(:progress => false))
-        @puid1 = list.save(Prog.new(:progress => false))
+        @puid0 = list.save(Prog.new(:waitfor => :world))
+        @puid1 = list.save(Prog.new(:waitfor => :world))
       end
 
       it 'calls the block and returns nil' do
         called = false
-        list.pick{ called = true }.should be_nil
+        list.pick(:enacter){ called = true }.should be_nil
         called.should be_true
       end
 

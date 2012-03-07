@@ -20,8 +20,8 @@ module Gisele
           end
         end
 
-        def pick(&bl)
-          @progs.find{|p| p.progress}.tap{|found|
+        def pick(waitfor, &bl)
+          @progs.find{|p| p.waitfor == waitfor}.tap{|found|
             bl.call if bl && !found
           }
         end

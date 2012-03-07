@@ -19,6 +19,8 @@ run:     self
 # Resume expects an input array on the stack. It fetches the current Prog and schedules
 # it with the given input
 resume:  self                       # take the current Prog
+         push :enacter              #
+         set :waitfor               #
          schedule                   # schedule it
          flip                       # [ input, prog ] -> [ prog, input ]
          set :input                 # prog.input = input

@@ -20,7 +20,7 @@ module Gisele
       def run
         @run = true
         while run?
-          prog = @proglist.pick          # blocking call
+          prog = @proglist.pick(:enacter) # blocking call
           run_one(prog) if prog and run? # prog may be nil at release time
         end
       end
