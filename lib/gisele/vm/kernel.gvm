@@ -38,6 +38,8 @@ resume:  self                       # take the current Prog
 schedule_at: self                       # [ pc, Prog ]
              flip                       # [ Prog, pc ]
              set :pc                    # [ Prog ]
+             push :enacter              # [ Prog, :enacter ]
+             set :waitfor               # [ Prog ]
              schedule                   # [ Prog ]
              push {}                    # [ Prog, {} ]
              set :waitlist              # [ Prog ]
