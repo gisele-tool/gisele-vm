@@ -3,18 +3,18 @@ module Gisele
   class VM
     describe Kernel, "op_fork" do
 
-      let(:vm){ Kernel.new nil, [], 17 }
+      let(:kern){ kernel(17) }
 
       context 'with a label' do
 
         before do
-          vm.stack = [ ]
-          vm.op_fork(:somewhere)
+          kern.stack = [ ]
+          kern.op_fork(:somewhere)
         end
 
         subject{
-          vm.stack.size.should eq(1)
-          vm.stack.last
+          kern.stack.size.should eq(1)
+          kern.stack.last
         }
 
         it 'sets the resulting prog on the stack' do
@@ -42,13 +42,13 @@ module Gisele
       context 'without label' do
 
         before do
-          vm.stack = [ :somewhere_else ]
-          vm.op_fork
+          kern.stack = [ :somewhere_else ]
+          kern.op_fork
         end
 
         subject{
-          vm.stack.size.should eq(1)
-          vm.stack.last
+          kern.stack.size.should eq(1)
+          kern.stack.last
         }
 
         it 'takes the label from the stack' do

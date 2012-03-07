@@ -3,9 +3,8 @@ module Gisele
   class VM
     describe Kernel, "fork macro" do
 
-      let(:list)  { ProgList.memory                           }
-      let(:vm)    { Kernel.new list, Kernel.bytecode, @parent }
-      let(:parent){ list.fetch(@parent)                       }
+      let(:kern)  { kernel(@parent)     }
+      let(:parent){ list.fetch(@parent) }
 
       before do
         @parent = list.save Prog.new(:pc => :fork)
@@ -13,11 +12,11 @@ module Gisele
       end
 
       subject do
-        vm.run(:fork, [ :joinat, [ :fat1, :fat2 ] ])
+        kern.run(:fork, [ :joinat, [ :fat1, :fat2 ] ])
       end
 
       after do
-        vm.stack.should be_empty
+        kern.stack.should be_empty
       end
 
       it 'sets the events as waitlist' do

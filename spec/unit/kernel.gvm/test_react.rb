@@ -3,10 +3,9 @@ module Gisele
   class VM
     describe Kernel, "react macro" do
 
-      let(:list)  { ProgList.memory                           }
-      let(:vm)    { Kernel.new list, Kernel.bytecode, @parent }
-      let(:parent){ list.fetch(@parent)                       }
-      let(:wlist) { {:ping => :sPing, :pong => :sPong}        }
+      let(:kern)  { kernel(@parent)     }
+      let(:parent){ list.fetch(@parent) }
+      let(:wlist) { {:ping => :sPing, :pong => :sPong} }
 
       before do
         @parent = list.save Prog.new(:pc => :react, :waitlist => wlist, :waitfor => :world)
@@ -14,11 +13,11 @@ module Gisele
       end
 
       subject do
-        vm.run(:react, [ event ])
+        kern.run(:react, [ event ])
       end
 
       after do
-        vm.stack.should be_empty
+        kern.stack.should be_empty
       end
 
       context 'when a recognized event' do

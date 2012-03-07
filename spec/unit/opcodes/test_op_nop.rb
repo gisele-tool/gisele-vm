@@ -3,10 +3,10 @@ module Gisele
   class VM
     describe Kernel, "op_nop" do
 
-      subject{
+      subject do
         kernel.op_nop
         kernel.stack
-      }
+      end
 
       it 'does nothing' do
         kernel.stack = [ 12 ]

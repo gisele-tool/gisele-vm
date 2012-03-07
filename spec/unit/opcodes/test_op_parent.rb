@@ -3,8 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_parent" do
 
-      let(:list){ ProgList.memory             }
-      let(:vm)  { Kernel.new list, [], @child }
+      let(:kern){ kernel(@child) }
 
       context 'with a parent' do
 
@@ -14,9 +13,9 @@ module Gisele
         end
 
         it 'puts the parent of the current prog on the stack' do
-          vm.stack = [ ]
-          vm.op_parent
-          vm.stack.should eq([ list.fetch(@parent) ])
+          kern.stack = [ ]
+          kern.op_parent
+          kern.stack.should eq([ list.fetch(@parent) ])
         end
 
       end
@@ -28,9 +27,9 @@ module Gisele
         end
 
         it 'puts the parent of the current prog on the stack' do
-          vm.stack = [ ]
-          vm.op_parent
-          vm.stack.should eq([ nil ])
+          kern.stack = [ ]
+          kern.op_parent
+          kern.stack.should eq([ nil ])
         end
 
       end

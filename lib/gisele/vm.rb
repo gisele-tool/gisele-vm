@@ -28,6 +28,8 @@ module Gisele
       yield(self) if block_given?
     end
 
+    ### Logging
+
     def logger=(arg)
       unless arg.nil? or Logger===arg
         raise ArgumentError, "Invalid logger: #{arg.inspect}"
@@ -37,6 +39,8 @@ module Gisele
     def_delegators :logger, :debug,  :info,  :warn,  :error,  :fatal
     def_delegators :logger, :debug?, :info?, :warn?, :error?, :fatal?
 
+    ### ProgList
+
     def proglist=(arg)
       unless ProgList===arg
         raise ArgumentError, "Invalid prog list: #{arg.inspect}"
@@ -44,6 +48,8 @@ module Gisele
       @proglist = arg
     end
     def_delegators :proglist, :pick, :fetch, :save
+
+    ### EventManager
 
     def event_manager=(arg)
       @event_manager = case arg
@@ -54,6 +60,12 @@ module Gisele
       end
     end
     def_delegators :event_manager, :event
+
+  private
+
+    def kernel(puid)
+      Kernel.new(self, Kernel.bytecode, puid)
+    end
 
   end
 end

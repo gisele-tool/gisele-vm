@@ -3,17 +3,16 @@ module Gisele
   class VM
     describe Kernel, "notify macro" do
 
-      let(:list)  { ProgList.memory                           }
-      let(:vm)    { Kernel.new list, Kernel.bytecode, @child  }
-      let(:parent){ list.fetch(@parent)                       }
-      let(:child) { list.fetch(@child)                        }
+      let(:kern)  { kernel(@child)      }
+      let(:parent){ list.fetch(@parent) }
+      let(:child) { list.fetch(@child)  }
 
       subject do
-        vm.run(:notify, [ ])
+        kern.run(:notify, [ ])
       end
 
       after do
-        vm.stack.should be_empty
+        kern.stack.should be_empty
       end
 
       context 'when the child has a parent' do

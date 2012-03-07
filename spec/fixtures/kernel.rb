@@ -2,6 +2,7 @@ module Gisele
   class VM
     class Kernel
 
+      attr_accessor :bytecode
       attr_accessor :opcodes
       attr_accessor :stack
 

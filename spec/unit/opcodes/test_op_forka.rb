@@ -3,10 +3,10 @@ module Gisele
   class VM
     describe Kernel, "op_fork" do
 
-      let(:vm){ Kernel.new nil, [], 17 }
+      let(:kern){ kernel(17) }
 
       after do
-        top = vm.stack.last
+        top = kern.stack.last
         top.should be_a(Array)
         top.size.should eq(2)
         top.each{|p| p.should be_a(Prog)}
@@ -21,13 +21,13 @@ module Gisele
       context 'with an array of labels' do
 
         subject do
-          vm.stack = [ ]
-          vm.op_forka([ :s0, :s1 ])
+          kern.stack = [ ]
+          kern.op_forka([ :s0, :s1 ])
         end
 
         it 'puts the resulting array on the stack' do
           subject
-          vm.stack.size.should eq(1)
+          kern.stack.size.should eq(1)
         end
 
       end # with a label
@@ -35,13 +35,13 @@ module Gisele
       context 'without argument' do
 
         subject do
-          vm.stack = [ [:s0, :s1] ]
-          vm.op_forka
+          kern.stack = [ [:s0, :s1] ]
+          kern.op_forka
         end
 
         it 'takes the labels from the stack' do
           subject
-          vm.stack.size.should eq(1)
+          kern.stack.size.should eq(1)
         end
 
       end # without label

@@ -3,11 +3,11 @@ module Gisele
   class VM
     describe Kernel, "op_ifezero" do
 
-      subject{
+      subject do
         kernel.opcodes = [ [:ifezero], [:push, 12], [:push, 24] ]
         kernel.run(nil, stack)
         kernel.stack
-      }
+      end
 
       context 'when zero is on the stack' do
         let(:stack){ [ 0 ] }

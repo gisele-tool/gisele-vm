@@ -3,9 +3,8 @@ module Gisele
   class VM
     describe Kernel, "listen macro" do
 
-      let(:list)  { ProgList.memory                           }
-      let(:vm)    { Kernel.new list, Kernel.bytecode, @parent }
-      let(:parent){ list.fetch(@parent)                       }
+      let(:kern)  { kernel(@parent)     }
+      let(:parent){ list.fetch(@parent) }
       let(:wlist) { {:ping => :sPing, :pong => :sPong}        }
 
       before do
@@ -14,11 +13,11 @@ module Gisele
       end
 
       subject do
-        vm.run(:listen, [ wlist ])
+        kern.run(:listen, [ wlist ])
       end
 
       after do
-        vm.stack.should be_empty
+        kern.stack.should be_empty
       end
 
       it 'sets the events as waitlist' do

@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'gisele-vm'
 require_relative 'fixtures/kernel'
+require_relative 'fixtures/vm'
 
 def fixtures
   Path.dir/:fixtures
@@ -8,9 +9,16 @@ end
 
 module SpecHelpers
 
+  def events
+    @events ||= []
+  end
+
   def vm
     @vm ||= Gisele::VM.new do |vm|
-      vm.proglist = Gisele::VM::ProgList.memory
+      vm.proglist      = Gisele::VM::ProgList.memory
+      vm.event_manager = proc{|evt|
+        events << evt
+      }
     end
   end
 
@@ -18,10 +26,8 @@ module SpecHelpers
     vm.proglist
   end
 
-  def kernel
-    @kernel ||= begin
-      Gisele::VM::Kernel.new vm
-    end
+  def kernel(puid = nil)
+    @kernel ||= vm.kernel(puid)
   end
 
   def capture_io

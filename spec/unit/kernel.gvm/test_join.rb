@@ -3,9 +3,8 @@ module Gisele
   class VM
     describe Kernel, "join macro" do
 
-      let(:list)  { ProgList.memory                           }
-      let(:vm)    { Kernel.new list, Kernel.bytecode, @parent }
-      let(:parent){ list.fetch(@parent)                       }
+      let(:kern)  { kernel(@parent)     }
+      let(:parent){ list.fetch(@parent) }
 
       before do
         @parent = list.save Prog.new(:pc => :join, :waitlist => wlist, :waitfor => :children)
@@ -13,11 +12,11 @@ module Gisele
       end
 
       subject do
-        vm.run(:join, [ {:wake => :wakeat} ])
+        kern.run(:join, [ {:wake => :wakeat} ])
       end
 
       after do
-        vm.stack.should be_empty
+        kern.stack.should be_empty
       end
 
       context 'when the waitlist is not empty' do

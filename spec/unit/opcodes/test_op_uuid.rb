@@ -3,12 +3,12 @@ module Gisele
   class VM
     describe Kernel, "op_puid" do
 
-      let(:vm){ Kernel.new nil, [], :test_self }
+      let(:kern){ kernel(17) }
 
       it 'pushes the puid on top of the stack' do
-        vm.stack = [:hello]
-        vm.op_puid
-        vm.stack.should eq([:hello, :test_self])
+        kern.stack = [:hello]
+        kern.op_puid
+        kern.stack.should eq([:hello, 17])
       end
 
     end
