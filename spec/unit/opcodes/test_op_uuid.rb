@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_puid" do
 
-      let(:vm){ Kernel.new :test_self }
+      let(:vm){ Kernel.new nil, [], :test_self }
 
       it 'pushes the puid on top of the stack' do
         vm.stack = [:hello]

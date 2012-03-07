@@ -4,9 +4,9 @@ module Gisele
     describe Kernel, "react macro" do
 
       let(:list)  { ProgList.memory                           }
-      let(:vm)    { Kernel.new @parent, Bytecode.kernel, list }
+      let(:vm)    { Kernel.new list, Bytecode.kernel, @parent }
       let(:parent){ list.fetch(@parent)                       }
-      let(:wlist) { {:ping => :sPing, :pong => :sPong}    }
+      let(:wlist) { {:ping => :sPing, :pong => :sPong}        }
 
       before do
         @parent = list.save Prog.new(:pc => :react, :waitlist => wlist, :waitfor => :world)

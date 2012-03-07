@@ -1,19 +1,16 @@
 module Gisele
   class VM
     class Kernel
-      attr_reader :puid
-      attr_reader :stack
-      attr_reader :opcodes
-      attr_reader :proglist
-      attr_reader :event_interface
 
-      def initialize(puid = nil, bytecode = [], proglist = nil, event_interface = nil)
-        @puid     = puid
+      attr_reader :vm
+      attr_reader :puid
+
+      def initialize(vm = VM.new, bytecode = [], puid = nil)
+        @vm       = vm
         @bytecode = bytecode
-        @proglist = proglist || ProgList.memory
+        @puid     = puid
         @stack    = []
         @opcodes  = []
-        @event_interface = event_interface
       end
 
       def run(at = nil, stack = [])
@@ -58,17 +55,17 @@ module Gisele
       end
 
       def fetch(puid)
-        @proglist.fetch(puid)
+        vm.fetch(puid)
       end
 
       def save(prog)
-        @proglist.save(prog)
+        vm.save(prog)
       end
 
       # event manager
 
       def event(kind, args)
-        event_interface.call(kind, [ @puid ] + args) if event_interface
+        vm.event(kind, [ @puid ] + args)
       end
 
       include Opcodes

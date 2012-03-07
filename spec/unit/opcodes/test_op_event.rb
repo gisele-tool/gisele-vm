@@ -3,9 +3,9 @@ module Gisele
   class VM
     describe Kernel, "op_event" do
 
-      let(:vm){ Kernel.new 17, [], ProgList.memory, self }
+      let(:vm){ Kernel.new self, [], 17 }
 
-      def call(kind, args)
+      def event(kind, args)
         @called = [kind, args]
       end
 

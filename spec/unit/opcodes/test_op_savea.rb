@@ -3,13 +3,14 @@ module Gisele
   class VM
     describe Kernel, "op_save" do
 
-      let(:vm){ Kernel.new }
+      let(:list){ ProgList.memory }
+      let(:vm)  { Kernel.new list }
 
       before do
-        @puid0 = vm.proglist.save Prog.new
-        @puid1 = vm.proglist.save Prog.new
-        @at0 = vm.proglist.fetch(@puid0)
-        @at1 = vm.proglist.fetch(@puid1)
+        @puid0 = list.save Prog.new
+        @puid1 = list.save Prog.new
+        @at0 = list.fetch(@puid0)
+        @at1 = list.fetch(@puid1)
         vm.stack = [ [ @at0, @at1 ] ]
         vm.peek.each{|p| p.pc = 12}
       end
@@ -21,7 +22,7 @@ module Gisele
       after do
         top = vm.peek
         top.each do |puid|
-          vm.proglist.fetch(puid).pc.should eq(12)
+          list.fetch(puid).pc.should eq(12)
         end
       end
 

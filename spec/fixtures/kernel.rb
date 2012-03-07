@@ -1,10 +1,9 @@
 module Gisele
   class VM
     class Kernel
-      attr_reader :puid
+
       attr_accessor :opcodes
       attr_accessor :stack
-      attr_accessor :proglist
 
       public :push, :peek, :pop
 

@@ -4,7 +4,7 @@ module Gisele
     describe Kernel, "op_self" do
 
       let(:list){ ProgList.memory            }
-      let(:vm)  { Kernel.new @puid, [], list }
+      let(:vm)  { Kernel.new list, [], @puid }
 
       before do
         @puid = list.save Prog.new
@@ -13,7 +13,7 @@ module Gisele
       it 'puts the current prog on the stack' do
         vm.stack = [ ]
         vm.op_self
-        vm.stack.should eq([ vm.proglist.fetch(@puid) ])
+        vm.stack.should eq([ list.fetch(@puid) ])
       end
 
     end

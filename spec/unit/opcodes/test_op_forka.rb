@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_fork" do
 
-      let(:vm){ Kernel.new 17, [] }
+      let(:vm){ Kernel.new nil, [], 17 }
 
       after do
         top = vm.stack.last
