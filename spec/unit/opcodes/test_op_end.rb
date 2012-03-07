@@ -3,34 +3,35 @@ module Gisele
   class VM
     describe Kernel, "op_end" do
 
-      let(:list){ ProgList.memory        }
+      let(:list){ ProgList.memory            }
       let(:vm)  { Kernel.new @puid, [], list }
+      let(:prog){ vm.stack.last              }
 
       before {
-        @puid = list.save Prog.new(:parent => 17, :progress => true)
+        @puid = list.save Prog.new(:parent => 17, :progress => true, :waitfor => :enacter)
+        subject
       }
 
-      subject{
-        vm.stack = [ ]
+      subject do
         vm.op_end
-        vm.stack.last
-      }
+      end
 
       it 'sets the resulting prog on the stack' do
-        subject.should be_a(Prog)
+        prog.should be_a(Prog)
       end
 
       it 'is the current Prog' do
-        subject.puid.should eq(@puid)
-        subject.parent.should eq(17)
+        prog.puid.should eq(@puid)
+        prog.parent.should eq(17)
       end
 
       it 'is not scheduled' do
-        subject.progress.should be_false
+        prog.progress.should be_false
+        prog.waitfor.should eq(:none)
       end
 
       it 'has the correct program counter' do
-        subject.pc.should eq(-1)
+        prog.pc.should eq(-1)
       end
 
       it 'is not saved' do

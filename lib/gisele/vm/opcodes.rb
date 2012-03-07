@@ -148,7 +148,7 @@ module Gisele
       # Sets the program counter of the current Prog to `-1`. Unschedule it. Push the
       # unsaved Prog on the stack.
       def op_end
-        push current_prog(:pc => -1, :progress => false)
+        push current_prog(:pc => -1, :progress => false, :waitfor => :none)
       end
 
       # Set the `progress` attribute to true on the top program
