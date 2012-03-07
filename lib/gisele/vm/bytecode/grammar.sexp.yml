@@ -2,7 +2,7 @@ parser:
   grammar.citrus
 rules:
   gvm:
-    - [ block+ ]
+    - [ block* ]
   block:
     - [ label, instruction+ ]
   label:

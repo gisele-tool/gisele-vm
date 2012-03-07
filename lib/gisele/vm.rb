@@ -21,11 +21,18 @@ module Gisele
     # The event manager used in this VM
     attr_reader :event_manager
 
-    def initialize
+    def initialize(bytecode = [:gvm])
+      self.bytecode       = bytecode
       self.logger         = Logger.new($stdout)
       self.proglist       = ProgList.memory.threadsafe
       self.event_manager  = EventManager.new
       yield(self) if block_given?
+    end
+
+    ### Bytecode
+
+    def bytecode=(bytecode)
+      @bytecode = Kernel.bytecode + Bytecode.coerce(bytecode)
     end
 
     ### Logging
@@ -64,7 +71,7 @@ module Gisele
   private
 
     def kernel(puid)
-      Kernel.new(self, Kernel.bytecode, puid)
+      Kernel.new(self, @bytecode, puid)
     end
 
   end
