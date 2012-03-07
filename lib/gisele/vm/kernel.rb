@@ -68,7 +68,7 @@ module Gisele
       # event manager
 
       def event(kind, args)
-        event_interface.call(@puid, kind, args) if event_interface
+        event_interface.call(kind, [ @puid ] + args) if event_interface
       end
 
       include Opcodes
