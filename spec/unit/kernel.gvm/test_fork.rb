@@ -26,11 +26,11 @@ module Gisele
 
       it 'fork and schedules self and children correctly' do
         expected = Relation([
-          {:puid => 0, :pc => :joinat, :parent => 0, :progress => false},
-          {:puid => 1, :pc => :fat1,   :parent => 0, :progress => true},
-          {:puid => 2, :pc => :fat2,   :parent => 0, :progress => true}
+          {:puid => 0, :pc => :joinat, :parent => 0, :progress => false, :waitfor => :children},
+          {:puid => 1, :pc => :fat1,   :parent => 0, :progress => true,  :waitfor => :enacter },
+          {:puid => 2, :pc => :fat2,   :parent => 0, :progress => true,  :waitfor => :enacter }
         ])
-        list.to_relation.project([:puid, :pc, :parent, :progress]).should eq(expected)
+        list.to_relation.project([:puid, :pc, :parent, :progress, :waitfor]).should eq(expected)
       end
 
     end

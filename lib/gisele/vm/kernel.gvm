@@ -120,6 +120,8 @@ fork:    forka                      # [ joinat, [ Prog, ... ] ]
          set :waitlist              # [ joinat, Prog ]
          flip                       # [ Prog, joinat ]
          set :pc                    # [ Prog ]
+         push :children             # [ Prog, :children ]
+         set :waitfor               # [ Prog ]
          then :sleep_it             # [ ]
 
 # Given a Hash of events, if the waitlist of the current prog is empty, schedule execution

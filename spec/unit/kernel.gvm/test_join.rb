@@ -8,7 +8,7 @@ module Gisele
       let(:parent){ list.fetch(@parent)                       }
 
       before do
-        @parent = list.save Prog.new(:pc => :join, :waitlist => wlist)
+        @parent = list.save Prog.new(:pc => :join, :waitlist => wlist, :waitfor => :children)
         subject
       end
 
@@ -22,6 +22,7 @@ module Gisele
         it 'keeps the program sleeping' do
           parent.pc.should eq(:join)
           parent.progress.should be_false
+          parent.waitfor.should eq(:children)
           pending{ vm.stack.should be_empty }
         end
       end
@@ -36,6 +37,7 @@ module Gisele
         it 'schedules the program at :wakeat' do
           parent.pc.should eq(:wakeat)
           parent.waitlist.should eq({})
+          parent.waitfor.should eq(:enacter)
           parent.progress.should be_true
         end
       end
