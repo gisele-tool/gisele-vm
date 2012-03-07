@@ -16,7 +16,7 @@ module Gisele
         @event_interface = event_interface
       end
 
-      def run(at = nil, stack = [], trace = false)
+      def run(at = nil, stack = [])
         @stack = stack
         enlist_bytecode_at(at) if at
         until @opcodes.empty?
@@ -27,21 +27,7 @@ module Gisele
 
     private
 
-      def current_prog
-        fetch(puid)
-      end
-
-      def fork(at)
-        Prog.new(:parent => puid, :pc => at, :waitfor => :enacter)
-      end
-
-      def event(kind, args)
-        event_interface.call(@puid, kind, args) if event_interface
-      end
-
-      def enlist_bytecode_at(label)
-        @opcodes += @bytecode[label]
-      end
+      ### stack
 
       def push(x)
         @stack << x
@@ -59,6 +45,18 @@ module Gisele
         @stack.last
       end
 
+      ### code
+
+      def enlist_bytecode_at(label)
+        @opcodes += @bytecode[label]
+      end
+
+      ### prog list
+
+      def fork(at)
+        Prog.new(:parent => puid, :pc => at, :waitfor => :enacter)
+      end
+
       def fetch(puid)
         @proglist.fetch(puid)
       end
@@ -69,6 +67,12 @@ module Gisele
         else
           @proglist.save(prog)
         end
+      end
+
+      # event manager
+
+      def event(kind, args)
+        event_interface.call(@puid, kind, args) if event_interface
       end
 
       include Opcodes
