@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_flip" do
 
-      let(:vm){ Kernel.new 0, [] }
+      let(:vm){ Kernel.new }
 
       before do
         vm.stack = [ 1, 2, 3 ]

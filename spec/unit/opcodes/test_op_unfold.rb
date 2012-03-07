@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_unfold" do
 
-      let(:vm){ Kernel.new 0, [] }
+      let(:vm){ Kernel.new }
 
       it 'unfolds the op array' do
         vm.stack = [ :a, [:b, :c] ]

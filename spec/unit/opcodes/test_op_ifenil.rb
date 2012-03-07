@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_ifenil" do
 
-      let(:vm){ Kernel.new(nil, []) }
+      let(:vm){ Kernel.new }
 
       subject{
         vm.opcodes = [ [:ifenil], [:push, 12], [:push, 24] ]

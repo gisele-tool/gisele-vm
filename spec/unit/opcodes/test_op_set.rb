@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_set" do
 
-      let(:vm){ Kernel.new 0, [] }
+      let(:vm){ Kernel.new }
 
       after do
         vm.stack.first.should eq(receiver)

@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_send" do
 
-      let(:vm){ Kernel.new 0, [] }
+      let(:vm){ Kernel.new }
 
       it 'pushes the result on the stack' do
         vm.stack = [ 1, [ 2 ] ]

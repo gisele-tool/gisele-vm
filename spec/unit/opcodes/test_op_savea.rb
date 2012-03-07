@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_save" do
 
-      let(:vm){ Kernel.new 0, [] }
+      let(:vm){ Kernel.new }
 
       before do
         @puid0 = vm.proglist.save Prog.new

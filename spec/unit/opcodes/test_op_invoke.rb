@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_invoke" do
 
-      let(:vm){ Kernel.new 0, [] }
+      let(:vm){ Kernel.new }
 
       def hello(*args)
         @args = args
