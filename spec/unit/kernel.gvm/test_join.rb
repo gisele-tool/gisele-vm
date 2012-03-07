@@ -16,22 +16,21 @@ module Gisele
         vm.run(:join, [ {:wake => :wakeat} ])
       end
 
+      after do
+        vm.stack.should be_empty
+      end
+
       context 'when the waitlist is not empty' do
         let(:wlist){ {12 => true, 13 => true} }
 
         it 'keeps the program sleeping' do
           parent.pc.should eq(:join)
           parent.waitfor.should eq(:children)
-          pending{ vm.stack.should be_empty }
         end
       end
 
       context 'when the waitlist is empty' do
         let(:wlist){ {} }
-
-        after do
-          vm.stack.should be_empty
-        end
 
         it 'schedules the program at :wakeat' do
           parent.pc.should eq(:wakeat)

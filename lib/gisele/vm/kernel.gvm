@@ -26,6 +26,16 @@ resume:  self                       # take the current Prog
          save
          pop
 
+# Given a Prog on the stack, simply saves it.
+#
+# INPUT:  [ Prog ] (aka `peek`)
+# OUTPUT: [ ]
+# PRE:    - `peek` should have been modified
+# POST:   - `peek` is now saved
+#
+save_it: save
+         pop
+
 # Given a label on the stack, schedule the current Prog for execution there. The effective
 # execution will only take place when the Prog will be selected for running.
 #
@@ -43,28 +53,7 @@ schedule_at: self                       # [ pc, Prog ]
              set :waitfor               # [ Prog ]
              push {}                    # [ Prog, {} ]
              set :waitlist              # [ Prog ]
-             save                       # [ puid ]
-             pop                        # [ ]
-
-# Given a Prog on the stack, unschedule and saves it.
-#
-# INPUT:  [ Prog ] (aka `peek`)
-# OUTPUT: [ ]
-# PRE:    - `peek` should be current scheduled
-# POST:   - `peek` is not scheduled (and saved)
-#
-sleep_it: save
-          pop
-
-# Let the current program fall asleep.
-#
-# INPUT:  [ ]
-# OUTPUT: [ ]  (i.e. no changes)
-# PRE:    - the current program should be progressing
-# POST:   - the current program is unscheduled (program counter unchanged)
-#
-sleep:   self
-         then :sleep_it
+             then :save_it              # [ ]
 
 # Given an event Hash on the stack. Registers it as waitlist. Unschedule the current prog
 # for continuation at :react.
@@ -82,14 +71,14 @@ listen:  self                       # [ events, Prog ]
          set  :waitfor              # [ Prog ]
          push :react                # [ Prog, :react ]
          set  :pc                   # [ Prog ]
-         then :sleep_it             # [ ]
+         then :save_it              # [ ]
 
 # Given an event on the stack, get the current Prog, check if it waits for this particular
 # event. If yes, schedule the Prog as specified in its wait list. Otherwise, return to
 # sleep.
 #
 # INPUT:  [ `event` ]
-# OUTPUT: [ ] or [ nil ]
+# OUTPUT: [ ]
 # PRE:    - the current Prog should be waiting for events (in its waitlist)
 # POST:   - if `event` is waited for, the current Prog is scheduled at the corresponding
 #           location.
@@ -100,7 +89,7 @@ react:   self                       # [ event, Prog ]
          flip                       # [ waitlist, event ]
          getr                       # [ pc/nil ]
          ifenil                     #
-         then :sleep                # [ nil ]
+         pop                        # [ ]
          then :schedule_at          # [ ]
 
 # Fork a list of children at specified locations. Wait for joining them at a label
@@ -123,13 +112,13 @@ fork:    forka                      # [ joinat, [ Prog, ... ] ]
          set :pc                    # [ Prog ]
          push :children             # [ Prog, :children ]
          set :waitfor               # [ Prog ]
-         then :sleep_it             # [ ]
+         then :save_it              # [ ]
 
 # Given a Hash of events, if the waitlist of the current prog is empty, schedule execution
 # at the label associated to the `wake` event. Otherwise simply return asleep.
 #
 # INPUT:  [ {:wake => `wakeat`} ] (aka `events`)
-# OUTPUT: [ ] or [ nil ]
+# OUTPUT: [ ]
 # PRE:    - `events` must include a :wake key
 #         - `wakeat` must be an existing label
 # POST:   - if the waitlist of the current prog is empty, it is scheduled at `wakeat`
@@ -148,8 +137,8 @@ join:    self                       # [ {evt...}, Prog ]
          flip                       # [ label/nil, {evt...} ]
          pop                        # [ label/nil ]
          ifenil                     # ...
-         then :sleep
-         then :schedule_at
+         pop                        # [ ]
+         then :schedule_at          # [ ]
 
 # Expects a Prog on the stack (typically the parent). Remove the current puid from its
 # waitlist and schedule it.
@@ -166,8 +155,7 @@ notify_it:  get :waitlist              # [ Prog, waitlist ]
             set :waitlist              # [ Prog ]
             push :enacter              # [ Prog, :enacter ]
             set :waitfor               # [ Prog ]
-            save                       # [ puid ]
-            pop                        # [ ]
+            then :save_it              # [ ]
 
 # End the current Prog then notify its parent through notify_it.
 #

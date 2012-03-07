@@ -17,12 +17,12 @@ module Gisele
         vm.run(:react, [ event ])
       end
 
+      after do
+        vm.stack.should be_empty
+      end
+
       context 'when a recognized event' do
         let(:event){ :ping }
-
-        after do
-          vm.stack.should be_empty
-        end
 
         it 'schedules the current Prog correctly' do
           parent.pc.should eq(:sPing)
@@ -38,7 +38,6 @@ module Gisele
           parent.pc.should eq(:react)
           parent.waitfor.should eq(:world)
           parent.waitlist.should eq(wlist)
-          pending{ vm.stack.should be_empty }
         end
       end
 
