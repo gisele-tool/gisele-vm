@@ -8,7 +8,6 @@ class Gisele::VM
         :pc       => 12,
         :waitfor => :enacter,
         :waitlist => {:a => true},
-        :progress => true,
         :input    => [ :event ] }
     }
 
@@ -19,7 +18,6 @@ class Gisele::VM
       s.pc.should       eq(0)
       s.waitfor.should  eq(:none)
       s.waitlist.should eq({})
-      s.progress.should eq(false)
       s.input.should    eq([])
     end
 
@@ -30,7 +28,6 @@ class Gisele::VM
       s.pc.should       eq(12)
       s.waitfor.should  eq(:enacter)
       s.waitlist.should eq({:a => true})
-      s.progress.should eq(true)
       s.input.should    eq([:event])
     end
 

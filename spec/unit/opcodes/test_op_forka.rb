@@ -12,7 +12,7 @@ module Gisele
         top.each{|p| p.should be_a(Prog)}
         top.each{|p|
           p.parent.should eq(17)
-          p.progress.should be_true
+          p.waitfor.should eq(:enacter)
           p.puid.should be_nil
         }
         top.map{|p| p.pc}.should eq([:s0, :s1])

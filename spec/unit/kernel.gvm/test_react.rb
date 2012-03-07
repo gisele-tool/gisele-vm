@@ -27,7 +27,6 @@ module Gisele
         it 'schedules the current Prog correctly' do
           parent.pc.should eq(:sPing)
           parent.waitfor.should eq(:enacter)
-          parent.progress.should be_true
           parent.waitlist.should eq({})
         end
       end
@@ -38,7 +37,6 @@ module Gisele
         it 'sleeps the current Prog' do
           parent.pc.should eq(:react)
           parent.waitfor.should eq(:world)
-          parent.progress.should be_false
           parent.waitlist.should eq(wlist)
           pending{ vm.stack.should be_empty }
         end

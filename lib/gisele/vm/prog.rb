@@ -6,7 +6,6 @@ module Gisele
       attr_accessor :pc
       attr_accessor :waitfor
       attr_reader   :waitlist
-      attr_accessor :progress
       attr_accessor :input
 
       def initialize(attrs = {})
@@ -15,7 +14,6 @@ module Gisele
         @pc       = attrs[:pc]       || 0
         @waitfor  = attrs[:waitfor]  || :none
         @waitlist = attrs[:waitlist] || {}
-        @progress = attrs[:progress] || false
         @input    = attrs[:input]    || []
       end
 
@@ -30,7 +28,6 @@ module Gisele
           :pc       => pc,
           :waitfor  => waitfor,
           :waitlist => waitlist,
-          :progress => progress,
           :input    => input }
       end
 

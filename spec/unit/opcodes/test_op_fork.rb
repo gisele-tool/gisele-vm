@@ -26,7 +26,7 @@ module Gisele
         end
 
         it 'is scheduled' do
-          subject.progress.should be_true
+          subject.waitfor.should eq(:enacter)
         end
 
         it 'has the correct program counter' do

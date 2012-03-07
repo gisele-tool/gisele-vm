@@ -11,8 +11,8 @@ module Gisele
       }
 
       it 'creates a fresh new Prog instance and schedules it' do
-        expected = Relation(:pc => :A_start, :progress => true)
-        subject.project([:pc, :progress]).should eq(expected)
+        expected = Relation(:pc => :A_start, :waitfor => :enacter)
+        subject.project([:pc, :waitfor]).should eq(expected)
       end
 
     end

@@ -21,7 +21,6 @@ run:     self
 resume:  self                       # take the current Prog
          push :enacter              #
          set :waitfor               #
-         schedule                   # schedule it
          flip                       # [ input, prog ] -> [ prog, input ]
          set :input                 # prog.input = input
          save
@@ -42,7 +41,6 @@ schedule_at: self                       # [ pc, Prog ]
              set :pc                    # [ Prog ]
              push :enacter              # [ Prog, :enacter ]
              set :waitfor               # [ Prog ]
-             schedule                   # [ Prog ]
              push {}                    # [ Prog, {} ]
              set :waitlist              # [ Prog ]
              save                       # [ puid ]
@@ -55,8 +53,7 @@ schedule_at: self                       # [ pc, Prog ]
 # PRE:    - `peek` should be current scheduled
 # POST:   - `peek` is not scheduled (and saved)
 #
-sleep_it: unschedule
-          save
+sleep_it: save
           pop
 
 # Let the current program fall asleep.
@@ -169,7 +166,6 @@ notify_it:  get :waitlist              # [ Prog, waitlist ]
             set :waitlist              # [ Prog ]
             push :enacter              # [ Prog, :enacter ]
             set :waitfor               # [ Prog ]
-            schedule                   # [ Prog ]
             save                       # [ puid ]
             pop                        # [ ]
 
@@ -185,8 +181,6 @@ notify_it:  get :waitlist              # [ Prog, waitlist ]
 notify:     self                       # [ Prog ]
             push -1                    # [ Prog, -1 ]
             set :pc                    # [ Prog ]
-            push false                 # [ Prog, false ]
-            set :progress              # [ Prog ]
             push :none                 # [ Prog, :none ]
             set :waitfor               # [ Prog ]
             save                       # [ puid ]

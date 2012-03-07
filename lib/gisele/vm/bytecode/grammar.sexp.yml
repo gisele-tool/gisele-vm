@@ -28,8 +28,6 @@ rules:
     - fetch
     - fork
     - forka
-    - schedule
-    - unschedule
     - save
     - savea
     # events
@@ -75,10 +73,6 @@ rules:
     - [ 'label_arg?' ]
   forka:
     - [ ]
-  schedule:
-    - []
-  unschedule:
-    - []
   save:
     - [ 'integer_arg?' ]
   savea:

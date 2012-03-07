@@ -6,7 +6,7 @@ module Gisele
       let(:agent){ Agent.new Path.dir/'code.gvm' }
 
       before do
-        @puid = agent.proglist.save Prog.new(:progress => false)
+        @puid = agent.proglist.save Prog.new(:waitfor => :world)
       end
 
       subject{
@@ -15,8 +15,8 @@ module Gisele
       }
 
       it 'creates a fresh new Prog instance and schedules it' do
-        expected = Relation(:puid => @puid, :progress => true, :input => [ :an_event ])
-        subject.project([:puid, :progress, :input]).should eq(expected)
+        expected = Relation(:puid => @puid, :waitfor => :enacter, :input => [ :an_event ])
+        subject.project([:puid, :waitfor, :input]).should eq(expected)
       end
 
     end

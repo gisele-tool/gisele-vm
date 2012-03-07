@@ -12,8 +12,6 @@ module Gisele
              :op_puid,
              :op_parent,
              :op_fetch,
-             :op_schedule,
-             :op_unschedule,
              :op_save,
              :op_savea,
              :op_pop,

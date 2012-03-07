@@ -29,8 +29,6 @@
    fold
    fold 3
    unfold
-   schedule
-   unschedule
    event
    event :hello
    get

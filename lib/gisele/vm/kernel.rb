@@ -34,7 +34,7 @@ module Gisele
       end
 
       def fork(at)
-        Prog.new(:parent => puid, :pc => at, :progress => true, :waitfor => :enacter)
+        Prog.new(:parent => puid, :pc => at, :waitfor => :enacter)
       end
 
       def event(kind, args)

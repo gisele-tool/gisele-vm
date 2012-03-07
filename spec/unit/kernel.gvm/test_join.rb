@@ -21,7 +21,6 @@ module Gisele
 
         it 'keeps the program sleeping' do
           parent.pc.should eq(:join)
-          parent.progress.should be_false
           parent.waitfor.should eq(:children)
           pending{ vm.stack.should be_empty }
         end
@@ -38,7 +37,6 @@ module Gisele
           parent.pc.should eq(:wakeat)
           parent.waitlist.should eq({})
           parent.waitfor.should eq(:enacter)
-          parent.progress.should be_true
         end
       end
 

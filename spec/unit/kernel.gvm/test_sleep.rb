@@ -8,7 +8,7 @@ module Gisele
       let(:parent){ list.fetch(@parent)                       }
 
       before do
-        @parent = list.save Prog.new(:progress => true)
+        @parent = list.save Prog.new(:waitfor => :world)
         subject
       end
 
@@ -21,7 +21,7 @@ module Gisele
       end
 
       it 'sleeps the current Prog' do
-        parent.progress.should be_false
+        parent.waitfor.should_not eq(:enacter)
       end
 
     end

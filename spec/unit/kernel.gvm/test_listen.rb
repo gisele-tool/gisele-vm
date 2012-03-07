@@ -6,7 +6,7 @@ module Gisele
       let(:list)  { ProgList.memory                           }
       let(:vm)    { Kernel.new @parent, Bytecode.kernel, list }
       let(:parent){ list.fetch(@parent)                       }
-      let(:wlist) { {:ping => :sPing, :pong => :sPong}    }
+      let(:wlist) { {:ping => :sPing, :pong => :sPong}        }
 
       before do
         @parent = list.save Prog.new(:pc => :listen)
@@ -31,7 +31,6 @@ module Gisele
 
       it 'unschedules the current Prog' do
         parent.waitfor.should eq(:world)
-        parent.progress.should be_false
       end
 
     end

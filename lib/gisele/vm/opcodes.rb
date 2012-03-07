@@ -139,16 +139,6 @@ module Gisele
         push at.map{|l| fork(l)}
       end
 
-      # Set the `progress` attribute to true on the top program
-      def op_schedule
-        peek.progress = true
-      end
-
-      # Set the `progress` attribute to false on the top program
-      def op_unschedule
-        peek.progress = false
-      end
-
       # Pops `n` programs from the stack and save them. Pushes their puid back on
       # the stack after saving, in the original order. `n` is considered 1 if unspecified.
       def op_save(n = nil)
