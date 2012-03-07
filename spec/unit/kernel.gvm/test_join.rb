@@ -4,7 +4,7 @@ module Gisele
     describe Kernel, "join macro" do
 
       let(:list)  { ProgList.memory                           }
-      let(:vm)    { Kernel.new list, Bytecode.kernel, @parent }
+      let(:vm)    { Kernel.new list, Kernel.bytecode, @parent }
       let(:parent){ list.fetch(@parent)                       }
 
       before do

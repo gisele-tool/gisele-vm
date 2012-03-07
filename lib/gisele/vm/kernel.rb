@@ -1,3 +1,4 @@
+require_relative 'kernel/opcodes'
 module Gisele
   class VM
     class Kernel
@@ -11,6 +12,10 @@ module Gisele
         @puid     = puid
         @stack    = []
         @opcodes  = []
+      end
+
+      def self.bytecode
+        @kernel_bytecode ||= Bytecode.parse(Path.dir/'kernel/kernel.gvm')
       end
 
       def run(at = nil, stack = [])

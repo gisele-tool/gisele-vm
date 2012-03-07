@@ -23,10 +23,6 @@ module Gisele
         Bytecode.new(Grammar.sexpr(source))
       end
 
-      def self.kernel
-        @kernel ||= Bytecode.parse(Path.dir/'kernel.gvm')
-      end
-
       def self.builder(namespace = nil)
         Builder.new(namespace)
       end
@@ -82,8 +78,6 @@ module Gisele
         end
       end
 
-      # Force loading the kernel as it might take time.
-      Bytecode.kernel
     end # class Bytecode
   end # class VM
 end # module Gisele

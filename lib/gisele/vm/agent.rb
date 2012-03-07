@@ -7,7 +7,7 @@ module Gisele
       attr_accessor :event_interface
 
       def initialize(bytecode, proglist = nil, event_interface = nil)
-        @bytecode        = Bytecode.coerce(bytecode) + Bytecode.kernel
+        @bytecode        = Bytecode.coerce(bytecode) + Kernel.bytecode
         @proglist        = proglist || ProgList.memory.threadsafe
         @event_interface = event_interface
         @bytecode.verify!

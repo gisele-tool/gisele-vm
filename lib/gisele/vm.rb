@@ -5,7 +5,6 @@ require_relative 'vm/prog_list'
 require_relative 'vm/event'
 require_relative 'vm/event_manager'
 require_relative 'vm/bytecode'
-require_relative 'vm/opcodes'
 require_relative 'vm/kernel'
 require_relative 'vm/agent'
 module Gisele

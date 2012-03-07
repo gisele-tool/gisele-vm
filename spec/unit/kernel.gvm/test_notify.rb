@@ -4,7 +4,7 @@ module Gisele
     describe Kernel, "notify macro" do
 
       let(:list)  { ProgList.memory                           }
-      let(:vm)    { Kernel.new list, Bytecode.kernel, @child  }
+      let(:vm)    { Kernel.new list, Kernel.bytecode, @child  }
       let(:parent){ list.fetch(@parent)                       }
       let(:child) { list.fetch(@child)                        }
 
