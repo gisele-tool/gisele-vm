@@ -40,7 +40,7 @@ grammar Gisele::VM::Bytecode::Grammar::Parser
   end
 
   rule int
-   ( '0' | [1-9] [0-9]*){ strip.to_i }
+   ( [\-]? '0' | [\-]? [1-9] [0-9]*){ strip.to_i }
   end
 
   rule symbol

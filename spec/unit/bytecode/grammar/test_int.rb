@@ -7,8 +7,12 @@ module Gisele
         Bytecode::Grammar.parse(src, :root => :int)
       end
 
-      it 'parses integers correctly' do
+      it 'parses positive integers correctly' do
         parse("101").value.should eq(101)
+      end
+
+      it 'parses negative integers correctly' do
+        parse("-101").value.should eq(-101)
       end
 
       it 'parses 0' do
