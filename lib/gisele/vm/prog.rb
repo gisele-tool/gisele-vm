@@ -31,13 +31,6 @@ module Gisele
           :input    => input }
       end
 
-      def merge(with)
-        merged = to_hash.merge(with.to_hash){|k,v1,v2|
-          k == :waitlist ? v1.merge(v2) : v2
-        }
-        Prog.new(merged)
-      end
-
       def dup
         super.tap do |c|
           c.waitlist = waitlist.dup

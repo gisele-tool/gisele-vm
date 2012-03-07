@@ -27,10 +27,8 @@ module Gisele
 
     private
 
-      def current_prog(with = nil)
-        prog = fetch(puid)
-        prog = prog.merge(with) if with
-        prog
+      def current_prog
+        fetch(puid)
       end
 
       def fork(at)
