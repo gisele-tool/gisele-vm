@@ -62,11 +62,7 @@ module Gisele
       end
 
       def save(prog)
-        if Array===prog
-          prog.map{|p| @proglist.save(p) }
-        else
-          @proglist.save(prog)
-        end
+        @proglist.save(prog)
       end
 
       # event manager

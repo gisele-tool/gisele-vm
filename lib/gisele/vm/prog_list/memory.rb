@@ -12,11 +12,11 @@ module Gisele
         end
 
         def save(prog)
-          prog = is_a_prog!(prog)
-          if prog.puid
-            save_prog(prog)
+          if Array===prog
+            prog.map{|p| save(p)}
           else
-            register_prog(prog)
+            prog = is_a_prog!(prog)
+            prog.puid ? save_prog(prog) : register_prog(prog)
           end
         end
 
