@@ -14,6 +14,10 @@ module Gisele
 
         let(:list){ Delegate.new(PingProgList.new) }
 
+        it 'allows getting the delegate object' do
+          list.delegate.should be_a(PingProgList)
+        end
+
         it 'delegates a fetch invocation' do
           list.fetch(0).should eq([:fetch, 0])
         end

@@ -3,6 +3,8 @@ module Gisele
     class ProgList
       class Delegate < ProgList
 
+        attr_reader :delegate
+
         def initialize(delegate)
           @delegate = delegate
         end
