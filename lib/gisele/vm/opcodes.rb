@@ -110,20 +110,25 @@ module Gisele
 
       # Push the current Prog on the stack.
       def op_self
-        push fetch(puid)
+        push vm.fetch(puid)
       end
 
       # Pushes the parent Prog of the executing program.
       def op_parent
-        cur = fetch(puid)
-        push(cur.parent==cur.puid ? nil : fetch(cur.parent))
+        cur = vm.fetch(puid)
+        push(cur.parent==cur.puid ? nil : vm.fetch(cur.parent))
       end
 
       # Fetches the Prog whose id is `puid` and pushes it on the stack. if `puid` is not
       # specified, pops it from the stack first.
       def op_fetch(puid = nil)
-        push fetch(puid || pop)
+        push vm.fetch(puid || pop)
       end
+
+      def fork(at)
+        Prog.new(:parent => puid, :pc => at, :waitfor => :enacter)
+      end
+      private :fork
 
       # Fork the current Prog. Set its program counter to `at` (taken from the stack if
       # not specified), and mark it as schedulable by default. The resulting Prog is
@@ -143,14 +148,14 @@ module Gisele
       # the stack after saving, in the original order. `n` is considered 1 if unspecified.
       def op_save(n = nil)
         progs = pop(n || 1)
-        puids = save(progs)
+        puids = vm.save(progs)
         puids.reverse.each{|puid| push(puid)}
       end
 
       # Expects an array of Progs on the stack. Similar to +save+ but in array version.
       # Push the resulting puids back on the stack in an array.
       def op_savea
-        push save(pop)
+        push vm.save(pop)
       end
 
       ### DATA STACK MANAGEMENT ##########################################################
@@ -193,7 +198,7 @@ module Gisele
       def op_event(kind = nil)
         kind ||= pop
         args = pop
-        event(kind, args)
+        vm.event(kind, [puid] + args)
       end
 
     end # module Opcodes

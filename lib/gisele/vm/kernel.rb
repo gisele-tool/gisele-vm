@@ -48,26 +48,6 @@ module Gisele
         @opcodes += @bytecode[label]
       end
 
-      ### prog list
-
-      def fork(at)
-        Prog.new(:parent => puid, :pc => at, :waitfor => :enacter)
-      end
-
-      def fetch(puid)
-        vm.fetch(puid)
-      end
-
-      def save(prog)
-        vm.save(prog)
-      end
-
-      # event manager
-
-      def event(kind, args)
-        vm.event(kind, [ @puid ] + args)
-      end
-
       include Opcodes
     end # class Kernel
   end # class VM
