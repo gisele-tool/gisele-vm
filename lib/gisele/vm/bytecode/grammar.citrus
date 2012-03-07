@@ -36,7 +36,11 @@ grammar Gisele::VM::Bytecode::Grammar::Parser
   end
 
   rule arg
-    int | symbol | string | constant | array | hash
+    boolean | int | symbol | string | constant | array | hash
+  end
+
+  rule boolean
+    ('true' | 'false'){ strip == 'true' }
   end
 
   rule int
