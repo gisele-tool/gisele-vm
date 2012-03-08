@@ -1,68 +1,27 @@
 module Gisele
   class VM
     class Agent
+      include Component
 
-      attr_reader   :bytecode
-      attr_reader   :proglist
-      attr_accessor :event_interface
-
-      def initialize(bytecode, proglist = nil, event_interface = nil)
-        @bytecode        = bytecode
-        @proglist        = proglist || ProgList.memory.threadsafe
-        @event_interface = event_interface
+      def initialize
+        @thread = nil
+        @mutex  = Mutex.new
       end
 
-      def start(label)
-        vm.start(label, [])
+      def connect(vm)
+        synchronize{ super }
+        @thread = Thread.new{ run }
       end
 
-      def run
-        @run = true
-        while run?
-          prog = @proglist.pick(:enacter) # blocking call
-          run_one(prog) if prog and run? # prog may be nil at release time
-        end
+      def disconnect
+        synchronize{ super }
+        @thread.join if @thread
       end
 
-      def runone(puid)
-        kernel(puid).run(:run, [ ])
-      end
+    private
 
-      def resume(puid, input = [])
-        vm.resume(puid, input)
-      end
-
-      def stop
-        @run = false
-        @proglist.release
-      end
-
-      def dump
-        @proglist.to_relation
-      end
-
-      def run_one(prog)
-        vm.progress(prog.puid)
-      rescue Interrupt
-        stop
-      rescue Exception => ex
-        $stderr.puts "Fatal exception (#{prog.puid}): #{ex.message}"
-        $stderr.puts ex.backtrace.join("\n")
-      end
-
-      def run?
-        @run
-      end
-
-      def vm
-        VM.new(bytecode) do |vm|
-          vm.proglist      = @proglist
-          vm.event_manager = @event_interface if @event_interface
-        end
-      end
-
-      def kernel(puid = nil)
-        Kernel.new vm, puid
+      def synchronize(&bl)
+        @mutex.synchronize(&bl)
       end
 
     end # class Agent
