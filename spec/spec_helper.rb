@@ -7,6 +7,8 @@ def fixtures
   Path.dir/:fixtures
 end
 
+(Path.dir/'unit/shared').glob("**/*.rb").each{|f| require(f.without_extension)}
+
 module SpecHelpers
 
   def events

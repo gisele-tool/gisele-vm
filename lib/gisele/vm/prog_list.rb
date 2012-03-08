@@ -5,6 +5,7 @@ require_relative 'prog_list/end_of_file'
 module Gisele
   class VM
     class ProgList
+      include Component
 
       def self.new(*args)
         raise "ProgList is an abstract class" if self == ProgList

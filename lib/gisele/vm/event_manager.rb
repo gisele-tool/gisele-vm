@@ -1,6 +1,7 @@
 module Gisele
   class VM
     class EventManager
+      include Component
 
       def initialize(&proc)
         @proc = proc
@@ -10,16 +11,10 @@ module Gisele
         if @proc
           @proc.call(event)
         else
-          puts event.to_s
+          info(event.to_s)
         end
       rescue Exception => ex
-        log_error(event, ex) if logger rescue nil
-      end
-
-    private
-
-      def log_error(event, error)
-        logger.error "Error when processing `#{event.to_s}`\n\t#{error.message}"
+        warn "Error when processing `#{event.to_s}`\n\t#{ex.message}" rescue nil
       end
 
     end # class EventManager

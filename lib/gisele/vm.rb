@@ -1,6 +1,8 @@
 require 'logger'
 require 'forwardable'
 require_relative 'vm/errors'
+require_relative 'vm/null_object'
+require_relative 'vm/component'
 require_relative 'vm/prog'
 require_relative 'vm/prog_list'
 require_relative 'vm/event'
