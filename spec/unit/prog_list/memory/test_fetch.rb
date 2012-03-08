@@ -26,14 +26,14 @@ class Gisele::VM
 
     it 'raises an ArgumentError if arg is not an PUID' do
       lambda{
-        list.fetch(self)
-      }.should raise_error(ArgumentError)
+        list.fetch(:blih)
+      }.should raise_error(InvalidPUIDError, "Invalid puid: `:blih`")
     end
 
     it 'raises an InvalidPUIDError if arg is invalid' do
       lambda{
         list.fetch(12)
-      }.should raise_error(InvalidPUIDError)
+      }.should raise_error(InvalidPUIDError, "Invalid puid: `12`")
     end
 
   end

@@ -75,17 +75,26 @@ module Gisele
     ### Kernel
 
     def start(at, input)
+      at    = valid_label!(at)
+      input = valid_input!(input)
       stack = kernel(nil).run(:start, [ input, at ])
       stack.first
     end
 
     def resume(puid, input)
-      prog = fetch(puid)
+      prog  = fetch(puid)
+      input = valid_input!(input)
+      unless prog.waitfor == :world
+        raise InvalidStateError, "Prog `#{puid}` does not wait for world stimuli"
+      end
       kernel(prog).run(:resume, [ input ])
     end
 
     def progress(puid)
       prog = fetch(puid)
+      unless prog.waitfor == :enacter
+        raise InvalidStateError, "Prog `#{puid}` does not wait for enactement progress"
+      end
       kernel(prog).run(:progress, [ ])
     end
 
@@ -93,6 +102,20 @@ module Gisele
 
     def kernel(prog = nil)
       Kernel.new(self, prog)
+    end
+
+    def valid_label!(at)
+      unless bytecode[at]
+        raise InvalidLabelError, "Unknown label: `#{at.inspect}`"
+      end
+      at
+    end
+
+    def valid_input!(input)
+      unless Array===input
+        raise InvalidInputError, "Invalid VM input: `#{input.inspect}`"
+      end
+      input
     end
 
   end

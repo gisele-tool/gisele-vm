@@ -57,13 +57,13 @@ module Gisele
 
         def is_a_valid_puid!(puid)
           case puid
-          when Integer
-            raise InvalidPUIDError, "Invalid puid: #{puid}" unless valid_puid?(puid)
-            puid
           when /^\d+$/
             is_a_valid_puid! Integer(puid)
           else
-            raise ArgumentError, "Not an PUID: #{puid}"
+            unless valid_puid?(puid)
+              raise InvalidPUIDError, "Invalid puid: `#{puid.inspect}`"
+            end
+            puid
           end
         end
 

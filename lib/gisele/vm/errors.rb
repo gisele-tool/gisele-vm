@@ -7,6 +7,15 @@ module Gisele
     class InvalidBytecodeError < Error
     end # class InvalidBytecodeError
 
+    class InvalidLabelError < Error
+    end # class InvalidLabelError
+
+    class InvalidInputError < Error
+    end # class InvalidInputError
+
+    class InvalidStateError < Error
+    end # class InvalidStateError
+
     class BadUsageError < Error
     end # BadUsageError
 
