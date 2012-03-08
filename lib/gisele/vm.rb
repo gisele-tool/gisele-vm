@@ -10,6 +10,7 @@ require_relative 'vm/event_manager'
 require_relative 'vm/bytecode'
 require_relative 'vm/kernel'
 require_relative 'vm/agent'
+require_relative 'vm/lifecycle'
 module Gisele
   class VM
     extend Forwardable
@@ -27,6 +28,7 @@ module Gisele
     attr_reader :event_manager
 
     def initialize(bytecode = [:gvm])
+      init_lifecycle
       self.bytecode       = bytecode
       self.logger         = Logger.new($stdout)
       self.proglist       = ProgList.memory.threadsafe
@@ -98,6 +100,14 @@ module Gisele
         raise InvalidStateError, "Prog `#{puid}` does not wait for enactement progress"
       end
       kernel(prog).run(:progress, [ ])
+    end
+
+    ### Lifecycle
+
+    include Lifecycle
+
+    def components
+      [ proglist, event_manager ]
     end
 
   private
