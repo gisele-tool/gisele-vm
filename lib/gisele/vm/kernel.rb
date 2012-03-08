@@ -25,6 +25,7 @@ module Gisele
           op = @opcodes.shift
           send :"op_#{op.first}", *op[1..-1]
         end
+        @stack
       end
 
     private

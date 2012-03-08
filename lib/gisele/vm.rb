@@ -75,7 +75,8 @@ module Gisele
     ### Kernel
 
     def start(at, input)
-      kernel(nil).run(:start, [ input, at ])
+      stack = kernel(nil).run(:start, [ input, at ])
+      stack.first
     end
 
     def resume(puid, input)
