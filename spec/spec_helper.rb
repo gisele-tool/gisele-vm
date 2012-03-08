@@ -26,8 +26,11 @@ module SpecHelpers
     vm.proglist
   end
 
-  def kernel(puid = nil)
-    @kernel ||= vm.kernel(puid)
+  def kernel(prog = nil)
+    @kernel ||= begin
+      prog = list.fetch(prog) if Integer===prog
+      vm.kernel(prog)
+    end
   end
 
   def capture_io

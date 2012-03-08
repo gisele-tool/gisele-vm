@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_fork" do
 
-      let(:kern){ kernel(17) }
+      let(:kern){ kernel(Prog.new :puid => 17) }
 
       after do
         top = kern.stack.last

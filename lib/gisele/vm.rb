@@ -80,17 +80,19 @@ module Gisele
     end
 
     def resume(puid, input)
-      kernel(puid).run(:resume, [ input ])
+      prog = fetch(puid)
+      kernel(prog).run(:resume, [ input ])
     end
 
     def progress(puid)
-      kernel(puid).run(:progress, [ ])
+      prog = fetch(puid)
+      kernel(prog).run(:progress, [ ])
     end
 
   private
 
-    def kernel(puid = nil)
-      Kernel.new(self, puid)
+    def kernel(prog = nil)
+      Kernel.new(self, prog)
     end
 
   end

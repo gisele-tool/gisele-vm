@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_event" do
 
-      let(:kern){ kernel(17)                       }
+      let(:kern){ kernel(Prog.new(:puid => 17))    }
       let(:evt) { Event.new(17, :hello, ["World"]) }
 
       before do

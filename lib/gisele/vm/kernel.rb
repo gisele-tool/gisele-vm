@@ -5,11 +5,11 @@ module Gisele
 
       attr_reader :vm
       attr_reader :opcodes
-      attr_reader :puid
+      attr_reader :prog
 
-      def initialize(vm = VM.new, puid = nil)
+      def initialize(vm = VM.new, prog = nil)
         @vm       = vm
-        @puid     = puid
+        @prog     = prog
         @stack    = []
         @opcodes  = []
       end
@@ -29,6 +29,12 @@ module Gisele
       end
 
     private
+
+      ### self
+
+      def puid
+        prog && prog.puid
+      end
 
       ### stack
 
