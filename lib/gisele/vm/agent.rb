@@ -13,7 +13,7 @@ module Gisele
       end
 
       def start(label)
-        kernel(nil).run(:start, [ label ])
+        vm.start(label, [])
       end
 
       def run
@@ -29,7 +29,7 @@ module Gisele
       end
 
       def resume(puid, input = [])
-        kernel(puid).run(:resume, [ input ])
+        vm.resume(puid, input)
       end
 
       def stop

@@ -12,13 +12,16 @@ run:     self
 
 # Forks a fresh new process and schedules it for running at a given label.
 #
-# INPUT:  [ `startat` ]
+# INPUT:  [ [input...], `startat` ]
 # OUTPUT: [ ]
 # PRE:    - true
 # POST:   - a new process has been created
-#         - it is scheduled
+#         - it is scheduled for running at `startat`
+#         - its input has been set to `input`
 #
-start:  fork                        # [ Prog ]
+start:  fork                        # [ [input...], Prog ]
+        flip                        # [ Prog, [input...] ]
+        set :input                  # [ Prog ]
         then :save_it               # [ ]
 
 # Schedule the current prog and set its input.

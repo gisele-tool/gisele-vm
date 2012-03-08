@@ -74,8 +74,8 @@ module Gisele
 
     ### Kernel
 
-    def start(at)
-      kernel(nil).run(:start, [ at ])
+    def start(at, input)
+      kernel(nil).run(:start, [ input, at ])
     end
 
     def resume(puid, input)
