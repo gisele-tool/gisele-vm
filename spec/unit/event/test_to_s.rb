@@ -4,7 +4,7 @@ module Gisele
 
       it 'works as expected' do
         expected = "start[17](Ping, 3)"
-        Event.new(17, :start, ["Ping", "3"]).to_s.should eq(expected)
+        Event.new(Prog.new(:puid => 17), :start, ["Ping", "3"]).to_s.should eq(expected)
       end
 
     end

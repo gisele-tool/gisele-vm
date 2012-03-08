@@ -13,6 +13,10 @@ module SpecHelpers
     @events ||= []
   end
 
+  def an_event
+    Gisele::VM::Event.new(Gisele::VM::Prog.new(:puid => 17), :hello, [ "world" ])
+  end
+
   def vm
     @vm ||= Gisele::VM.new do |vm|
       vm.proglist      = Gisele::VM::ProgList.memory

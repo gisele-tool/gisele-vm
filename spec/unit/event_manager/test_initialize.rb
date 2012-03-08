@@ -12,9 +12,8 @@ module Gisele
         end
 
         it 'uses the block when an event occurs' do
-          event = Event.new(17, :hello, [])
-          subject.event(event)
-          @event.should eq(event)
+          subject.event(an_event)
+          @event.should eq(an_event)
         end
 
       end # with a block

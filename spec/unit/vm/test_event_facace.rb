@@ -11,9 +11,8 @@ module Gisele
     }
 
     it 'delegates event calls to it' do
-      event = VM::Event.new(17, :hello, ["World"])
-      vm.event(event)
-      @event.should eq(event)
+      vm.event(an_event)
+      @event.should eq(an_event)
     end
 
   end

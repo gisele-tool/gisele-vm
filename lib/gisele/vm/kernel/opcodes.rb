@@ -198,7 +198,7 @@ module Gisele
         def op_event(type = nil)
           type ||= pop
           args = pop
-          vm.event(Event.new(puid, type, args))
+          vm.event(Event.new(prog, type, args))
         end
 
       end # module Opcodes

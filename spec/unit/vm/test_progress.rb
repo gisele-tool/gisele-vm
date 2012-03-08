@@ -12,7 +12,8 @@ module Gisele
     end
 
     it 'executes the Prog with its input' do
-      @events.should eq([ VM::Event.new(@puid, :pong, [ "world" ]) ])
+      prog = list.fetch(@puid)
+      @events.should eq([ VM::Event.new(prog, :pong, [ "world" ]) ])
     end
 
     it 'resets the input' do
