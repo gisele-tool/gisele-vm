@@ -83,6 +83,10 @@ module Gisele
       kernel(puid).run(:resume, [ input ])
     end
 
+    def progress(puid)
+      kernel(puid).run(:progress, [ ])
+    end
+
   private
 
     def kernel(puid = nil)

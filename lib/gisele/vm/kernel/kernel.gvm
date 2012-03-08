@@ -1,14 +1,22 @@
-# Run starts running the current prog at its program counter.
-run:     self
-         get :pc
-         then                       # enqueue instruction at program counter
-         get :input
-         flip                       # [ Prog, [ input... ] ] -> [ [ input... ], Prog ]
-         push []
-         set :input
-         save
-         pop
-         unfold                     # [ input... ]
+# Make the current Prog progress by running it on its input.
+#
+# INPUT:  [ ]
+# OUTPUT: [ ]
+# PRE:    - the current Prog must be scheduled (waitfor: enacter)
+#         - its input must be set as well as its program counter
+# POST:   - the Prog has been executed on its input
+#         - its input is now [ ]
+#
+progress: self                       # [ Prog ]
+          get :pc                    # [ Prog, pc ]
+          then                       # [ Prog ]       # enqueue instructions at pc
+          get :input                 # [ Prog, [input...] ]
+          flip                       # [ [ input... ], Prog ]
+          push []                    # [ [input...], Prog, [] ]
+          set :input                 # [ [input...], Prog ]
+          save                       # [ [input...], puid ]
+          pop                        # [ [input...] ]
+          unfold                     # [ input... ]
 
 # Forks a fresh new process and schedules it for running at a given label.
 #
@@ -190,3 +198,7 @@ notify:     self                       # [ Prog ]
             ifenil
             pop                        # [ ]
             then :notify_it            # [ ]
+
+ping:       fold  1
+            event :pong
+            then :notify

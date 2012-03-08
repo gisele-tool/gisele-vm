@@ -42,7 +42,7 @@ module Gisele
       end
 
       def run_one(prog)
-        kernel(prog.puid).run(:run, [ ])
+        vm.progress(prog.puid)
       rescue Interrupt
         stop
       rescue Exception => ex
