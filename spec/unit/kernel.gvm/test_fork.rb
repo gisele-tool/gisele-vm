@@ -7,7 +7,7 @@ module Gisele
       let(:parent){ list.fetch(@parent) }
 
       before do
-        @parent = list.save Prog.new(:pc => :fork)
+        @parent = list.save Prog.new(:pc => :fork, :root => 16)
         subject
       end
 
@@ -25,11 +25,11 @@ module Gisele
 
       it 'fork and schedules self and children correctly' do
         expected = Relation([
-          {:puid => 0, :pc => :joinat, :parent => 0, :waitfor => :children},
-          {:puid => 1, :pc => :fat1,   :parent => 0, :waitfor => :enacter },
-          {:puid => 2, :pc => :fat2,   :parent => 0, :waitfor => :enacter }
+          {:puid => 0, :pc => :joinat, :parent => 0, :root => 16, :waitfor => :children},
+          {:puid => 1, :pc => :fat1,   :parent => 0, :root => 16, :waitfor => :enacter },
+          {:puid => 2, :pc => :fat2,   :parent => 0, :root => 16, :waitfor => :enacter }
         ])
-        list.to_relation.project([:puid, :pc, :parent, :waitfor]).should eq(expected)
+        list.to_relation.project([:puid, :pc, :parent, :root, :waitfor]).should eq(expected)
       end
 
     end

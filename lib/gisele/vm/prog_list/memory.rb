@@ -46,6 +46,7 @@ module Gisele
           @progs << prog.dup.tap{|d|
             d.puid   = @progs.size
             d.parent = d.puid if d.parent.nil?
+            d.root   = d.puid if d.root.nil?
           }
           @progs.last.puid
         end

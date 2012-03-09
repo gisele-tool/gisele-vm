@@ -126,7 +126,12 @@ module Gisele
         end
 
         def fork(at)
-          Prog.new(:parent => puid, :pc => at, :waitfor => :enacter)
+          Prog.new({
+            :parent  => puid,
+            :pc      => at,
+            :waitfor => :enacter,
+            :root    => prog && prog.root
+          })
         end
         private :fork
 

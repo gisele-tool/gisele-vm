@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Kernel, "op_fork" do
 
-      let(:kern){ kernel(Prog.new :puid => 17) }
+      let(:kern){ kernel(Prog.new :puid => 17, :root => 16) }
 
       context 'with a label' do
 
@@ -23,6 +23,7 @@ module Gisele
 
         it 'is a child Prog' do
           subject.parent.should eq(17)
+          subject.root.should eq(16)
         end
 
         it 'is scheduled' do

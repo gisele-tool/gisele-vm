@@ -44,6 +44,7 @@ class Gisele::VM
         puid.should_not be_nil
         list.fetch(puid).puid.should eq(puid)
         list.fetch(puid).parent.should eq(puid)
+        list.fetch(puid).root.should eq(puid)
       end
 
       it 'accepts a valid parent' do

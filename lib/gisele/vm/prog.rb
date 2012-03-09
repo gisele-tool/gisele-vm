@@ -3,6 +3,7 @@ module Gisele
     class Prog
       attr_accessor :puid
       attr_accessor :parent
+      attr_accessor :root
       attr_accessor :pc
       attr_accessor :waitfor
       attr_reader   :waitlist
@@ -11,6 +12,7 @@ module Gisele
       def initialize(attrs = {})
         @puid     = attrs[:puid]     || nil
         @parent   = attrs[:parent]   || @puid
+        @root     = attrs[:root]     || @puid
         @pc       = attrs[:pc]       || 0
         @waitfor  = attrs[:waitfor]  || :none
         @waitlist = attrs[:waitlist] || {}
@@ -25,6 +27,7 @@ module Gisele
       def to_hash
         { :puid     => puid,
           :parent   => parent,
+          :root     => root,
           :pc       => pc,
           :waitfor  => waitfor,
           :waitlist => waitlist,

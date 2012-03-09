@@ -5,6 +5,7 @@ class Gisele::VM
     let(:h){
       { :puid     => "puid",
         :parent   => "parent",
+        :root     => "root",
         :pc       => 12,
         :waitfor => :enacter,
         :waitlist => {:a => true},
@@ -15,6 +16,7 @@ class Gisele::VM
       s = Prog.new
       s.puid.should     be_nil
       s.parent.should   be_nil
+      s.root.should     be_nil
       s.pc.should       eq(0)
       s.waitfor.should  eq(:none)
       s.waitlist.should eq({})
@@ -25,6 +27,7 @@ class Gisele::VM
       s = Prog.new(h)
       s.puid.should     eq("puid")
       s.parent.should   eq("parent")
+      s.root.should     eq("root")
       s.pc.should       eq(12)
       s.waitfor.should  eq(:enacter)
       s.waitlist.should eq({:a => true})
