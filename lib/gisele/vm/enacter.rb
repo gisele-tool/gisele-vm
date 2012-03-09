@@ -5,19 +5,24 @@ module Gisele
     private
 
       def runone
-        if prog = vm.proglist.pick(:enacter)
-          vm.progress(prog)
-          true
-        else
-          # let the superclass known that something is wrong so that
-          # it can manage the locks friendly (see Agent#run)
-          false
+        prog = nil
+
+        # Critical section to ensure that the agent won't be disconnected in
+        # the middle of an enactement step.
+        synchronize do
+          if prog = vm.proglist.pick(:enacter)
+            debug("Enacting Prog #{prog.puid}@#{prog.pc}")
+            vm.progress(prog)
+          end
         end
+
+        # No prog probably means that the VM is currently trying to disconnect.
+        # We wait 0.1 msec out of the critical section to favor the disconnection
+        # process.
+        sleep(0.1) unless prog
+
       rescue Exception => ex
-        puid = (prog && prog.puid) || ''
-        msg  = "Progress error (#{puid}): #{ex.message}\n" + ex.backtrace.join("\n")
-        error(msg) rescue nil
-        false
+        error error_message(ex, "Progress error (#{prog.puid}):")
       end
 
     end # class Enacter
