@@ -3,28 +3,21 @@ module Gisele
     class Command
       class Interactive
 
-        attr_reader :agent
-
-        def initialize(agent)
-          require 'logger'
-          @agent  = agent
-          @runner = nil
-          @log    = Logger.new($stdout)
-        end
-
-        def stop?
-          defined?(@stop) && @stop
-        end
-
-        def stop!
-          @agent.stop  if @agent
-          @runner.join if @runner
-          @stop = true
+        def initialize(file)
+          @file = file
         end
 
         def run!
-          @runner = Thread.new{ @agent.run }
-          run_one until stop?
+          @vm = VM.new(@file) do |vm|
+            vm.logger = Logger.new($stdout)
+            vm.add_enacter
+          end
+          @vm.run!
+          sleep(0.01) until @vm.running?
+          run_one     while @vm.running?
+        rescue Exception => ex
+          puts "Unable to start the Virtual Machine: #{ex.message}"
+          puts ex.backtrace.join("\n")
         end
 
         def run_one
@@ -39,31 +32,27 @@ module Gisele
           end
         rescue Interrupt
           puts "Interrupt on user request (graceful shutdown)."
-          stop!
+          stop_action
         rescue Exception => ex
           puts ex.message
         end
 
         def list_action
-          puts agent.dump
+          puts @vm.proglist.to_relation
         end
 
         def new_action(args)
-          agent.start(args.strip.to_sym)
+          @vm.start(args.strip.to_sym, [])
         end
 
         def resume_action(args)
           puid, *input = args.split(/\s+/)
           input = input.map{|x| Bytecode::Grammar.parse(x, :root => :arg).value}
-          agent.resume(puid, input)
+          @vm.resume(puid, input)
         end
 
         def stop_action
-          stop!
-        end
-
-        def call(puid, kind, args) ### event interface
-          @log.info "Process(#{puid}): #{kind}(#{args.join(', ')})"
+          @vm.stop
         end
 
       end # class Interactive

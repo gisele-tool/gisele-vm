@@ -70,9 +70,7 @@ module Gisele
 
       def interactive(file)
         require_relative 'command/interactive'
-        list  = ProgList.end_of_file(file, @truncate).threadsafe
-        agent = VM::Agent.new(file, list)
-        Interactive.new(agent).run!
+        Interactive.new(file).run!
       end
 
     end # class Command
