@@ -83,8 +83,11 @@ module Gisele
     def start(at, input)
       at    = valid_label!(at)
       input = valid_input!(input)
-      stack = kernel(nil).run(:start, [ input, at ])
-      stack.first
+
+      kernel(nil) do |k|
+        stack = k.run(:start, [ input, at ])
+        stack.first
+      end
     end
 
     def resume(puid, input)
@@ -93,7 +96,10 @@ module Gisele
       unless prog.waitfor == :world
         raise InvalidStateError, "Prog `#{puid}` does not wait for world stimuli"
       end
-      kernel(prog).run(:resume, [ input ])
+
+      kernel(prog) do |k|
+        k.run(:resume, [ input ])
+      end
     end
 
     def progress(puid)
@@ -101,7 +107,10 @@ module Gisele
       unless prog.waitfor == :enacter
         raise InvalidStateError, "Prog `#{puid}` does not wait for enactement progress"
       end
-      kernel(prog).run(:progress, [ ])
+
+      kernel(prog) do |k|
+        k.run(:progress, [ ])
+      end
     end
 
     ### Lifecycle
@@ -126,7 +135,11 @@ module Gisele
   private
 
     def kernel(prog = nil)
-      Kernel.new(self, prog)
+      if block_given?
+        yield Kernel.new(self, prog)
+      else
+        Kernel.new(self, prog)
+      end
     end
 
     def valid_label!(at)
