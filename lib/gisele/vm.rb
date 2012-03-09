@@ -107,7 +107,14 @@ module Gisele
     include Lifecycle
 
     def components
-      [ proglist, event_manager ]
+      @components ||= [ proglist, event_manager ]
+    end
+
+    def add_agent(agent)
+      unless stopped?
+        raise InvalidStateError, "The VM must be stopped to add an agent"
+      end
+      components << agent
     end
 
   private
