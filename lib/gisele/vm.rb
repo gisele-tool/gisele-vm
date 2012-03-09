@@ -86,7 +86,7 @@ module Gisele
     end
 
     def resume(puid, input)
-      prog  = fetch(puid)
+      prog = Prog===puid ? puid : fetch(puid)
       input = valid_input!(input)
       unless prog.waitfor == :world
         raise InvalidStateError, "Prog `#{puid}` does not wait for world stimuli"
@@ -95,7 +95,7 @@ module Gisele
     end
 
     def progress(puid)
-      prog = fetch(puid)
+      prog = Prog===puid ? puid : fetch(puid)
       unless prog.waitfor == :enacter
         raise InvalidStateError, "Prog `#{puid}` does not wait for enactement progress"
       end

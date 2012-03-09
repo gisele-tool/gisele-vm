@@ -2,22 +2,30 @@ require 'spec_helper'
 module Gisele
   describe VM, "progress" do
 
+    subject do
+      vm.progress(arg)
+    end
+
     before do
       @puid = vm.start(:ping, [ "world" ])
-      subject
     end
 
-    subject do
-      vm.progress(@puid)
+    context 'with a puid' do
+      let(:arg){ @puid }
+      it 'executes the Prog with its input' do
+        subject
+        @events.should eq([ VM::Event.new(list.fetch(@puid), :pong, [ "world" ]) ])
+        list.fetch(@puid).input.should eq([])
+      end
     end
 
-    it 'executes the Prog with its input' do
-      prog = list.fetch(@puid)
-      @events.should eq([ VM::Event.new(prog, :pong, [ "world" ]) ])
-    end
-
-    it 'resets the input' do
-      list.fetch(@puid).input.should eq([])
+    context 'with a prog' do
+      let(:arg){ list.fetch(@puid) }
+      it 'executes the Prog with its input' do
+        subject
+        @events.should eq([ VM::Event.new(arg, :pong, [ "world" ]) ])
+        list.fetch(@puid).input.should eq([])
+      end
     end
 
     it 'detects invalid puids' do

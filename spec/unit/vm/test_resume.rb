@@ -3,17 +3,31 @@ module Gisele
   describe VM, "resume" do
 
     subject do
-      vm.resume(@puid, [ :an_event ])
+      vm.resume(arg, [ :an_event ])
     end
 
     before do
       @puid = list.save VM::Prog.new(:pc => :hello, :waitfor => :world)
-      subject
     end
 
-    it 'creates a fresh new Prog instance and schedules it' do
-      expected = Relation(:puid => @puid, :waitfor => :enacter, :input => [ :an_event ])
-      list.to_relation.project([:puid, :waitfor, :input]).should eq(expected)
+    let(:expected){
+      Relation(:puid => @puid, :waitfor => :enacter, :input => [ :an_event ])
+    }
+
+    context 'with a puid' do
+      let(:arg){ @puid }
+      it 'creates a fresh new Prog instance and schedules it' do
+        subject
+        list.to_relation.project([:puid, :waitfor, :input]).should eq(expected)
+      end
+    end
+
+    context 'with a Prog' do
+      let(:arg){ list.fetch(@puid) }
+      it 'creates a fresh new Prog instance and schedules it' do
+        subject
+        list.to_relation.project([:puid, :waitfor, :input]).should eq(expected)
+      end
     end
 
     it 'detects invalid puids' do
