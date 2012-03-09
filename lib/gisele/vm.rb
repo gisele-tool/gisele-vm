@@ -9,8 +9,9 @@ require_relative 'vm/event'
 require_relative 'vm/event_manager'
 require_relative 'vm/bytecode'
 require_relative 'vm/kernel'
-require_relative 'vm/agent'
 require_relative 'vm/lifecycle'
+require_relative 'vm/agent'
+require_relative 'vm/enacter'
 module Gisele
   class VM
     extend Forwardable
@@ -115,6 +116,10 @@ module Gisele
         raise InvalidStateError, "The VM must be stopped to add an agent"
       end
       components << agent
+    end
+
+    def add_enacter
+      add_agent Enacter.new
     end
 
   private

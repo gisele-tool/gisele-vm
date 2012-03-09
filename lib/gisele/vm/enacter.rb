@@ -4,24 +4,18 @@ module Gisele
 
     private
 
-      def run
-        while connected?
-          prog = nil
-          synchronize do
-            prog = vm.proglist.pick(:enacter)
-            run_prog(prog) if prog
-          end
+      def runone
+        prog = vm.proglist.pick(:enacter)
+        if prog
+          vm.progress(prog)
+        else
           # no prog has been found last time => probably in shutdown process
-          # sleep a bit so as to favor the disconnection process now...
-          sleep(0.1) unless prog
+          # sleep a bit so as to favor disconnecting...
+          sleep(0.1) rescue nil
         end
-      end
-
-      def run_prog(prog)
-        vm.progress(prog)
       rescue Exception => ex
-        msg = "Error while executing #{prog.puid}: #{ex.message}\n" +
-              ex.backtrace.join("\n")
+        puid = (prog && prog.puid) || ''
+        msg  = "Progress error (#{puid}): #{ex.message}\n" + ex.backtrace.join("\n")
         error(msg) rescue nil
       end
 
