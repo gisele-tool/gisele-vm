@@ -6,65 +6,54 @@ module Gisele
 
         def initialize(delegate)
           super(delegate)
-          @mutex    = Mutex.new
-          @cv       = ConditionVariable.new
-          @released = false
+          @lock = Mutex.new
+          @cv   = ConditionVariable.new
+        end
+
+        def disconnect
+          @lock.synchronize do
+            super
+            @cv.signal
+          end
         end
 
         def fetch(puid)
-          synchronize{ super }
+          @lock.synchronize do
+            super
+          end
         end
 
         def save(prog)
-          synchronize do
-            puid = super
-            notify!
-            puid
+          @lock.synchronize do
+            super.tap{ @cv.signal }
           end
         end
 
         def pick(waitfor, &bl)
-          synchronize do
-            while (prog = super).nil?
-              wait!(bl)
-              break if @released
+          @lock.synchronize do
+            prog = nil
+            while connected? and !(prog = super)
+              bl.call if bl
+              @cv.wait(@lock)
             end
             prog
           end
         end
 
-        def release
-          synchronize do
-            @released = true
-            notify!
+        def empty?
+          @lock.synchronize do
+            super
           end
         end
 
-        def empty?
-          synchronize{ super }
-        end
-
         def to_relation
-          synchronize{ super }
+          @lock.synchronize do
+            super
+          end
         end
 
         def threadsafe
           self
-        end
-
-      private
-
-        def synchronize(&bl)
-          @mutex.synchronize(&bl)
-        end
-
-        def wait!(bl)
-          bl.call if bl
-          @cv.wait(@mutex)
-        end
-
-        def notify!
-          @cv.signal
         end
 
       end # class Threadsafe
