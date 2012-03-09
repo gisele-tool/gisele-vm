@@ -105,13 +105,18 @@ listen:  self                       # [ events, Prog ]
 #           location.
 #         - otherwise, the current Prog falls alsleep (program counter unchanged)
 #
-react:   self                       # [ event, Prog ]
-         getr :waitlist             # [ event, waitlist ]
-         flip                       # [ waitlist, event ]
-         getr                       # [ pc/nil ]
-         ifenil                     #
-         pop                        # [ ]
-         then :schedule_at          # [ ]
+react:       self                       # [ event, Prog ]
+             getr :waitlist             # [ event, waitlist ]
+             flip                       # [ waitlist, event ]
+             getr                       # [ pc/nil ]
+             ifenil                     #
+             then :react_sleep          #
+             then :schedule_at          #
+react_sleep: pop                        # [ ]
+             self                       # [ Prog ]
+             push :world                # [ Prog, :world ]
+             set  :waitfor              # [ Prog ]
+             then :save_it              #
 
 # Fork a list of children at specified locations. Wait for joining them at a label
 # `joinat` specified through the stack as well.

@@ -8,7 +8,7 @@ module Gisele
       let(:wlist) { {:ping => :sPing, :pong => :sPong} }
 
       before do
-        @parent = list.save Prog.new(:pc => :react, :waitlist => wlist, :waitfor => :world)
+        @parent = list.save Prog.new(:pc => :react, :waitlist => wlist, :waitfor => waitfor)
         subject
       end
 
@@ -21,7 +21,8 @@ module Gisele
       end
 
       context 'when a recognized event' do
-        let(:event){ :ping }
+        let(:event)  { :ping  }
+        let(:waitfor){ :world }
 
         it 'schedules the current Prog correctly' do
           parent.pc.should eq(:sPing)
@@ -31,7 +32,8 @@ module Gisele
       end
 
       context 'when an unrecognized event' do
-        let(:event){ :pang }
+        let(:event)  { :pang    }
+        let(:waitfor){ :enacter }
 
         it 'sleeps the current Prog' do
           parent.pc.should eq(:react)
