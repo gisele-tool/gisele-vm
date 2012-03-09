@@ -3,8 +3,15 @@ module Gisele
     class Agent
       include Component
 
-      def initialize
+      attr_reader :options
+
+      def initialize(options = {})
         @lock = Mutex.new
+        @options = default_options.merge(options)
+      end
+
+      def default_options
+        {}
       end
 
       def connect(vm)
