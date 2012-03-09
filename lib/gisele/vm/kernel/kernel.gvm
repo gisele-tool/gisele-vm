@@ -132,7 +132,7 @@ fork:    forka                      # [ joinat, [ Prog, ... ] ]
          flip                       # [ Prog, joinat ]
          set :pc                    # [ Prog ]
          push :children             # [ Prog, :children ]
-         set :waitfor               # [ Prog ]
+         set  :waitfor              # [ Prog ]
          then :save_it              # [ ]
 
 # Given a Hash of events, if the waitlist of the current prog is empty, schedule execution
@@ -145,21 +145,26 @@ fork:    forka                      # [ joinat, [ Prog, ... ] ]
 # POST:   - if the waitlist of the current prog is empty, it is scheduled at `wakeat`
 #         - if ... is not empty, it is unscheduled (program counter unchanged)
 #
-join:    self                       # [ {evt...}, Prog ]
-         getr :waitlist             # [ {evt...}, waitlist ]
-         push []
-         send :size                 # [ {evt...}, size ]
-         ifezero
-         push :wake
-         push :wait                 # [ {evt...}, size, wake/wait ]
-         flip                       # [ {evt...}, wake/wait, size ]
-         pop                        # [ {evt...}, wake/wait ]
-         get                        # [ {evt...}, label/nil ]
-         flip                       # [ label/nil, {evt...} ]
-         pop                        # [ label/nil ]
-         ifenil                     # ...
-         pop                        # [ ]
-         then :schedule_at          # [ ]
+join:       self                       # [ {evt...}, Prog ]
+            getr :waitlist             # [ {evt...}, waitlist ]
+            push []
+            send :size                 # [ {evt...}, size ]
+            ifezero
+            push :wake
+            push :wait                 # [ {evt...}, size, wake/wait ]
+            flip                       # [ {evt...}, wake/wait, size ]
+            pop                        # [ {evt...}, wake/wait ]
+            get                        # [ {evt...}, label/nil ]
+            flip                       # [ label/nil, {evt...} ]
+            pop                        # [ label/nil ]
+            ifenil                     # ...
+            then :join_sleep           # [ ]
+            then :schedule_at          # [ ]
+join_sleep: pop
+            self
+            push :children
+            set  :waitfor
+            then :save_it
 
 # Expects a Prog on the stack (typically the parent). Remove the current puid from its
 # waitlist and schedule it.
