@@ -21,9 +21,9 @@ module Gisele
         end
 
         def pick(waitfor, &bl)
-          @progs.find{|p| p.waitfor == waitfor}.tap{|found|
-            bl.call if bl && !found
-          }
+          candidate = @progs.select{|p| p.waitfor == waitfor}.sample
+          bl.call if bl and candidate.nil?
+          candidate
         end
 
         def empty?
