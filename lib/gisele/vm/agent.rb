@@ -4,6 +4,7 @@ module Gisele
       include Component
 
       attr_reader :options
+      attr_reader :thread
 
       def initialize(options = {})
         @lock = Mutex.new
@@ -16,7 +17,7 @@ module Gisele
 
       def connect(vm)
         super
-        Thread.new{
+        @thread = Thread.new{
 
           # The VM is still in warmup phase. We are not allowed to make any
           # request to the kernel during that phase...

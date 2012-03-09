@@ -2,7 +2,7 @@ module Gisele
   class VM
     module Lifecycle
 
-      # VM last start error
+      attr_reader :thread
       attr_reader :last_error
 
       def stopped?
@@ -49,12 +49,12 @@ module Gisele
 
       def run!
         raise InvalidStateError, "VM already running" unless stopped?
-        done   = false
-        runner = Thread.new(self) do |vm|
+        done    = false
+        @thread = Thread.new(self) do |vm|
           vm.run{|s| done=true} rescue nil
         end
         sleep(0.01) until done
-        running? ? runner : raise(last_error)
+        running? ? @thread : raise(last_error)
       end
 
       def stop
