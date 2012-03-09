@@ -13,7 +13,7 @@ module Gisele
         def disconnect
           @lock.synchronize do
             super
-            @cv.signal
+            @cv.broadcast
           end
         end
 
@@ -25,7 +25,7 @@ module Gisele
 
         def save(prog)
           @lock.synchronize do
-            super.tap{ @cv.signal }
+            super.tap{ @cv.broadcast }
           end
         end
 
