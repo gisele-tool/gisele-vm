@@ -11,6 +11,9 @@ OPTIONS
   -t, --truncate                   Truncate process instances first
   -i, --interactive                Start a console in interactive VM mode
   -s, --simulate                   Use an agent simulating the environment
+      --verbose                    Log in verbose mode
+      --silent                     Only show warnings and errors
+      --log=FILE                   Use a specific log file
       --help                       Show this help message
       --version                    Show version and exit
 

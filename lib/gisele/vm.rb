@@ -2,6 +2,7 @@ require 'logger'
 require 'forwardable'
 require_relative 'vm/errors'
 require_relative 'vm/null_object'
+require_relative 'vm/logging'
 require_relative 'vm/component'
 require_relative 'vm/prog'
 require_relative 'vm/prog_list'
@@ -16,12 +17,10 @@ require_relative 'vm/simulator'
 module Gisele
   class VM
     extend Forwardable
+    include Logging
 
     # The executed bytecode
     attr_reader :bytecode
-
-    # A Logger instance
-    attr_reader :logger
 
     # The ProgList instance used in this VM
     attr_reader :proglist
@@ -32,7 +31,6 @@ module Gisele
     def initialize(bytecode = [:gvm])
       init_lifecycle
       self.bytecode       = bytecode
-      self.logger         = Logger.new($stdout)
       self.proglist       = ProgList.memory.threadsafe
       self.event_manager  = EventManager.new
       yield(self) if block_given?
@@ -44,17 +42,6 @@ module Gisele
       @bytecode = Kernel.bytecode + Bytecode.coerce(bytecode)
       @bytecode.verify!
     end
-
-    ### Logging
-
-    def logger=(arg)
-      unless arg.nil? or Logger===arg
-        raise ArgumentError, "Invalid logger: #{arg.inspect}"
-      end
-      @logger = arg
-    end
-    def_delegators :logger, :debug,  :info,  :warn,  :error,  :fatal
-    def_delegators :logger, :debug?, :info?, :warn?, :error?, :fatal?
 
     ### ProgList
 

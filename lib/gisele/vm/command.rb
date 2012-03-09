@@ -37,6 +37,18 @@ module Gisele
           @simulation = true
         end
 
+        @verbose = Logger::INFO
+        opt.on('--verbose', 'Log in verbose mode') do
+          @verbose = Logger::DEBUG
+        end
+        opt.on('--silent', 'Only show warnings and errors') do
+          @verbose = Logger::WARN
+        end
+        @log_file = $stdout
+        opt.on('--log=FILE', 'Use a specific log file') do |file|
+          @log_file = file
+        end
+
         opt.on_tail('--help', "Show this help message") do
           raise Quickl::Help
         end
@@ -84,8 +96,8 @@ module Gisele
         @vm ||= VM.new(gvm_file) do |vm|
 
           # Install the logger
-          vm.logger       = Logger.new($stdout)
-          vm.logger.level = Logger::INFO
+          vm.logger       = Logger.new(@log_file)
+          vm.logger.level = @verbose
 
           # Install the ProgList
           vm.proglist = ProgList.end_of_file(gvm_file, @truncate)
