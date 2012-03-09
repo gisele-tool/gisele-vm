@@ -16,9 +16,13 @@ module Gisele
           sleep(0.01) while vm.warmup?
 
           # We run until the vm disconnects us
-          @lock.synchronize do
-            runone
-          end while connected?
+          while connected?
+            success = @lock.synchronize{ runone }
+
+            # failure might be due to the shutdown process. In that
+            # case, sleep a bit so as to favor disconnecting...
+            sleep(0.1) unless success
+          end
         }
       end
 

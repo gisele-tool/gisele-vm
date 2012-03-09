@@ -5,18 +5,19 @@ module Gisele
     private
 
       def runone
-        prog = vm.proglist.pick(:enacter)
-        if prog
+        if prog = vm.proglist.pick(:enacter)
           vm.progress(prog)
+          true
         else
-          # no prog has been found last time => probably in shutdown process
-          # sleep a bit so as to favor disconnecting...
-          sleep(0.1) rescue nil
+          # let the superclass known that something is wrong so that
+          # it can manage the locks friendly (see Agent#run)
+          false
         end
       rescue Exception => ex
         puid = (prog && prog.puid) || ''
         msg  = "Progress error (#{puid}): #{ex.message}\n" + ex.backtrace.join("\n")
         error(msg) rescue nil
+        false
       end
 
     end # class Enacter
