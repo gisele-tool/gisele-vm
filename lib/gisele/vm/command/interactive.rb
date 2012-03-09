@@ -21,7 +21,7 @@ module Gisele
         end
 
         def list_action
-          puts vm.proglist.to_relation
+          puts vm.proglist.to_relation.group([:root], :progs, :allbut => true)
         end
 
         def new_action(args)
