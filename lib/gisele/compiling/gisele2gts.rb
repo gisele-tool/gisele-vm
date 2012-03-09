@@ -35,7 +35,7 @@ module Gisele
           endevt = add_state(:event)
 
           sexpr[2...-1].each do |s|
-            apply(s)
+            apply(s) if s.first == :task_def
           end
 
           c_entry, c_exit = apply(sexpr.last)
