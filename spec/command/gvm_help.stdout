@@ -3,13 +3,14 @@ The Gisele Virtual Machine
 
 SYNOPSIS
   gvm [--version] [--help]
-  gvm GVM_FILE [PUID]
+  gvm GIS_FILE
 
 OPTIONS
-  -c, --compile                    Compile the input file
+  -c, --compile                    Compile the input file and output the VM bytecode
   -g, --gts                        Outputs a gisele transition system
-  -i, --interactive                Start the interactive mode
   -t, --truncate                   Truncate process instances first
+  -i, --interactive                Start a console in interactive VM mode
+  -s, --simulate                   Use an agent simulating the environment
       --help                       Show this help message
       --version                    Show version and exit
 

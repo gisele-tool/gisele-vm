@@ -107,4 +107,3 @@ e40:  push ["Goodbye"]
       event :end
 s43:  then :notify
 s44:  then :notify
-

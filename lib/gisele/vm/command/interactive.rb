@@ -1,26 +1,9 @@
 module Gisele
   class VM
     class Command
-      class Interactive
+      class Interactive < Agent
 
-        def initialize(file)
-          @file = file
-        end
-
-        def run!
-          @vm = VM.new(@file) do |vm|
-            vm.logger = Logger.new($stdout)
-            vm.add_enacter
-          end
-          @vm.run!
-          sleep(0.01) until @vm.running?
-          run_one     while @vm.running?
-        rescue Exception => ex
-          puts "Unable to start the Virtual Machine: #{ex.message}"
-          puts ex.backtrace.join("\n")
-        end
-
-        def run_one
+        def runone
           puts "? Please choose an action:(list, new, resume, quit or help)\n"
           case s = $stdin.gets
           when /^l(ist)?/           then list_action
@@ -38,21 +21,21 @@ module Gisele
         end
 
         def list_action
-          puts @vm.proglist.to_relation
+          puts vm.proglist.to_relation
         end
 
         def new_action(args)
-          @vm.start(args.strip.to_sym, [])
+          vm.start(args.strip.to_sym, [])
         end
 
         def resume_action(args)
           puid, *input = args.split(/\s+/)
           input = input.map{|x| Bytecode::Grammar.parse(x, :root => :arg).value}
-          @vm.resume(puid, input)
+          vm.resume(puid, input)
         end
 
         def stop_action
-          @vm.stop
+          vm.stop
         end
 
       end # class Interactive
