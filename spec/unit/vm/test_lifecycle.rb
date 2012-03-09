@@ -47,6 +47,7 @@ module Gisele
         before do
           @thread = vm.run!
           @thread.should be_a(Thread)
+          vm.should be_running
         end
 
         after do
@@ -55,7 +56,6 @@ module Gisele
         end
 
         it 'connects components' do
-          vm.should be_running
           components.each{|c| c.should be_connected }
         end
 
