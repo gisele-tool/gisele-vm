@@ -11,6 +11,8 @@ OPTIONS
   -t, --truncate                   Truncate process instances first
   -i, --interactive                Start a console in interactive VM mode
   -s, --simulate                   Use an agent simulating the environment
+      --drb-server                 Register the VM as a DRb server
+      --drb-client                 Look for the virtual machine on DRb
       --verbose                    Log in verbose mode
       --silent                     Only show warnings and errors
       --log=FILE                   Use a specific log file

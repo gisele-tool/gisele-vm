@@ -36,6 +36,14 @@ module Gisele
         opt.on('-s', '--simulate', 'Use an agent simulating the environment') do
           @simulation = true
         end
+        @drb_server = false
+        opt.on('--drb-server', 'Register the VM as a DRb server') do
+          @drb_server = true
+        end
+        @drb_client = false
+        opt.on('--drb-client', 'Look for the virtual machine on DRb') do
+          @drb_client = true
+        end
 
         @verbose = Logger::INFO
         opt.on('--verbose', 'Log in verbose mode') do
@@ -58,17 +66,11 @@ module Gisele
       end
 
       def execute(args)
-        raise Quickl::Help unless args.size==1
         @gis_file = Path(args.shift)
-
-        unless gis_file.exist?
-          raise Quickl::IOAccessError, "File does not exists: #{file}"
-        end
-
         case @mode
-        when :run     then start_vm
-        when :compile then puts bytecode
-        when :gts     then puts gts.to_dot
+        when :run        then start_vm
+        when :compile    then puts bytecode
+        when :gts        then puts gts.to_dot
         end
       end
 
@@ -91,9 +93,12 @@ module Gisele
         @bytecode ||= Compiling::Gts2Bytecode.call(gts)
       end
 
-      def vm
+      def real_vm
+        unless gis_file && gis_file.exist?
+          raise Quickl::IOAccessError, "File does not exists: #{gis_file}"
+        end
         gvm_file.open("w"){|io| io << bytecode.to_s } unless gvm_file.exist?
-        @vm ||= VM.new(gvm_file) do |vm|
+        VM.new(gvm_file) do |vm|
 
           # Install the logger
           vm.logger       = Logger.new(@log_file)
@@ -104,17 +109,38 @@ module Gisele
 
           # Install the Enacter
           vm.add_enacter
+        end
+      end
 
-          if @interactive
-            require_relative 'command/interactive'
-            vm.add_agent Command::Interactive.new
-          end
+      def populate_vm(vm)
+        if @interactive
+          require_relative 'command/interactive'
+          vm.add_agent Command::Interactive.new
+        end
 
-          # Add the simulation if required
-          if @simulation
-            vm.add_agent Simulator::Resumer.new
-            vm.add_agent Simulator::Starter.new
+        # Add the simulation if required
+        if @simulation
+          vm.add_agent Simulator::Resumer.new
+          vm.add_agent Simulator::Starter.new
+        end
+
+        # Add the DRB server if required
+        if @drb_server
+          require_relative 'proxy'
+          vm.add_agent Proxy::Server.new
+        end
+      end
+
+      def vm
+        @vm ||= begin
+          vm = if @drb_client
+            require_relative 'proxy'
+            Proxy::Client.new
+          else
+            real_vm
           end
+          populate_vm(vm)
+          vm
         end
       end
 
