@@ -6,16 +6,17 @@ module Gisele
       class PseudoVM
         include Lifecycle
 
+        attr_reader :registry
+
         def initialize(components)
-          @components = components
+          @registry = Registry.new
+          components.each do |c|
+            @registry.register(c)
+          end
           init_lifecycle
         end
 
         def info(msg)
-        end
-
-        def components
-          @components
         end
 
       end

@@ -23,6 +23,9 @@ module Gisele
     # The executed bytecode
     attr_reader :bytecode
 
+    # The component registry
+    attr_reader :registry
+
     # The ProgList instance used in this VM
     attr_reader :proglist
 
@@ -31,6 +34,7 @@ module Gisele
 
     def initialize(bytecode = [:gvm])
       init_lifecycle
+      @registry           = Registry.new
       self.bytecode       = bytecode
       self.proglist       = ProgList.memory.threadsafe
       self.event_manager  = EventManager.new
@@ -44,25 +48,32 @@ module Gisele
       @bytecode.verify!
     end
 
+    ### Registry
+
+    def_delegators :registry, :components, :register, :unregister
+
     ### ProgList
 
     def proglist=(arg)
       unless ProgList===arg
         raise ArgumentError, "Invalid prog list: #{arg.inspect}"
       end
-      @proglist = arg
+      unregister(@proglist) if @proglist
+      register(@proglist = arg)
     end
     def_delegators :proglist, :pick, :fetch, :save
 
     ### EventManager
 
     def event_manager=(arg)
-      @event_manager = case arg
+      arg = case arg
       when EventManager then arg
       when Proc         then EventManager.new(&arg)
       else
         raise ArgumentError, "Invalid event manager: #{arg.inspect}"
       end
+      unregister(@event_manager) if @event_manager
+      register(@event_manager = arg)
     end
     def_delegators :event_manager, :event
 
@@ -104,21 +115,6 @@ module Gisele
     ### Lifecycle
 
     include Lifecycle
-
-    def components
-      @components ||= [ proglist, event_manager ]
-    end
-
-    def add_agent(agent)
-      unless stopped?
-        raise InvalidStateError, "The VM must be stopped to add an agent"
-      end
-      components << agent
-    end
-
-    def add_enacter
-      add_agent Enacter.new
-    end
 
   private
 

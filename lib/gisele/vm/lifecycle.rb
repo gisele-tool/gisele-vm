@@ -29,9 +29,7 @@ module Gisele
 
           info('VM start request received, connecting.')
           begin
-            # Connect the components now. This is safe: all are connected
-            # or none of them (see that method)
-            connect_components
+            registry.connect(self)
           rescue Exception => ex
             fatal("Components failed to load: #{ex.message}") rescue nil
             @last_error = ex
@@ -64,7 +62,7 @@ module Gisele
 
           info('VM stop request received, disconnecting.')
           begin
-            disconnect_components(components)
+            registry.disconnect
           rescue Exception => ex
             warn("Error when disconnecting: #{ex.message}") rescue nil
           end
@@ -81,21 +79,6 @@ module Gisele
         @status = :stopped
         @lock   = Mutex.new
         @cv     = ConditionVariable.new
-      end
-
-      def connect_components
-        connected = []
-        components.each do |c|
-          c.connect(self)
-          connected << c
-        end
-      rescue Exception => ex
-        disconnect_components(connected)
-        raise
-      end
-
-      def disconnect_components(which = components)
-        which.each{|c| c.disconnect rescue nil }
       end
 
     end # module Lifecycle

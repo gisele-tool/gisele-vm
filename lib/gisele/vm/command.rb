@@ -103,17 +103,17 @@ module Gisele
           vm.proglist = ProgList.end_of_file(gvm_file, @truncate)
 
           # Install the Enacter
-          vm.add_enacter
+          vm.register VM::Enacter.new
 
           if @interactive
             require_relative 'command/interactive'
-            vm.add_agent Command::Interactive.new
+            vm.register Command::Interactive.new
           end
 
           # Add the simulation if required
           if @simulation
-            vm.add_agent Simulator::Resumer.new
-            vm.add_agent Simulator::Starter.new
+            vm.register Simulator::Resumer.new
+            vm.register Simulator::Starter.new
           end
         end
       end
