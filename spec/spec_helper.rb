@@ -1,7 +1,6 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'gisele-vm'
 require_relative 'fixtures/kernel'
-require_relative 'fixtures/vm'
 
 def fixtures
   Path.dir/:fixtures
@@ -19,10 +18,10 @@ module SpecHelpers
     Gisele::VM::Event.new(Gisele::VM::Prog.new(:puid => 17), :hello, [ "world" ])
   end
 
-  def vm
-    @vm ||= Gisele::VM.new do |vm|
+  def vm(bc = nil)
+    @vm ||= Gisele::VM.new(bc || [:gvm]) do |vm|
       vm.proglist      = Gisele::VM::ProgList.memory
-      vm.event_manager = proc{|evt|
+      vm.event_manager = Gisele::VM::EventManager.new{|evt|
         events << evt
       }
     end
@@ -32,11 +31,19 @@ module SpecHelpers
     vm.proglist
   end
 
-  def kernel(prog = nil)
+  def kernel(bc = nil)
     @kernel ||= begin
-      prog = list.fetch(prog) if Integer===prog
-      vm.kernel(prog)
+      k = vm(bc).kernel
+      k.connect(vm)
+      k
     end
+  end
+
+  def runner(*args)
+    bc   = args.find{|x| Gisele::VM::Bytecode===x}
+    prog = args.find{|x| Integer===x or Gisele::VM::Prog===x}
+    prog = list.fetch(prog) if Integer===prog
+    @kernel ||= kernel(bc).runner(prog)
   end
 
   def capture_io

@@ -2,6 +2,7 @@ module Gisele
   class VM
     module Lifecycle
 
+      attr_reader :status
       attr_reader :thread
       attr_reader :last_error
 
