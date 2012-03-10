@@ -5,9 +5,9 @@ module Gisele
     after do
       vm.should_not be_running
       vm.status.should eq(:stopped)
-      vm.components[0].should be_a(VM::Kernel)
-      vm.components[1].should be_a(VM::ProgList)
-      vm.components[2].should be_a(VM::EventManager)
+      vm.components[0].should be_a(VM::ProgList)
+      vm.components[1].should be_a(VM::EventManager)
+      vm.components[-1].should be_a(VM::Kernel)
     end
 
     context 'without block' do

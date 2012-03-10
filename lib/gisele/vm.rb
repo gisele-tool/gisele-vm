@@ -40,7 +40,9 @@ module Gisele
       # post installation of prior components
       @registry.register @event_manager, true
       @registry.register @proglist, true
-      @registry.register @kernel, true
+
+      # install the kernel as last one (the last one disconnected)
+      @registry.register @kernel
     end
 
     def vm
