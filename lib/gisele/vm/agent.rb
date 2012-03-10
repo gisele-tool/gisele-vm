@@ -7,7 +7,6 @@ module Gisele
 
       def initialize(options = {})
         super()
-        @lock = Mutex.new
         @options = default_options.merge(options)
       end
 
@@ -47,10 +46,6 @@ module Gisele
       end
 
     private
-
-      def synchronize(&bl)
-        @lock.synchronize(&bl)
-      end
 
       def error_message(error, base = "An error occured:")
         base.to_s << " " << error.message << "\n" << error.backtrace.join("\n")

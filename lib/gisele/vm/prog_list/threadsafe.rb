@@ -6,31 +6,30 @@ module Gisele
 
         def initialize(delegate)
           super(delegate)
-          @lock = Mutex.new
-          @cv   = ConditionVariable.new
+          @cv = ConditionVariable.new
         end
 
         def disconnect
-          @lock.synchronize do
+          synchronize do
             super
             @cv.broadcast
           end
         end
 
         def fetch(puid)
-          @lock.synchronize do
+          synchronize do
             super
           end
         end
 
         def save(prog)
-          @lock.synchronize do
+          synchronize do
             super.tap{ @cv.broadcast }
           end
         end
 
         def pick(restriction, &bl)
-          @lock.synchronize do
+          synchronize do
             prog = nil
             while connected? && (prog = super).nil?
               bl.call if bl
@@ -41,13 +40,13 @@ module Gisele
         end
 
         def empty?
-          @lock.synchronize do
+          synchronize do
             super
           end
         end
 
         def to_relation
-          @lock.synchronize do
+          synchronize do
             super
           end
         end
