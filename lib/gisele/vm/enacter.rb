@@ -17,9 +17,10 @@ module Gisele
           end
         end
 
-        # No prog probably means that the VM is currently trying to disconnect.
-        # We wait 0.1 msec out of the critical section to favor the VM.
-        sleep(0.1) unless prog
+        # No Prog means either that the VM is trying to disconnect or that the
+        # ProgList changed but has nothing for the enacter. We pass here out of
+        # the critical section to favor the other agents...
+        Thread.pass unless prog
 
       rescue Exception => ex
         error error_message(ex, "Progress error (#{prog.puid}):")

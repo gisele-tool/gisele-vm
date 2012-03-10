@@ -20,7 +20,7 @@ module Gisele
 
           # The VM is still in warmup phase. We are not allowed to make any
           # request to the kernel during that phase...
-          sleep(0.01) while vm.warmup?
+          Thread.pass while vm.warmup?
 
           # while true loop is there
           run

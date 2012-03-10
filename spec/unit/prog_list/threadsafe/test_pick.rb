@@ -29,7 +29,7 @@ class Gisele::VM::ProgList
           @thread = Thread.new(list){|l|
             l.pick(:waitfor => :enacter){ stopped = true }
           }
-          sleep(0.01) while !stopped
+          Thread.pass until stopped
         end
 
         it 'enters the lock and leaves it at save' do

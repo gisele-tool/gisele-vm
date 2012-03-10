@@ -52,7 +52,7 @@ module Gisele
         @thread = Thread.new(self) do |vm|
           vm.run{|s| done=true} rescue nil
         end
-        sleep(0.01) until done
+        Thread.pass until done
         running? ? @thread : raise(last_error)
       end
 
