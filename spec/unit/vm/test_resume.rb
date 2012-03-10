@@ -46,7 +46,7 @@ module Gisele
       list.save(VM::Prog.new :puid => @puid, :waitfor => :enacter)
       lambda{
         vm.resume(@puid, [])
-      }.should raise_error(VM::InvalidStateError, "Prog `#{@puid}` does not wait for world stimuli")
+      }.should raise_error(VM::InvalidStateError, "Prog `#{@puid}` does not wait for the world")
     end
 
   end

@@ -38,7 +38,7 @@ module Gisele
       list.save(VM::Prog.new :puid => @puid, :waitfor => :world)
       lambda{
         vm.progress(@puid)
-      }.should raise_error(VM::InvalidStateError, "Prog `#{@puid}` does not wait for enactement progress")
+      }.should raise_error(VM::InvalidStateError, "Prog `#{@puid}` does not wait for the enacter")
     end
 
   end

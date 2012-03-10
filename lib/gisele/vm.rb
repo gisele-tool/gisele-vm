@@ -90,11 +90,9 @@ module Gisele
     end
 
     def resume(puid, input)
-      prog = Prog===puid ? puid : fetch(puid)
+      prog  = Prog===puid ? puid : fetch(puid)
+      prog  = valid_prog!(puid, :world)
       input = valid_input!(input)
-      unless prog.waitfor == :world
-        raise InvalidStateError, "Prog `#{puid}` does not wait for world stimuli"
-      end
 
       kernel(prog) do |k|
         k.run(:resume, [ input ])
@@ -102,10 +100,7 @@ module Gisele
     end
 
     def progress(puid)
-      prog = Prog===puid ? puid : fetch(puid)
-      unless prog.waitfor == :enacter
-        raise InvalidStateError, "Prog `#{puid}` does not wait for enactement progress"
-      end
+      prog = valid_prog!(puid, :enacter)
 
       kernel(prog) do |k|
         k.run(:progress, [ ])
@@ -138,6 +133,14 @@ module Gisele
         raise InvalidInputError, "Invalid VM input: `#{input.inspect}`"
       end
       input
+    end
+
+    def valid_prog!(p, waitfor)
+      prog = Prog===p ? p : fetch(p)
+      unless prog.waitfor == waitfor
+        raise InvalidStateError, "Prog `#{p}` does not wait for the #{waitfor}"
+      end
+      prog
     end
 
   end
