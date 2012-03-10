@@ -15,7 +15,7 @@ module Gisele
       end
 
       def self.bytecode
-        @kernel_bytecode ||= Bytecode.parse(Path.dir/'kernel/kernel.gvm')
+        @kernel_bytecode ||= Bytecode.parse(Path.dir/'kernel/macros.gvm')
       end
 
       def run(at = nil, stack = [])
