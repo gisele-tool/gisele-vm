@@ -14,6 +14,19 @@ module Gisele
         subject.lock.should be_a(Mutex)
       end
 
+      it 'raises an InvalidStateError when connect is badly used' do
+        subject.connect(self)
+        lambda{
+          subject.connect(self)
+        }.should raise_error(InvalidStateError, "Already connected")
+      end
+
+      it 'raises an InvalidStateError when disconnect is badly used' do
+        lambda{
+          subject.disconnect
+        }.should raise_error(InvalidStateError, "Not connected")
+      end
+
     end
   end
 end

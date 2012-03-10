@@ -18,10 +18,12 @@ module Gisele
       end
 
       def connect(vm)
+        raise InvalidStateError, "Already connected" if connected?
         @vm = vm
       end
 
       def disconnect
+        raise InvalidStateError, "Not connected" unless connected?
         @vm = nil
       end
 
