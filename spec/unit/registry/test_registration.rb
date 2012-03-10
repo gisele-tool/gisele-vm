@@ -13,6 +13,12 @@ module Gisele
         subject.components.should_not be_include(c)
       end
 
+      it 'allows registring prior components' do
+        subject.register(c)
+        subject.register(self, true)
+        subject.components.should eq([self, c])
+      end
+
       it 'raises an error if hot registration' do
         subject.connect(self)
         lambda{

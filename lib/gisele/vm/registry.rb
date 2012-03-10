@@ -10,10 +10,14 @@ module Gisele
         @connected  = []
       end
 
-      def register(component)
+      def register(component, prior = false)
         raise NotImplementedError,
               "Hot registration is not implemented." if connected?
-        @components << component
+        if prior
+          @components.unshift component
+        else
+          @components.push component
+        end
       end
 
       def unregister(component)
