@@ -15,6 +15,10 @@ module Gisele
         ProgList::Memory.new(progs)
       end
 
+      def self.sqldb(options)
+        ProgList::Sqldb.new(options)
+      end
+
       def self.end_of_file(file, truncate = false)
         ProgList::EndOfFile.new(file, truncate)
       end
@@ -46,4 +50,5 @@ require_relative 'prog_list/delegate'
 require_relative 'prog_list/threadsafe'
 require_relative 'prog_list/memory'
 require_relative 'prog_list/end_of_file'
+require_relative 'prog_list/sqldb'
 

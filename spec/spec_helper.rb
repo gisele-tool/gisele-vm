@@ -63,6 +63,17 @@ module SpecHelpers
     puts "It took #{(t2-t1)} ms."
   end
 
+  def sqlite_none
+    file = (fixtures/'none.db')
+    file.unlink if file.exist? rescue nil
+    {:uri => "sqlite://#{file}"}
+  end
+
+  def sqlite_empty
+    file = (fixtures/'empty.db')
+    {:uri => "sqlite://#{file}"}
+  end
+
 end
 
 RSpec.configure do |c|
