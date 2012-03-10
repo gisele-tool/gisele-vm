@@ -6,6 +6,7 @@ module Gisele
         attr_reader :delegate
 
         def initialize(delegate)
+          super()
           @delegate = delegate
         end
 

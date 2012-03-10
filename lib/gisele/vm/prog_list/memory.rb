@@ -4,6 +4,7 @@ module Gisele
       class Memory < ProgList
 
         def initialize(progs = [])
+          super()
           @progs = progs
         end
 

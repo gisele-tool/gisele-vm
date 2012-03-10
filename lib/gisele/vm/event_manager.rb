@@ -1,9 +1,9 @@
 module Gisele
   class VM
-    class EventManager
-      include Component
+    class EventManager < Component
 
       def initialize(&proc)
+        super()
         @proc = proc
       end
 

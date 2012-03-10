@@ -1,14 +1,13 @@
-require_relative 'prog_list/delegate'
-require_relative 'prog_list/threadsafe'
-require_relative 'prog_list/memory'
-require_relative 'prog_list/end_of_file'
 module Gisele
   class VM
-    class ProgList
-      include Component
+    class ProgList < Component
 
       def self.new(*args)
         raise "ProgList is an abstract class" if self == ProgList
+        super
+      end
+
+      def initialize
         super
       end
 
@@ -27,3 +26,8 @@ module Gisele
     end # class ProgList
   end # class VM
 end # module Gisele
+require_relative 'prog_list/delegate'
+require_relative 'prog_list/threadsafe'
+require_relative 'prog_list/memory'
+require_relative 'prog_list/end_of_file'
+

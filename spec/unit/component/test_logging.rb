@@ -2,17 +2,18 @@ require 'spec_helper'
 module Gisele
   class VM
     describe Component, "logging delegation" do
-      include Component
+
+      let(:component){ Component.new }
 
       context 'without vm' do
 
         it 'uses a NullObject to avoid failing' do
-          vm.should be_a(NullObject)
+          component.vm.should be_a(NullObject)
         end
 
         it 'delegates logger methods to it' do
           lambda{
-            info("message")
+            component.info("message")
           }.should_not raise_error
         end
 
@@ -20,12 +21,12 @@ module Gisele
 
       context 'with a vm' do
 
-        def vm
-          Struct.new(:info).new("blah")
+        before do
+          component.connect Struct.new(:info).new("blah")
         end
 
         it 'delegates logger methods to it' do
-          info.should eq("blah")
+          component.info.should eq("blah")
         end
 
       end # with a vm

@@ -41,7 +41,7 @@ module Gisele
       context 'when everything goes fine' do
 
         let(:components) do
-          (1..2).map{|x| Object.new.extend(VM::Component) }
+          (1..2).map{|x| VM::Component.new }
         end
 
         before do
@@ -77,7 +77,7 @@ module Gisele
 
         let(:components) do
           (1..2).map{|x|
-            c = Object.new.extend(VM::Component)
+            c = VM::Component.new
             def c.connect(vm)
               raise ArgumentError, "blah"
             end if x == 2

@@ -1,12 +1,12 @@
 module Gisele
   class VM
-    class Agent
-      include Component
+    class Agent < Component
 
       attr_reader :options
       attr_reader :thread
 
       def initialize(options = {})
+        super()
         @lock = Mutex.new
         @options = default_options.merge(options)
       end

@@ -1,6 +1,6 @@
 module Gisele
   class VM
-    module Component
+    class Component
       extend Forwardable
 
       def vm
@@ -21,6 +21,6 @@ module Gisele
 
       def_delegators :vm, :debug,  :info,  :warn,  :error,  :fatal
       def_delegators :vm, :debug?, :info?, :warn?, :error?, :fatal?
-    end # module Component
+    end # class Component
   end # class VM
 end # module Gisele
