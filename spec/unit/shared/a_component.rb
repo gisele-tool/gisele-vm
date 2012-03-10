@@ -10,6 +10,10 @@ module Gisele
         subject.vm.should be_a(NullObject)
       end
 
+      it 'has a global lock on the object' do
+        subject.lock.should be_a(Mutex)
+      end
+
     end
   end
 end

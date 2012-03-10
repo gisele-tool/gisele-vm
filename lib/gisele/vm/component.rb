@@ -3,6 +3,16 @@ module Gisele
     class Component
       extend Forwardable
 
+      attr_reader :lock
+
+      def initialize
+        @lock = Mutex.new
+      end
+
+      def synchronize(&bl)
+        @lock.synchronize(&bl)
+      end
+
       def vm
         @vm || NullObject.new
       end
