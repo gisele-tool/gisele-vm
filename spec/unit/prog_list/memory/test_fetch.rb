@@ -17,7 +17,7 @@ class Gisele::VM
 
     it 'distributes copies, not original Progs' do
       list.fetch(@puid).pc = :newpc
-      list.fetch(@puid).pc.should eq(0)
+      list.fetch(@puid).pc.should eq(:main)
     end
 
     it 'allows passing strings' do

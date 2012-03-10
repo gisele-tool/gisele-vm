@@ -13,7 +13,7 @@ module Gisele
         @puid     = attrs[:puid]     || nil
         @parent   = attrs[:parent]   || @puid
         @root     = attrs[:root]     || @puid
-        @pc       = attrs[:pc]       || 0
+        @pc       = attrs[:pc]       || :main
         @waitfor  = attrs[:waitfor]  || :none
         @waitlist = attrs[:waitlist] || {}
         @input    = attrs[:input]    || []

@@ -11,14 +11,14 @@ class Gisele::VM
       end
 
       it 'saves the prog for real' do
-        list.fetch(puid).pc.should eq(0)
+        list.fetch(puid).pc.should eq(:main)
 
         # update it
         prog = list.fetch(puid)
         prog.pc = 12
 
         # the original have not changed
-        list.fetch(puid).pc.should eq(0)
+        list.fetch(puid).pc.should eq(:main)
 
         # save and check
         list.save(prog)
