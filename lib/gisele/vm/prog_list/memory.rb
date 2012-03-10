@@ -12,15 +12,6 @@ module Gisele
           @progs[is_a_valid_puid!(puid)].dup
         end
 
-        def save(prog)
-          if Array===prog
-            prog.map{|p| save(p)}
-          else
-            prog = is_a_prog!(prog)
-            prog.puid ? save_prog(prog) : register_prog(prog)
-          end
-        end
-
         def pick(restriction, &bl)
           keys = restriction.keys
           candidate = @progs.select{|p|
@@ -28,6 +19,10 @@ module Gisele
           }.sample
           bl.call if bl and candidate.nil?
           candidate
+        end
+
+        def clear
+          @progs = []
         end
 
         def empty?
@@ -53,11 +48,6 @@ module Gisele
             d.root   = d.puid if d.root.nil?
           }
           @progs.last.puid
-        end
-
-        def is_a_prog!(prog)
-          raise ArgumentError, "Invalid prog: #{prog}", caller unless Prog===prog
-          prog
         end
 
         def is_a_valid_puid!(puid)

@@ -23,6 +23,22 @@ module Gisele
         Threadsafe.new(self)
       end
 
+      def save(prog)
+        if Array===prog
+          prog.map{|p| save(p)}
+        else
+          prog = is_a_prog!(prog)
+          prog.puid ? save_prog(prog) : register_prog(prog)
+        end
+      end
+
+    private
+
+      def is_a_prog!(prog)
+        raise ArgumentError, "Invalid prog: #{prog}", caller unless Prog===prog
+        prog
+      end
+
     end # class ProgList
   end # class VM
 end # module Gisele

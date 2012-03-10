@@ -17,6 +17,10 @@ module Gisele
           super.tap{|puid| save! }
         end
 
+        def clear
+          super.tap{ save! }
+        end
+
       private
 
       def self.find_end(file, mode = 'r')

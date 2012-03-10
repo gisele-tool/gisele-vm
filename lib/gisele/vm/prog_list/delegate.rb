@@ -32,6 +32,10 @@ module Gisele
           @delegate.pick(restriction, &bl)
         end
 
+        def clear
+          @delegate.clear
+        end
+
         def empty?
           @delegate.empty?
         end
