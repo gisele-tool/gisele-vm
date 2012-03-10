@@ -29,10 +29,10 @@ module Gisele
           end
         end
 
-        def pick(waitfor, &bl)
+        def pick(restriction, &bl)
           @lock.synchronize do
             prog = nil
-            while connected? and !(prog = super)
+            while connected? && (prog = super).nil?
               bl.call if bl
               @cv.wait(@lock)
             end

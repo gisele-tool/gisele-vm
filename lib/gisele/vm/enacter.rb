@@ -10,7 +10,7 @@ module Gisele
         # Critical section to ensure that the agent won't be disconnected in
         # the middle of an enactement step.
         synchronize do
-          if prog = vm.proglist.pick(:enacter)
+          if prog = vm.proglist.pick(:waitfor => :enacter)
             debug("Enacting Prog #{prog.puid}@#{prog.pc}")
             vm.progress(prog)
           end

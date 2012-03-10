@@ -17,8 +17,8 @@ module Gisele
           @delegate.save(prog)
         end
 
-        def pick(waitfor, &bl)
-          @delegate.pick(waitfor, &bl)
+        def pick(restriction, &bl)
+          @delegate.pick(restriction, &bl)
         end
 
         def empty?

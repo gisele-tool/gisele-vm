@@ -20,8 +20,11 @@ module Gisele
           end
         end
 
-        def pick(waitfor, &bl)
-          candidate = @progs.select{|p| p.waitfor == waitfor}.sample
+        def pick(restriction, &bl)
+          keys = restriction.keys
+          candidate = @progs.select{|p|
+            p.to_hash(keys) == restriction
+          }.sample
           bl.call if bl and candidate.nil?
           candidate
         end

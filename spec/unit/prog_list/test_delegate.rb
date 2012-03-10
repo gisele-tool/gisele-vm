@@ -28,7 +28,8 @@ module Gisele
         end
 
         it 'delegates a pick invocation' do
-          list.pick(:enacter).should eq([:pick, :enacter])
+          r = {:waitfor => :enacter}
+          list.pick(r).should eq([:pick, r])
         end
 
         it 'delegates an empty? invocation' do

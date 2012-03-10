@@ -14,7 +14,8 @@ module Gisele
     end
 
     it 'delegates pick calls to it' do
-      vm.pick(:enacter).pc.should eq(17)
+      vm.pick(:waitfor => :enacter).pc.should eq(17)
+      vm.pick(:waitfor => :world).should be_nil
     end
 
   end

@@ -15,7 +15,7 @@ module Gisele
             # Critical section to ensure that the agent won't be disconnected in
             # the middle of an enactement step.
             synchronize do
-              if prog = vm.proglist.pick(:world)
+              if prog = vm.proglist.pick(:waitfor => :world)
                 event = prog.waitlist.keys.sample
                 debug("Sending event #{event} to Prog #{prog.puid}@#{prog.pc}")
                 vm.resume(prog, [ event ])

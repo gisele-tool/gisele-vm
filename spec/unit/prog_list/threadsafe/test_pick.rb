@@ -5,7 +5,7 @@ class Gisele::VM::ProgList
 
     context 'when not connected' do
       it 'returns nil' do
-        list.pick(:enacter).should be_nil
+        list.pick(:waitfor => :enacter).should be_nil
       end
     end # not connected
 
@@ -16,7 +16,7 @@ class Gisele::VM::ProgList
       context 'when something is ready' do
         def pick(arg); :something; end
         it 'returns something' do
-          list.pick(:enacter).should eq(:something)
+          list.pick(:waitfor => :enacter).should eq(:something)
         end
       end # something is ready
 
@@ -27,7 +27,7 @@ class Gisele::VM::ProgList
         before do
           stopped = false
           @thread = Thread.new(list){|l|
-            l.pick(:enacter){ stopped = true }
+            l.pick(:waitfor => :enacter){ stopped = true }
           }
           sleep(0.01) while !stopped
         end
