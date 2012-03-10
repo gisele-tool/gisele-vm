@@ -10,6 +10,16 @@ module Gisele
           @delegate = delegate
         end
 
+        def connect(vm)
+          super
+          delegate.connect(vm)
+        end
+
+        def disconnect
+          super
+          delegate.disconnect
+        end
+
         def fetch(puid)
           @delegate.fetch(puid)
         end

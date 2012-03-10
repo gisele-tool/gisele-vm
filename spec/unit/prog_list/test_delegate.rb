@@ -40,6 +40,11 @@ module Gisele
           list.to_relation.should eq([:to_relation])
         end
 
+        it 'delegates connect(vm) and disconnect calls' do
+          list.connect(vm).should eq([:connect, vm])
+          list.disconnect.should eq([:disconnect])
+        end
+
       end
     end
   end

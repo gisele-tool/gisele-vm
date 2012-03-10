@@ -1,6 +1,7 @@
 require 'spec_helper'
 class Gisele::VM::ProgList
   describe Threadsafe do
+    include Gisele::VM::FakeComponent
     let(:list){ Threadsafe.new(self) }
 
     context 'when not connected' do

@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'gisele-vm'
 require_relative 'fixtures/kernel'
+require_relative 'fixtures/fake_component'
 
 def fixtures
   Path.dir/:fixtures
