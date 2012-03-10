@@ -24,14 +24,22 @@ module Gisele
         @waitlist = wlist
       end
 
-      def to_hash
-        { :puid     => puid,
-          :parent   => parent,
-          :root     => root,
-          :pc       => pc,
-          :waitfor  => waitfor,
-          :waitlist => waitlist,
-          :input    => input }
+      def to_hash(keys = nil)
+        if keys
+          h = {}
+          keys.each do |k|
+            h[k] = instance_variable_get(:"@#{k}")
+          end
+          h
+        else
+          { :puid     => puid,
+            :parent   => parent,
+            :root     => root,
+            :pc       => pc,
+            :waitfor  => waitfor,
+            :waitlist => waitlist,
+            :input    => input }
+        end
       end
 
       def dup
