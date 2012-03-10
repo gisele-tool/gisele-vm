@@ -30,7 +30,7 @@ module Gisele
             @msg = msg.upcase
           end
         end
-        
+
         it 'delegates logging calls' do
           info("something to log").should eq("SOMETHING TO LOG")
         end
