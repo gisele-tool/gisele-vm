@@ -1,10 +1,15 @@
-source :rubygems
+source 'http://rubygems.org'
 
 group :runtime do
-  gem "stamina-core", "~> 0.5.4"
   gem "sexpr", :git => "git://github.com/blambeau/sexpr.git"
+  gem "alf",   :git => "git://github.com/blambeau/alf.git"
   gem "gisele", "~> 0.5.0"
-  gem "alf", :git => "git://github.com/blambeau/alf.git"
+  gem "stamina-core", "~> 0.5.4"
+  gem "sequel", "~> 3.33"
+end
+
+group :extra do
+  gem "sqlite3", "~> 1.3"
 end
 
 group :development do

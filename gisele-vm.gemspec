@@ -123,12 +123,15 @@ Gem::Specification.new do |s|
   # One call to add_development_dependency('gem_name', 'gem version requirement')
   # for each development dependency. These gems are required for developers
   #
+  s.add_development_dependency("sqlite3", "~> 1.3")
   s.add_development_dependency("rake", "~> 0.9.2")
   s.add_development_dependency("rspec", "~> 2.8")
   s.add_development_dependency("wlang", "~> 0.10.2")
   s.add_development_dependency("ruby-prof", "~> 0.10.8")
   s.add_dependency("gisele", "~> 0.5.0")
   s.add_dependency("alf", "~> 0.11.0")
+  s.add_dependency("stamina-core", "~> 0.5.4")
+  s.add_dependency("sequel", "~> 3.33")
 
   # The version of ruby required by this gem
   #
