@@ -1,7 +1,7 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe ProgList::Sqldb, 'connect' do
+    describe ProgList::Sqldb, 'connect', :sqlite => true do
 
       subject do
         ProgList::Sqldb.new(options).connect(vm)

@@ -79,4 +79,7 @@ end
 RSpec.configure do |c|
   c.extend  SpecHelpers
   c.include SpecHelpers
+#  c.filter_run :sqlite => lambda{|x|
+#    x.nil? or !ENV['TRAVIS']
+#  }
 end

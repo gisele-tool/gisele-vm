@@ -1,6 +1,6 @@
 module Gisele
   class VM
-    describe ProgList::Memory do
+    describe ProgList::Sqldb, :sqlite => true do
       subject do
         @proglist ||= begin
           ProgList.sqldb(sqlite_empty)

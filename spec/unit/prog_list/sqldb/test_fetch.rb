@@ -1,7 +1,7 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe ProgList::Sqldb, 'fetch' do
+    describe ProgList::Sqldb, 'fetch', :sqlite => true do
       let(:db){ ProgList::Sqldb sqlite_empty }
 
       before do

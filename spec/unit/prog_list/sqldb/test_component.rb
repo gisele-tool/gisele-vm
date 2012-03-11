@@ -1,7 +1,7 @@
 require 'spec_helper'
 module Gisele
   class VM
-    describe ProgList::Sqldb do
+    describe ProgList::Sqldb, :sqlite => true do
       subject do
         ProgList::Sqldb.new sqlite_empty
       end
