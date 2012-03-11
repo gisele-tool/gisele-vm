@@ -1,3 +1,4 @@
+require 'spec_helper'
 module Gisele
   class VM
     describe ProgList::Sqldb, :sqlite => true do
