@@ -29,6 +29,7 @@ GEM
       sexpr (~> 0.5.0)
       stamina-core (~> 0.5.3)
       yargi (~> 0.2.0)
+    jdbc-sqlite3 (3.7.2)
     myrrha (1.2.2)
     quickl (0.4.3)
     rake (0.9.2.2)
@@ -49,11 +50,13 @@ GEM
     yargi (0.2.0)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
   alf!
   gisele (~> 0.5.0)
+  jdbc-sqlite3 (~> 3.7)
   rake (~> 0.9.2)
   rspec (~> 2.8)
   ruby-prof (~> 0.10.8)

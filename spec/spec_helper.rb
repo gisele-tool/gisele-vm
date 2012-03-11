@@ -63,15 +63,19 @@ module SpecHelpers
     puts "It took #{(t2-t1)} ms."
   end
 
+  def sqlite_protocol
+    defined?(JRUBY_VERSION) ? "jdbc:sqlite" : "sqlite"
+  end
+
   def sqlite_none
     file = (fixtures/'none.db')
     file.unlink if file.exist? rescue nil
-    {:uri => "sqlite://#{file}"}
+    {:uri => "#{sqlite_protocol}://#{file}"}
   end
 
   def sqlite_empty
     file = (fixtures/'empty.db')
-    {:uri => "sqlite://#{file}"}
+    {:uri => "#{sqlite_protocol}://#{file}"}
   end
 
 end
