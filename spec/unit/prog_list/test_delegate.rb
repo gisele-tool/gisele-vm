@@ -33,7 +33,7 @@ module Gisele
         end
 
         it 'delegates a to_relation invocation' do
-          list.to_relation.should eq([:to_relation])
+          list.to_relation.should eq([:to_relation, nil])
         end
 
         it 'delegates connect(vm) and disconnect calls' do

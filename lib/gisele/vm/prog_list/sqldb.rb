@@ -44,6 +44,12 @@ module Gisele
           sequel_db[table_name].delete
         end
 
+        def to_relation(restriction = nil)
+          tuples = sequel_db[table_name]
+          tuples = tuples.where(encode(restriction)) if restriction
+          Alf::Relation(tuples)
+        end
+
       private
 
         def save_prog(prog)

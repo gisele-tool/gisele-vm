@@ -39,7 +39,7 @@ module Gisele
           end
         end
 
-        def to_relation
+        def to_relation(restriction = nil)
           synchronize do
             super
           end

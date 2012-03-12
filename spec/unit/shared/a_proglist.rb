@@ -51,7 +51,6 @@ module Gisele
           subject.fetch(p1).pc.should eq(:s19)
           subject.fetch(p2).parent.should eq(p2)
         end
-
       end
 
       describe 'pick' do
@@ -72,7 +71,25 @@ module Gisele
             subject.pick(:waitfor => :operator).should be_nil
           end
         end
+      end
 
+      describe 'to_relation' do
+        before(:all) do
+          connect_and_clear
+          @enacted = subject.save(Prog.new :waitfor => :enacter)
+          @worlded = subject.save(Prog.new :waitfor => :world)
+        end
+        after (:all){ disconnect_and_clear }
+
+        it 'returns a Relation wil all Progs by default' do
+          rel = subject.to_relation
+          rel.project([:puid]).should eq(Relation(:puid => [ @enacted, @worlded ]))
+        end
+
+        it 'supports a restriction Hash argument' do
+          rel = subject.to_relation(:waitfor => :enacter)
+          rel.project([:puid]).should eq(Relation(:puid => @enacted))
+        end
       end
 
     end

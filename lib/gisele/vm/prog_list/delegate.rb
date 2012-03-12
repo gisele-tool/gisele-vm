@@ -36,8 +36,8 @@ module Gisele
           @delegate.clear
         end
 
-        def to_relation
-          @delegate.to_relation
+        def to_relation(restriction = nil)
+          @delegate.to_relation(restriction)
         end
 
       end # class Delegate

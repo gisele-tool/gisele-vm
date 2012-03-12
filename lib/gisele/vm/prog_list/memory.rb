@@ -25,8 +25,14 @@ module Gisele
           @progs = []
         end
 
-        def to_relation
-          Alf::Relation(@progs.map{|p| p.to_hash})
+        def to_relation(restriction = nil)
+          progs = @progs
+          if restriction
+            keys  = restriction.keys
+            progs = progs.select{|p| p.to_hash(keys) == restriction}
+          end
+          progs = progs.map{|p| p.to_hash}
+          Alf::Relation(progs)
         end
 
       private
