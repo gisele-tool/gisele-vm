@@ -27,10 +27,6 @@ module Gisele
         ProgList::Sqldb.new(options)
       end
 
-      def self.end_of_file(file, truncate = false)
-        ProgList::EndOfFile.new(file, truncate)
-      end
-
       def threadsafe
         Threadsafe.new(self)
       end
@@ -57,5 +53,4 @@ end # module Gisele
 require_relative 'prog_list/delegate'
 require_relative 'prog_list/threadsafe'
 require_relative 'prog_list/memory'
-require_relative 'prog_list/end_of_file'
 require_relative 'prog_list/sqldb'
