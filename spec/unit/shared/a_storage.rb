@@ -3,19 +3,23 @@ module Gisele
     shared_examples_for "a Storage" do
 
       def connect_and_clear
-        subject.connect(vm)
+        subject.registered(vm)
+        subject.connect
         subject.clear
       end
 
       def disconnect_and_clear
         subject.clear
         subject.disconnect
+        subject.unregistered
       end
 
       describe "connect/disconnect" do
         it 'allows connecting and disconnecting' do
-          subject.connect(vm)
+          subject.registered(vm)
+          subject.connect
           subject.disconnect
+          subject.unregistered
         end
       end
 

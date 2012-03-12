@@ -22,7 +22,7 @@ module Gisele
       context 'with a vm' do
 
         before do
-          component.connect Struct.new(:info).new("blah")
+          component.registered Struct.new(:info).new("blah")
         end
 
         it 'delegates logger methods to it' do

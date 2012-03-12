@@ -3,13 +3,13 @@ module Gisele
   class VM
     describe Registry, "connect" do
 
-      let(:registry){ Registry.new }
+      let(:registry){ Registry.new(vm) }
       let(:c1){ Component.new }
       let(:c2){ Component.new }
       let(:c3){ Component.new }
 
       subject do
-        registry.connect(vm)
+        registry.connect
       end
 
       before do
@@ -31,7 +31,7 @@ module Gisele
 
       context "when a component fails to load" do
         before do
-          def c2.connect(vm)
+          def c2.connect
             raise ArgumentError, "blah"
           end
         end

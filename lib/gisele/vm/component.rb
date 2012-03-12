@@ -6,7 +6,9 @@ module Gisele
       attr_reader :lock
 
       def initialize
-        @lock = Mutex.new
+        @lock      = Mutex.new
+        @vm        = nil
+        @connected = false
       end
 
       def synchronize(&bl)
@@ -17,18 +19,31 @@ module Gisele
         @vm || NullObject.new
       end
 
-      def connect(vm)
-        raise InvalidStateError, "Already connected" if connected?
+      def registered(vm)
         @vm = vm
+      end
+
+      def unregistered
+        @vm = nil
+      end
+
+      def registered?
+        !@vm.nil?
+      end
+
+      def connect
+        raise InvalidStateError, "Not registered" unless registered?
+        raise InvalidStateError, "Already connected" if connected?
+        @connected = true
       end
 
       def disconnect
         raise InvalidStateError, "Not connected" unless connected?
-        @vm = nil
+        @connected = false
       end
 
       def connected?
-        !@vm.nil?
+        @connected
       end
 
       def_delegators :vm, :debug,  :info,  :warn,  :error,  :fatal

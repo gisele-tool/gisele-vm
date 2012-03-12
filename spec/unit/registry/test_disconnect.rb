@@ -3,7 +3,7 @@ module Gisele
   class VM
     describe Registry, "connect" do
 
-      let(:registry){ Registry.new }
+      let(:registry){ Registry.new(vm) }
       let(:c1){ Component.new }
       let(:c2){ Component.new }
       let(:c3){ Component.new }
@@ -17,7 +17,7 @@ module Gisele
         registry.register(c2)
         registry.register(c3)
         registry.components.should eq([c1, c2, c3])
-        registry.connect(vm)
+        registry.connect
         subject
       end
 

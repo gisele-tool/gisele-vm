@@ -29,19 +29,11 @@ module SpecHelpers
   end
 
   def list
-    @list ||= begin
-      list = vm.proglist
-      list.connect(vm)
-      list
-    end
+    vm.proglist
   end
 
   def kernel(bc = nil)
-    @kernel ||= begin
-      k = vm(bc).kernel
-      k.connect(vm)
-      k
-    end
+    vm(bc).kernel
   end
 
   def runner(*args)

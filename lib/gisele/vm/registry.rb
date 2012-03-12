@@ -4,10 +4,11 @@ module Gisele
 
       attr_reader :components
 
-      def initialize
+      def initialize(vm)
         super()
+        @vm         = vm
         @components = []
-        @connected  = []
+        @connected_components = []
       end
 
       def register(component, prior = false)
@@ -18,19 +19,21 @@ module Gisele
         else
           @components.push component
         end
+        component.registered(vm)
       end
 
       def unregister(component)
         raise NotImplementedError,
               "Hot unregistration is not implemented." if connected?
         @components.delete(component)
+        component.unregistered
       end
 
-      def connect(vm)
+      def connect
         super
         @components.each do |c|
-          c.connect(vm)
-          @connected << c
+          c.connect
+          @connected_components << c
         end
       rescue Exception => ex
         disconnect
@@ -39,15 +42,9 @@ module Gisele
 
       def disconnect
         super
-        @connected.each do |c|
-          disconnect_one(c)
+        @connected_components.each do |c|
+          c.disconnect rescue nil
         end
-      end
-
-    private
-
-      def disconnect_one(c)
-        c.disconnect rescue nil
       end
 
     end # class Registry

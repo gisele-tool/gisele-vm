@@ -3,8 +3,19 @@ module Gisele
   class VM
     describe ProgList::Sqldb, 'connect', :sqlite => true do
 
+      let(:db){ @db ||= ProgList::Sqldb.new(options) }
+
+      before do
+        db.registered(vm)
+      end
+
       subject do
-        ProgList::Sqldb.new(options).connect(vm)
+        db.connect
+      end
+
+      after do
+        db.disconnect
+        db.unregistered
       end
 
       context 'when the database is unreachable' do

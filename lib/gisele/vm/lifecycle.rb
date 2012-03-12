@@ -30,7 +30,7 @@ module Gisele
 
           info('VM start request received, connecting.')
           begin
-            registry.connect(self)
+            registry.connect
           rescue Exception => ex
             fatal("Components failed to load: #{ex.message}") rescue nil
             @last_error = ex

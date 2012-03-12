@@ -9,7 +9,7 @@ module Gisele
         attr_reader :registry
 
         def initialize(components)
-          @registry = Registry.new
+          @registry = Registry.new(self)
           components.each do |c|
             @registry.register(c)
           end
@@ -79,7 +79,7 @@ module Gisele
         let(:components) do
           (1..2).map{|x|
             c = VM::Component.new
-            def c.connect(vm)
+            def c.connect
               raise ArgumentError, "blah"
             end if x == 2
             c

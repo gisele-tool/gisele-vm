@@ -14,7 +14,7 @@ module Gisele
         {}
       end
 
-      def connect(vm)
+      def connect
         super
         @thread = Thread.new{
 

@@ -28,7 +28,7 @@ module Gisele
 
     def initialize(bytecode = [:gvm])
       @bytecode  = (Kernel.bytecode + Bytecode.coerce(bytecode)).verify!
-      @registry  = Registry.new
+      @registry  = Registry.new(self)
       @kernel    = Kernel.new
       init_lifecycle
 

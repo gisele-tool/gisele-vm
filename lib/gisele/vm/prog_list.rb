@@ -21,9 +21,19 @@ module Gisele
         ProgList::Sqldb.new(options)
       end
 
-      def connect(vm)
+      def registered(vm)
         super
-        @storage.connect(vm)
+        @storage.registered(vm)
+      end
+
+      def unregistered
+        super
+        @storage.unregistered
+      end
+
+      def connect
+        super
+        @storage.connect
       end
 
       def disconnect

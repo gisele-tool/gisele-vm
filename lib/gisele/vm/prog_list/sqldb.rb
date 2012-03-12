@@ -18,7 +18,7 @@ module Gisele
           defined?(JRUBY_VERSION) ? "jdbc:sqlite" : "sqlite"
         end
 
-        def connect(vm)
+        def connect
           super
           @sequel_db = Sequel.connect(connection_info)
           @sequel_db.test_connection
