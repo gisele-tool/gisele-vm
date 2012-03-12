@@ -4,10 +4,10 @@ module Gisele
     describe ProgList::Sqldb, :sqlite => true do
       subject do
         @proglist ||= begin
-          ProgList.sqldb(sqlite_memory)
+          ProgList::Sqldb.new(sqlite_memory)
         end
       end
-      it_should_behave_like "a ProgList"
+      it_should_behave_like "a Storage"
     end
   end
 end

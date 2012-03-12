@@ -3,8 +3,12 @@ class Gisele::VM
   describe ProgList::Memory, 'save' do
 
     context 'when arg is an existing Prog' do
-      let(:puid){ 0 }
-      let(:list){ ProgList.memory([ Prog.new(:puid => puid) ]) }
+      let(:puid){ @puid }
+      let(:list){ ProgList::Memory.new }
+
+      before do
+        @puid = list.save(Prog.new :pc => :main)
+      end
 
       it 'returns the puid' do
         list.save(list.fetch(puid)).should eq(puid)
@@ -37,7 +41,7 @@ class Gisele::VM
 
     context 'when arg is a fresh new Prog' do
       let(:puid){ nil }
-      let(:list){ ProgList.memory([ ]) }
+      let(:list){ ProgList::Memory.new }
 
       it 'sets a fresh new puid' do
         puid = list.save(Prog.new)
@@ -55,7 +59,7 @@ class Gisele::VM
     end
 
     context 'when arg is an array of Progs' do
-      let(:list){ ProgList.memory([ ]) }
+      let(:list){ ProgList::Memory.new }
 
       subject do
         list.save([ Prog.new, Prog.new ])
@@ -73,13 +77,13 @@ class Gisele::VM
 
     it 'raises an ArgumentError if arg is not recognized' do
       lambda{
-        ProgList.memory.save(self)
+        ProgList::Memory.new.save(self)
       }.should raise_error(ArgumentError)
     end
 
     it 'raises an InvalidPUIDError if arg is invalid' do
       lambda{
-        ProgList.memory.save(Prog.new(:puid => 12))
+        ProgList::Memory.new.save(Prog.new(:puid => 12))
       }.should raise_error(InvalidPUIDError)
     end
 

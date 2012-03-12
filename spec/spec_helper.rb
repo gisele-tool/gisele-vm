@@ -29,7 +29,11 @@ module SpecHelpers
   end
 
   def list
-    vm.proglist
+    @list ||= begin
+      list = vm.proglist
+      list.connect(vm)
+      list
+    end
   end
 
   def kernel(bc = nil)

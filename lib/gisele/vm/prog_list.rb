@@ -1,14 +1,14 @@
 module Gisele
   class VM
     class ProgList < Component
+      extend Forwardable
 
-      def self.new(*args)
-        raise "ProgList is an abstract class" if self == ProgList
-        super
+      def initialize(storage)
+        @storage = storage.threadsafe
       end
 
-      def initialize
-        super
+      def self.memory
+        ProgList.new ProgList::Memory.new
       end
 
       def self.storage(options = nil)
@@ -16,40 +16,30 @@ module Gisele
         options = {:uri => options } unless Hash===options
         options[:uri] = "memory" unless options[:uri]
         options[:uri] = "#{Sqldb.sqlite_protocol}:memory" if options[:uri]=='memory'
-        ProgList::Sqldb.new(options).threadsafe
-      end
-
-      def self.memory(progs = [])
-        ProgList::Memory.new(progs)
-      end
-
-      def self.sqldb(options)
         ProgList::Sqldb.new(options)
       end
 
-      def threadsafe
-        Threadsafe.new(self)
+      def connect(vm)
+        super
+        @storage.connect(vm)
       end
 
-      def save(prog)
-        if Array===prog
-          prog.map{|p| save(p)}
-        else
-          prog = is_a_prog!(prog)
-          prog.puid ? save_prog(prog) : register_prog(prog)
-        end
+      def disconnect
+        super
+        @storage.disconnect
       end
 
-    private
-
-      def is_a_prog!(prog)
-        raise ArgumentError, "Invalid prog: #{prog}", caller unless Prog===prog
-        prog
-      end
+      def_delegators :"@storage", :options,
+                                  :save,
+                                  :fetch,
+                                  :pick,
+                                  :clear,
+                                  :to_relation
 
     end # class ProgList
   end # class VM
 end # module Gisele
+require_relative 'prog_list/storage'
 require_relative 'prog_list/threadsafe'
 require_relative 'prog_list/memory'
 require_relative 'prog_list/sqldb'

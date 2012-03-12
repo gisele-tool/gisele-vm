@@ -106,7 +106,7 @@ module Gisele
           vm.logger.level = @verbose
 
           # Install the ProgList
-          vm.proglist = VM::ProgList.storage(@storage)
+          vm.proglist = VM::ProgList.new VM::ProgList.storage(@storage)
 
           # Install the Enacter
           vm.register VM::Enacter.new

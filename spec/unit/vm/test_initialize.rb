@@ -13,11 +13,6 @@ module Gisele
     context 'without block' do
       let(:vm){ VM.new }
 
-      it 'installs a threadsafe Memory prog list' do
-        vm.proglist.should be_a(VM::ProgList::Threadsafe)
-        vm.proglist.delegate.should be_a(VM::ProgList::Memory)
-      end
-
       it 'uses the kernel bytecode' do
         vm.bytecode[:start].should_not be_nil
       end
@@ -32,10 +27,11 @@ module Gisele
     end
 
     context 'with a block' do
-      let(:em){ VM::EventManager.new }
+      let(:em)  { VM::EventManager.new }
+      let(:list){ VM::ProgList.new VM::ProgList.storage("memory") }
       let(:vm){
         VM.new([:gvm, [:block, :hello, [:nop]]]) do |vm|
-          vm.proglist      = VM::ProgList.memory
+          vm.proglist      = list
           vm.logger        = nil
           vm.event_manager = em
         end
@@ -47,7 +43,7 @@ module Gisele
       end
 
       it 'installs the provided proglist' do
-        vm.proglist.should be_a(VM::ProgList::Memory)
+        vm.proglist.should eq(list)
       end
 
       it 'installs the provided logger' do

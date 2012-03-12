@@ -2,14 +2,12 @@ require 'sequel'
 module Gisele
   class VM
     class ProgList
-      class Sqldb < ProgList
+      class Sqldb < Storage
 
         attr_reader :sequel_db
-        attr_reader :options
 
         def initialize(options = {})
-          super()
-          @options = default_options.merge(options)
+          super(default_options.merge(options))
         end
 
         def default_options

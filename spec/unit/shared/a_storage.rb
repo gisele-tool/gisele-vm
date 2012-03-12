@@ -1,6 +1,6 @@
 module Gisele
   class VM
-    shared_examples_for "a ProgList" do
+    shared_examples_for "a Storage" do
 
       def connect_and_clear
         subject.connect(vm)

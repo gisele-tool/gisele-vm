@@ -2,7 +2,7 @@ require 'thread'
 module Gisele
   class VM
     class ProgList
-      class Threadsafe < ProgList
+      class Threadsafe < Component
 
         attr_reader :delegate
 

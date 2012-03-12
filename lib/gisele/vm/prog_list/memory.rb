@@ -1,11 +1,11 @@
 module Gisele
   class VM
     class ProgList
-      class Memory < ProgList
+      class Memory < Storage
 
-        def initialize(progs = [])
-          super()
-          @progs = progs
+        def initialize(options = {})
+          super
+          @progs = []
         end
 
         def fetch(puid)

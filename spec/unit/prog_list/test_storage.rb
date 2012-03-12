@@ -5,8 +5,7 @@ module Gisele
       subject{ ProgList.storage(arg) }
 
       before do
-        subject.should be_a(ProgList::Threadsafe)
-        subject.delegate.should be_a(ProgList::Sqldb)
+        subject.should be_a(ProgList::Sqldb)
       end
 
       context 'without arg' do

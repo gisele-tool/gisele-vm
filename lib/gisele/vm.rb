@@ -34,7 +34,7 @@ module Gisele
 
       # registration
       yield(self) if block_given?
-      @proglist      ||= ProgList.memory.threadsafe
+      @proglist      ||= ProgList.memory
       @event_manager ||= EventManager.new
 
       # post installation of prior components
