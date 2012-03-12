@@ -20,14 +20,17 @@ module SpecHelpers
   end
 
   def vm(bc = nil)
-    @vm ||= Gisele::VM.new(bc || [:gvm]) do |vm|
-      vm.proglist      = Gisele::VM::ProgList.memory
-      vm.event_manager = Gisele::VM::EventManager.new{|evt|
-        events << evt
-      }
+    @vm ||= begin
+      vm = Gisele::VM.new(bc || [:gvm]) do |vm|
+        vm.proglist      = Gisele::VM::ProgList.memory
+        vm.event_manager = Gisele::VM::EventManager.new{|evt|
+          events << evt
+        }
+      end
+      vm.connect
+      vm.proglist.clear
+      vm
     end
-    @vm.connect unless @vm.connected?
-    @vm
   end
 
   def list
