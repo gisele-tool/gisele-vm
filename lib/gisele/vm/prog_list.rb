@@ -61,7 +61,6 @@ module Gisele
       end
 
       def pick(restriction, &bl)
-        connected!
         synchronize do
           prog = nil
           while connected? && (prog = @storage.pick(restriction)).nil?
