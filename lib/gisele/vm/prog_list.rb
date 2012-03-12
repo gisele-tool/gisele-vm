@@ -50,7 +50,6 @@ module Gisele
     end # class ProgList
   end # class VM
 end # module Gisele
-require_relative 'prog_list/delegate'
 require_relative 'prog_list/threadsafe'
 require_relative 'prog_list/memory'
 require_relative 'prog_list/sqldb'

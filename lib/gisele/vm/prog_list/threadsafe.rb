@@ -2,40 +2,49 @@ require 'thread'
 module Gisele
   class VM
     class ProgList
-      class Threadsafe < ProgList::Delegate
+      class Threadsafe < ProgList
+
+        attr_reader :delegate
 
         def initialize(delegate)
-          super(delegate)
-          @cv = ConditionVariable.new
+          super()
+          @delegate = delegate
+          @cv       = ConditionVariable.new
         end
 
         def options
           @delegate.options
         end
 
+        def connect(vm)
+          super
+          @delegate.connect(vm)
+        end
+
         def disconnect
+          super
           synchronize do
-            super
+            @delegate.disconnect
             @cv.broadcast
           end
         end
 
         def fetch(puid)
           synchronize do
-            super
+            @delegate.fetch(puid)
           end
         end
 
         def save(prog)
           synchronize do
-            super.tap{ @cv.broadcast }
+            @delegate.save(prog).tap{ @cv.broadcast }
           end
         end
 
         def pick(restriction, &bl)
           synchronize do
             prog = nil
-            while connected? && (prog = super).nil?
+            while connected? && (prog = @delegate.pick(restriction)).nil?
               bl.call if bl
               @cv.wait(@lock)
             end
@@ -43,9 +52,15 @@ module Gisele
           end
         end
 
+        def clear
+          synchronize do
+            @delegate.clear
+          end
+        end
+
         def to_relation(restriction = nil)
           synchronize do
-            super
+            @delegate.to_relation(restriction)
           end
         end
 
