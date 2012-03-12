@@ -49,6 +49,18 @@ module Gisele
       self
     end
 
+    def connect
+      @registry.connect
+    end
+
+    def disconnect
+      @registry.disconnect
+    end
+
+    def connected?
+      @registry.connected?
+    end
+
     include Robustness
     include Logging
     include Lifecycle

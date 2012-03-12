@@ -14,7 +14,9 @@ module Gisele
       let(:arg){ @puid }
       it 'executes the Prog with its input' do
         subject
-        @events.should eq([ VM::Event.new(list.fetch(@puid), :pong, [ "world" ]) ])
+        prog           = list.fetch(@puid)
+        expected_event = VM::Event.new(prog, :pong, [ "world" ])
+        @events.should eq([ expected_event ])
         list.fetch(@puid).input.should eq([])
       end
     end

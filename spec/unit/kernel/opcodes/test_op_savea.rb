@@ -9,7 +9,7 @@ module Gisele
         @at0 = list.fetch(@puid0)
         @at1 = list.fetch(@puid1)
         runner.stack = [ [ @at0, @at1 ] ]
-        runner.peek.each{|p| p.pc = 12}
+        runner.peek.each{|p| p.pc = :s18}
       end
 
       subject do
@@ -19,7 +19,7 @@ module Gisele
       after do
         top = runner.peek
         top.each do |puid|
-          list.fetch(puid).pc.should eq(12)
+          list.fetch(puid).pc.should eq(:s18)
         end
       end
 

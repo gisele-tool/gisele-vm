@@ -20,14 +20,14 @@ module Gisele
       end
 
       it 'sets the events as waitlist' do
-        parent.waitlist.should eq({1 => true, 2 => true})
+        parent.waitlist.should eq({@parent+1 => true, @parent+2 => true})
       end
 
       it 'fork and schedules self and children correctly' do
         expected = Relation([
-          {:puid => 0, :pc => :joinat, :parent => 0, :root => 16, :waitfor => :children},
-          {:puid => 1, :pc => :fat1,   :parent => 0, :root => 16, :waitfor => :enacter },
-          {:puid => 2, :pc => :fat2,   :parent => 0, :root => 16, :waitfor => :enacter }
+          {:puid => @parent,   :pc => :joinat, :parent => @parent, :root => 16, :waitfor => :children},
+          {:puid => @parent+1, :pc => :fat1,   :parent => @parent, :root => 16, :waitfor => :enacter },
+          {:puid => @parent+2, :pc => :fat2,   :parent => @parent, :root => 16, :waitfor => :enacter }
         ])
         list.to_relation.project([:puid, :pc, :parent, :root, :waitfor]).should eq(expected)
       end

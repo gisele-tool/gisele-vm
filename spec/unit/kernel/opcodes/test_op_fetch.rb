@@ -14,11 +14,11 @@ module Gisele
       end
 
       it 'fetches the correct Prog with an arg' do
-        runner.op_fetch(1)
+        runner.op_fetch(@child)
       end
 
       it 'supports taking the puid from the stack' do
-        runner.stack = [ 1 ]
+        runner.stack = [ @child ]
         runner.op_fetch
       end
 

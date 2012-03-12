@@ -31,8 +31,12 @@ module Gisele
         !@vm.nil?
       end
 
-      def connect
+      def registered!
         raise InvalidStateError, "Not registered" unless registered?
+      end
+
+      def connect
+        registered!
         raise InvalidStateError, "Already connected" if connected?
         @connected = true
       end
@@ -44,6 +48,10 @@ module Gisele
 
       def connected?
         @connected
+      end
+
+      def connected!
+        raise InvalidStateError, "Not connected" unless connected?
       end
 
       def_delegators :vm, :debug,  :info,  :warn,  :error,  :fatal

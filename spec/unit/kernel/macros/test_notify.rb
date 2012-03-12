@@ -18,8 +18,10 @@ module Gisele
       context 'when the child has a parent' do
 
         before do
-          @parent = list.save Prog.new(:waitlist => {1 => true, 2 => true})
+          @parent = list.save Prog.new
           @child  = list.save Prog.new(:parent => @parent)
+          @child2 = list.save Prog.new(:parent => @parent)
+          list.save(Prog.new :puid => @parent, :waitlist => {@child => true, @child2 => true})
           subject
         end
 
@@ -29,7 +31,7 @@ module Gisele
         end
 
         it 'resumes the parent on a reduced waitlist' do
-          parent.waitlist.should eq(2 => true)
+          parent.waitlist.should eq(@child2 => true)
           parent.waitfor.should eq(:enacter)
         end
 

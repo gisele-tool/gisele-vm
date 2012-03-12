@@ -26,14 +26,16 @@ module SpecHelpers
         events << evt
       }
     end
+    @vm.connect unless @vm.connected?
+    @vm
   end
 
   def list
-    vm.proglist
+    @list ||= vm.proglist
   end
 
   def kernel(bc = nil)
-    vm(bc).kernel
+    @k ||= vm(bc).kernel
   end
 
   def runner(*args)

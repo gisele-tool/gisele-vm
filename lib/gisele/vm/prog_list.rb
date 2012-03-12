@@ -10,7 +10,7 @@ module Gisele
       end
 
       def self.memory
-        ProgList.new ProgList::Memory.new
+        ProgList.new storage("memory")
       end
 
       def self.storage(options = nil)
@@ -44,11 +44,15 @@ module Gisele
         end
       end
 
-      def_delegators :"@storage", :options,
-                                  :fetch,
-                                  :to_relation
+      def_delegators :"@storage", :options
+
+      def fetch(puid)
+        connected!
+        @storage.fetch(puid)
+      end
 
       def save(prog)
+        connected!
         synchronize do
           @storage.save(prog).tap do
             @waiting.broadcast
@@ -57,6 +61,7 @@ module Gisele
       end
 
       def pick(restriction, &bl)
+        connected!
         synchronize do
           prog = nil
           while connected? && (prog = @storage.pick(restriction)).nil?
@@ -68,10 +73,16 @@ module Gisele
       end
 
       def clear
+        connected!
         synchronize do
           @storage.clear
           @waiting.broadcast
         end
+      end
+
+      def to_relation(restriction = nil)
+        connected!
+        @storage.to_relation(restriction)
       end
 
     end # class ProgList

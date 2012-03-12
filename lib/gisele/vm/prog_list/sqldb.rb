@@ -32,15 +32,15 @@ module Gisele
         end
 
         def fetch(puid)
-          got = sequel_db[table_name].
-            where(:puid => puid).first
+          got = sequel_db[table_name].where(:puid => puid).first
+          raise InvalidPUIDError, "Invalid puid: `#{puid.inspect}`" unless got
           decode(got)
         end
 
         def pick(restriction)
           c = sequel_db[table_name].
             where(encode(restriction)).limit(1).first
-          c ? decode(c) : nil
+          c && decode(c)
         end
 
         def clear
@@ -74,6 +74,7 @@ module Gisele
 
         def decode(h, as_prog = true)
           h[:pc]       = h[:pc].to_sym               if h.has_key?(:pc)
+          h[:pc]       = -1                          if h[:pc] == :"-1"
           h[:waitfor]  = h[:waitfor].to_sym          if h.has_key?(:waitfor)
           h[:waitlist] = ::Kernel.eval(h[:waitlist]) if h.has_key?(:waitlist)
           h[:input]    = ::Kernel.eval(h[:input])    if h.has_key?(:input)
