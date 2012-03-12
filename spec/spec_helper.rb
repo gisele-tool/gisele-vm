@@ -67,10 +67,8 @@ module SpecHelpers
     defined?(JRUBY_VERSION) ? "jdbc:sqlite" : "sqlite"
   end
 
-  def sqlite_none
-    file = (fixtures/'none.db')
-    file.unlink if file.exist? rescue nil
-    {:uri => "#{sqlite_protocol}://#{file}"}
+  def sqlite_memory
+    {:uri => "#{sqlite_protocol}:memory"}
   end
 
   def sqlite_empty

@@ -17,7 +17,7 @@ module Gisele
       end
 
       context 'when the database is creatable' do
-        let(:options){ sqlite_none }
+        let(:options){ sqlite_memory }
         it 'returns itself' do
           subject.should be_a(ProgList::Sqldb)
         end

@@ -4,7 +4,7 @@ module Gisele
     describe ProgList::Sqldb, :sqlite => true do
       subject do
         @proglist ||= begin
-          ProgList.sqldb(sqlite_empty)
+          ProgList.sqldb(sqlite_memory)
         end
       end
       it_should_behave_like "a ProgList"
