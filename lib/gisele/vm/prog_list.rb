@@ -4,6 +4,7 @@ module Gisele
       extend Forwardable
 
       def initialize(storage)
+        super()
         @storage = storage.threadsafe
       end
 
