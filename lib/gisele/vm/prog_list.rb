@@ -11,6 +11,14 @@ module Gisele
         super
       end
 
+      def self.engine(options = nil)
+        options = {:uri => "memory"} unless options
+        options = {:uri => options } unless Hash===options
+        options[:uri] = "memory" unless options[:uri]
+        options[:uri] = "#{Sqldb.sqlite_protocol}:memory" if options[:uri]=='memory'
+        ProgList::Sqldb.new(options).threadsafe
+      end
+
       def self.memory(progs = [])
         ProgList::Memory.new(progs)
       end
@@ -51,4 +59,3 @@ require_relative 'prog_list/threadsafe'
 require_relative 'prog_list/memory'
 require_relative 'prog_list/end_of_file'
 require_relative 'prog_list/sqldb'
-

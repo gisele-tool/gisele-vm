@@ -9,6 +9,10 @@ module Gisele
           @cv = ConditionVariable.new
         end
 
+        def options
+          @delegate.options
+        end
+
         def disconnect
           synchronize do
             super

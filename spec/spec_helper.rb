@@ -64,7 +64,7 @@ module SpecHelpers
   end
 
   def sqlite_protocol
-    defined?(JRUBY_VERSION) ? "jdbc:sqlite" : "sqlite"
+    Gisele::VM::ProgList::Sqldb.sqlite_protocol
   end
 
   def sqlite_memory

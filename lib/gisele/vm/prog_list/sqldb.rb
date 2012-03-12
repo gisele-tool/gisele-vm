@@ -5,6 +5,7 @@ module Gisele
       class Sqldb < ProgList
 
         attr_reader :sequel_db
+        attr_reader :options
 
         def initialize(options = {})
           super()
@@ -13,6 +14,10 @@ module Gisele
 
         def default_options
           { :table_name => :gvm_proglist }
+        end
+
+        def self.sqlite_protocol
+          defined?(JRUBY_VERSION) ? "jdbc:sqlite" : "sqlite"
         end
 
         def connect(vm)
