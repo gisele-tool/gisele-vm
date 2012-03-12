@@ -47,6 +47,7 @@ module Gisele
         def to_relation(restriction = nil)
           tuples = sequel_db[table_name]
           tuples = tuples.where(encode(restriction)) if restriction
+          tuples = tuples.map{|t| decode(t, false)}
           Alf::Relation(tuples)
         end
 
@@ -68,12 +69,12 @@ module Gisele
           puid
         end
 
-        def decode(h)
+        def decode(h, as_prog = true)
           h[:pc]       = h[:pc].to_sym               if h.has_key?(:pc)
           h[:waitfor]  = h[:waitfor].to_sym          if h.has_key?(:waitfor)
           h[:waitlist] = ::Kernel.eval(h[:waitlist]) if h.has_key?(:waitlist)
           h[:input]    = ::Kernel.eval(h[:input])    if h.has_key?(:input)
-          Prog.new(h)
+          as_prog ? Prog.new(h) : h
         end
 
         def encode(prog)

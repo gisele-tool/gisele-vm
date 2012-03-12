@@ -76,19 +76,26 @@ module Gisele
       describe 'to_relation' do
         before(:all) do
           connect_and_clear
-          @enacted = subject.save(Prog.new :waitfor => :enacter)
-          @worlded = subject.save(Prog.new :waitfor => :world)
+          @enacted = subject.save(Prog.new :waitfor => :enacter, :pc => :s17)
+          @worlded = subject.save(Prog.new :waitfor => :world,   :pc => :s18)
         end
         after (:all){ disconnect_and_clear }
 
         it 'returns a Relation wil all Progs by default' do
           rel = subject.to_relation
-          rel.project([:puid]).should eq(Relation(:puid => [ @enacted, @worlded ]))
+          expected = Relation([
+            { :puid => @enacted, :waitlist => {}, :pc => :s17 },
+            { :puid => @worlded, :waitlist => {}, :pc => :s18 }
+          ])
+          rel.project([:puid, :waitlist, :pc]).should eq(expected)
         end
 
         it 'supports a restriction Hash argument' do
           rel = subject.to_relation(:waitfor => :enacter)
-          rel.project([:puid]).should eq(Relation(:puid => @enacted))
+          expected = Relation([
+            { :puid => @enacted, :waitlist => {}, :pc => :s17 },
+          ])
+          rel.project([:puid, :waitlist, :pc]).should eq(expected)
         end
       end
 
