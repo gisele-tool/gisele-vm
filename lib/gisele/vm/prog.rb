@@ -54,6 +54,10 @@ module Gisele
       end
       alias :eql? :==
 
+      def to_s
+        "Prog(#{puid.inspect})"
+      end
+
     end # class Prog
   end # class VM
 end # module Gisele
