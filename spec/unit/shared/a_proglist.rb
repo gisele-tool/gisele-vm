@@ -62,8 +62,8 @@ module Gisele
         after (:all){ disconnect_and_clear }
 
         it 'allows picking a prog based on a restriction' do
-          subject.pick(:waitfor => :enacter).puid.should eq(@enacted)
-          subject.pick(:waitfor => :world).puid.should eq(@worlded)
+          subject.pick(:waitfor => :enacter).should eq(subject.fetch(@enacted))
+          subject.pick(:waitfor => :world).should eq(subject.fetch(@worlded))
         end
 
         it 'returns nil if picking cannot be served' do

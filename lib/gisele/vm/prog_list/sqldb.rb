@@ -37,7 +37,7 @@ module Gisele
         def pick(restriction)
           c = sequel_db[table_name].
             where(encode(restriction)).limit(1).first
-          c ? Prog.new(c) : nil
+          c ? decode(c) : nil
         end
 
         def clear
