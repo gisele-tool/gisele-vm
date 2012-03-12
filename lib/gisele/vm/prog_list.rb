@@ -11,7 +11,7 @@ module Gisele
         super
       end
 
-      def self.engine(options = nil)
+      def self.storage(options = nil)
         options = {:uri => "memory"} unless options
         options = {:uri => options } unless Hash===options
         options[:uri] = "memory" unless options[:uri]
