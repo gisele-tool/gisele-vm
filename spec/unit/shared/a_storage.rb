@@ -75,9 +75,7 @@ module Gisele
         end
 
         it 'returns nil if picking cannot be served' do
-          unless ProgList::Threadsafe===subject
-            subject.pick(:waitfor => :operator).should be_nil
-          end
+          subject.pick(:waitfor => :operator).should be_nil
         end
       end
 

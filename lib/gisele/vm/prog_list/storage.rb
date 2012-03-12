@@ -18,10 +18,6 @@ module Gisele
           end
         end
 
-        def threadsafe
-          Threadsafe.new(self)
-        end
-
       private
 
         def is_a_prog!(prog)
