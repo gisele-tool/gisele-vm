@@ -44,10 +44,6 @@ module Gisele
           sequel_db[table_name].delete
         end
 
-        def empty?
-          sequel_db[table_name].empty?
-        end
-
       private
 
         def save_prog(prog)

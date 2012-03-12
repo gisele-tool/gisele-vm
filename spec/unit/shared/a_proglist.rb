@@ -5,12 +5,10 @@ module Gisele
       def connect_and_clear
         subject.connect(vm)
         subject.clear
-        subject.should be_empty
       end
 
       def disconnect_and_clear
         subject.clear
-        subject.should be_empty
         subject.disconnect
       end
 

@@ -36,10 +36,6 @@ module Gisele
           @delegate.clear
         end
 
-        def empty?
-          @delegate.empty?
-        end
-
         def to_relation
           @delegate.to_relation
         end

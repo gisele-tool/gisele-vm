@@ -39,12 +39,6 @@ module Gisele
           end
         end
 
-        def empty?
-          synchronize do
-            super
-          end
-        end
-
         def to_relation
           synchronize do
             super

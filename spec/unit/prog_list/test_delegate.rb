@@ -32,10 +32,6 @@ module Gisele
           list.pick(r).should eq([:pick, r])
         end
 
-        it 'delegates an empty? invocation' do
-          list.empty?.should eq([:empty?])
-        end
-
         it 'delegates a to_relation invocation' do
           list.to_relation.should eq([:to_relation])
         end
