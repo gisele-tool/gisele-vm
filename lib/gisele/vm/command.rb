@@ -62,7 +62,7 @@ module Gisele
         @gis_file = Path(args.shift)
 
         unless gis_file.exist?
-          raise Quickl::IOAccessError, "File does not exists: #{file}"
+          raise Quickl::IOAccessError, "File does not exists: #{gis_file}"
         end
 
         case @mode
