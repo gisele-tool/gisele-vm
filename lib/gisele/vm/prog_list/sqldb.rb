@@ -61,11 +61,11 @@ module Gisele
         end
 
         def register_prog(prog)
-          puid = sequel_db[table_name].
-            insert(encode(prog))
-          sequel_db[table_name].
-            where(:puid => puid).
-            update(:root => puid, :parent => puid)
+          puid = sequel_db[table_name].insert(encode(prog))
+          if prog.parent.nil? or prog.root.nil?
+            sequel_db[table_name].where(:puid => puid).
+              update(:root => prog.root || puid, :parent => prog.parent || puid)
+          end
           puid
         end
 

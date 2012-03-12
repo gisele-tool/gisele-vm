@@ -34,6 +34,14 @@ module Gisele
           default.should eq(@prog.to_hash)
         end
 
+        it 'allows forking Prog instances' do
+          c_puid = subject.save(Prog.new :parent => @puid, :root => @puid)
+          child = subject.fetch(c_puid)
+          child.puid.should eq(c_puid)
+          child.parent.should eq(@puid)
+          child.root.should eq(@puid)
+        end
+
         it 'allows saving Prog instances' do
           @prog.pc    = :s18
           @prog.input = [:ended]
