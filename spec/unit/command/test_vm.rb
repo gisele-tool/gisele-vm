@@ -44,6 +44,13 @@ module Gisele
         end
       end
 
+      context 'with --storage' do
+        let(:argv){ ["--storage=postgres://localhost/gvm"] }
+        it 'sets the options on ProgList correctly' do
+          subject.proglist.options[:uri].should eq("postgres://localhost/gvm")
+        end
+      end
+
     end
   end
 end

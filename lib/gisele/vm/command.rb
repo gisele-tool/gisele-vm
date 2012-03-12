@@ -24,6 +24,12 @@ module Gisele
           @mode = :gts
         end
 
+        @storage = "memory"
+        opt.on('--storage=URI',
+               "Use the specified storage (defaults to 'memory')") do |uri|
+          @storage = uri
+        end
+
         @truncate = false
         opt.on('-t', '--truncate', 'Truncate process instances first') do
           @truncate = true
@@ -100,7 +106,7 @@ module Gisele
           vm.logger.level = @verbose
 
           # Install the ProgList
-          vm.proglist = ProgList.end_of_file(gvm_file, @truncate)
+          vm.proglist = VM::ProgList.engine(@storage)
 
           # Install the Enacter
           vm.register VM::Enacter.new
