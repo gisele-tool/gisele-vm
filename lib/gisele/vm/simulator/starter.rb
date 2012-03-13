@@ -14,9 +14,11 @@ module Gisele
             # Critical section to ensure that the agent won't be disconnected in
             # the middle of an enactement step.
             synchronize do
+              return unless connected? # could be disconnected in the meantime
               debug("Starting a new process at :main")
               vm.start(:main, [])
             end
+
             sleep(options[:sleep_time] || 0)
 
           rescue Interrupt

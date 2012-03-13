@@ -4,7 +4,7 @@ module Gisele
 
     let(:vm){
       VM.new do |vm|
-        vm.event_manager = lambda{|evt|
+        vm.event_manager = VM::EventManager.new{|evt|
           @event = evt
         }
       end

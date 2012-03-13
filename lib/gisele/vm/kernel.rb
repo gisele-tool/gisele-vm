@@ -1,66 +1,58 @@
-require_relative 'kernel/opcodes'
 module Gisele
   class VM
-    class Kernel
-
-      attr_reader :vm
-      attr_reader :opcodes
-      attr_reader :prog
-
-      def initialize(vm = VM.new, prog = nil)
-        @vm       = vm
-        @prog     = prog
-        @stack    = []
-        @opcodes  = []
-      end
+    class Kernel < Component
+      include Robustness
 
       def self.bytecode
-        @kernel_bytecode ||= Bytecode.parse(Path.dir/'kernel/kernel.gvm')
+        @kernelbc ||= Bytecode.parse(Path.dir/'kernel/macros.gvm')
       end
 
-      def run(at = nil, stack = [])
-        @stack = stack
-        enlist_bytecode_at(at) if at
-        until @opcodes.empty?
-          op = @opcodes.shift
-          send :"op_#{op.first}", *op[1..-1]
+      def_delegators :vm, :pick,
+                          :fetch,
+                          :save,
+                          :event
+
+      def start(at, input)
+        at    = valid_label!(at)
+        input = valid_input!(input)
+
+        runner(nil) do |k|
+          stack = k.run(:start, [ input, at ])
+          stack.first
         end
-        @stack
+      end
+
+      def resume(puid, input)
+        prog  = Prog===puid ? puid : fetch(puid)
+        prog  = valid_prog!(puid, :world)
+        input = valid_input!(input)
+
+        runner(prog) do |k|
+          k.run(:resume, [ input ])
+        end
+      end
+
+      def progress(puid)
+        prog = valid_prog!(puid, :enacter)
+
+        runner(prog) do |k|
+          k.run(:progress, [ ])
+        end
       end
 
     private
 
-      ### self
-
-      def puid
-        prog && prog.puid
-      end
-
-      ### stack
-
-      def push(x)
-        @stack << x
-      end
-
-      def pop(n = nil)
-        if n.nil?
-          @stack.pop
+      def runner(prog = nil)
+        if block_given?
+          yield Runner.new(vm, prog)
         else
-          n.times.map{ @stack.pop }
+          Runner.new(vm, prog)
         end
       end
 
-      def peek
-        @stack.last
-      end
-
-      ### code
-
-      def enlist_bytecode_at(label)
-        @opcodes += vm.bytecode[label]
-      end
-
-      include Opcodes
     end # class Kernel
   end # class VM
 end # module Gisele
+require_relative 'kernel/opcodes'
+require_relative 'kernel/runner'
+

@@ -1,6 +1,7 @@
 require 'logger'
 require 'forwardable'
 require_relative 'vm/errors'
+require_relative 'vm/robustness'
 require_relative 'vm/null_object'
 require_relative 'vm/logging'
 require_relative 'vm/component'
@@ -8,6 +9,7 @@ require_relative 'vm/prog'
 require_relative 'vm/prog_list'
 require_relative 'vm/event'
 require_relative 'vm/event_manager'
+require_relative 'vm/registry'
 require_relative 'vm/bytecode'
 require_relative 'vm/kernel'
 require_relative 'vm/lifecycle'
@@ -17,131 +19,70 @@ require_relative 'vm/simulator'
 module Gisele
   class VM
     extend Forwardable
-    include Logging
 
-    # The executed bytecode
-    attr_reader :bytecode
-
-    # The ProgList instance used in this VM
-    attr_reader :proglist
-
-    # The event manager used in this VM
-    attr_reader :event_manager
+    attr_reader   :bytecode
+    attr_reader   :registry
+    attr_reader   :kernel
+    attr_accessor :proglist
+    attr_accessor :event_manager
 
     def initialize(bytecode = [:gvm])
+      @bytecode  = (Kernel.bytecode + Bytecode.coerce(bytecode)).verify!
+      @registry  = Registry.new(self)
+      @kernel    = Kernel.new
       init_lifecycle
-      self.bytecode       = bytecode
-      self.proglist       = ProgList.memory.threadsafe
-      self.event_manager  = EventManager.new
+
+      # registration
       yield(self) if block_given?
+      @proglist      ||= ProgList.memory
+      @event_manager ||= EventManager.new
+
+      # post installation of prior components
+      @registry.register @event_manager, true
+      @registry.register @proglist, true
+
+      # install the kernel as last one (the last one disconnected)
+      @registry.register @kernel
     end
 
-    ### Bytecode
-
-    def bytecode=(bytecode)
-      @bytecode = Kernel.bytecode + Bytecode.coerce(bytecode)
-      @bytecode.verify!
+    def self.compile(gis)
+      gts = Compiling::Gisele2Gts.compile(gis)
+      bc  = Compiling::Gts2Bytecode.call(gts)
     end
 
-    ### ProgList
-
-    def proglist=(arg)
-      unless ProgList===arg
-        raise ArgumentError, "Invalid prog list: #{arg.inspect}"
-      end
-      @proglist = arg
-    end
-    def_delegators :proglist, :pick, :fetch, :save
-
-    ### EventManager
-
-    def event_manager=(arg)
-      @event_manager = case arg
-      when EventManager then arg
-      when Proc         then EventManager.new(&arg)
-      else
-        raise ArgumentError, "Invalid event manager: #{arg.inspect}"
-      end
-    end
-    def_delegators :event_manager, :event
-
-    ### Kernel
-
-    def start(at, input)
-      at    = valid_label!(at)
-      input = valid_input!(input)
-
-      kernel(nil) do |k|
-        stack = k.run(:start, [ input, at ])
-        stack.first
-      end
+    def vm
+      self
     end
 
-    def resume(puid, input)
-      prog = Prog===puid ? puid : fetch(puid)
-      input = valid_input!(input)
-      unless prog.waitfor == :world
-        raise InvalidStateError, "Prog `#{puid}` does not wait for world stimuli"
-      end
-
-      kernel(prog) do |k|
-        k.run(:resume, [ input ])
-      end
+    def connect
+      @registry.connect
     end
 
-    def progress(puid)
-      prog = Prog===puid ? puid : fetch(puid)
-      unless prog.waitfor == :enacter
-        raise InvalidStateError, "Prog `#{puid}` does not wait for enactement progress"
-      end
-
-      kernel(prog) do |k|
-        k.run(:progress, [ ])
-      end
+    def disconnect
+      @registry.disconnect
     end
 
-    ### Lifecycle
+    def connected?
+      @registry.connected?
+    end
 
+    include Robustness
+    include Logging
     include Lifecycle
 
-    def components
-      @components ||= [ proglist, event_manager ]
-    end
+    def_delegators :registry,      :components,
+                                   :register,
+                                   :unregister
 
-    def add_agent(agent)
-      unless stopped?
-        raise InvalidStateError, "The VM must be stopped to add an agent"
-      end
-      components << agent
-    end
+    def_delegators :kernel,        :start,
+                                   :resume,
+                                   :progress
 
-    def add_enacter
-      add_agent Enacter.new
-    end
+    def_delegators :proglist,      :pick,
+                                   :fetch,
+                                   :save
 
-  private
-
-    def kernel(prog = nil)
-      if block_given?
-        yield Kernel.new(self, prog)
-      else
-        Kernel.new(self, prog)
-      end
-    end
-
-    def valid_label!(at)
-      unless bytecode[at]
-        raise InvalidLabelError, "Unknown label: `#{at.inspect}`"
-      end
-      at
-    end
-
-    def valid_input!(input)
-      unless Array===input
-        raise InvalidInputError, "Invalid VM input: `#{input.inspect}`"
-      end
-      input
-    end
+    def_delegators :event_manager, :event
 
   end
 end

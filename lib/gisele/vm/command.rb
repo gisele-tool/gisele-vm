@@ -24,6 +24,12 @@ module Gisele
           @mode = :gts
         end
 
+        @storage = "memory"
+        opt.on('--storage=URI',
+               "Use the specified storage (defaults to 'memory')") do |uri|
+          @storage = uri
+        end
+
         @truncate = false
         opt.on('-t', '--truncate', 'Truncate process instances first') do
           @truncate = true
@@ -67,6 +73,9 @@ module Gisele
 
       def execute(args)
         @gis_file = Path(args.shift)
+        unless gis_file.exist?
+          raise Quickl::IOAccessError, "File does not exists: #{gis_file}"
+        end
         case @mode
         when :run        then start_vm
         when :compile    then puts bytecode
@@ -93,10 +102,7 @@ module Gisele
         @bytecode ||= Compiling::Gts2Bytecode.call(gts)
       end
 
-      def real_vm
-        unless gis_file && gis_file.exist?
-          raise Quickl::IOAccessError, "File does not exists: #{gis_file}"
-        end
+      def vm
         gvm_file.open("w"){|io| io << bytecode.to_s } unless gvm_file.exist?
         VM.new(gvm_file) do |vm|
 
@@ -105,41 +111,21 @@ module Gisele
           vm.logger.level = @verbose
 
           # Install the ProgList
-          vm.proglist = ProgList.end_of_file(gvm_file, @truncate)
+          vm.proglist = VM::ProgList.new VM::ProgList.storage(@storage)
 
           # Install the Enacter
-          vm.add_enacter
-        end
-      end
+          vm.register VM::Enacter.new
 
-      def populate_vm(vm)
-        if @interactive
-          require_relative 'command/interactive'
-          vm.add_agent Command::Interactive.new
-        end
-
-        # Add the simulation if required
-        if @simulation
-          vm.add_agent Simulator::Resumer.new
-          vm.add_agent Simulator::Starter.new
-        end
-
-        # Add the DRB server if required
-        if @drb_server
-          require_relative 'proxy'
-          vm.add_agent Proxy::Server.new
-        end
-      end
-
-      def vm
-        @vm ||= begin
-          vm = if @drb_client
-            require_relative 'proxy'
-            Proxy::Client.new
-          else
-            real_vm
+          if @interactive
+            require_relative 'command/interactive'
+            vm.register Command::Interactive.new
           end
-          populate_vm(vm)
+
+          # Add the simulation if required
+          if @simulation
+            vm.register Simulator::Resumer.new
+            vm.register Simulator::Starter.new
+          end
           vm
         end
       end

@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+begin
+  require 'worklist'
+rescue LoadError => ex
+  $:.unshift File.expand_path('../../lib', __FILE__)
+  require 'worklist'
+end
+
+process_file = Path.pwd/'rxth.gis'
+bytecode = Gisele::VM.compile(process_file)
+vm = Gisele::VM.new(bytecode) do |vm|
+
+  storage     = Gisele::VM::ProgList.storage("sqlite://#{Path.pwd/'vm.db'}")
+  vm.proglist = Gisele::VM::ProgList.new(storage)
+
+  vm.logger   = Logger.new($stdout)
+
+  vm.register Gisele::VM::Enacter.new
+
+  require 'gisele/vm/command/interactive'
+  vm.register Gisele::VM::Command::Interactive.new
+
+  vm.register(agent = Worklist::Agent.new(process_file))
+  vm.event_manager = Gisele::VM::EventManager.new{|event|
+    agent.event(event)
+  }
+end
+vm.run

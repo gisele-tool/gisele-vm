@@ -20,8 +20,11 @@ module Gisele
           puts ex.message
         end
 
-        def list_action
-          puts vm.proglist.to_relation.group([:root], :progs, :allbut => true)
+        def list_action(lispy = Alf.lispy)
+          rel = vm.proglist.to_relation
+          rel = lispy.extend(rel, :waitlist => lambda{ waitlist.keys })
+          rel = lispy.group(rel, [:root], :progs, :allbut => true)
+          puts rel.to_relation
         end
 
         def new_action(args)

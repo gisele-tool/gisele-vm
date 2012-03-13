@@ -15,7 +15,8 @@ module Gisele
             # Critical section to ensure that the agent won't be disconnected in
             # the middle of an enactement step.
             synchronize do
-              if prog = vm.proglist.pick(:world)
+              return unless connected? # could be disconnected in the meantime
+              if prog = vm.proglist.pick(:waitfor => :world)
                 event = prog.waitlist.keys.sample
                 debug("Sending event #{event} to Prog #{prog.puid}@#{prog.pc}")
                 vm.resume(prog, [ event ])
@@ -25,10 +26,10 @@ module Gisele
             if prog
               sleep(options[:sleep_time] || 0)
             else
-              # No prog probably means that the VM is currently trying to disconnect.
-              # We wait 0.1 msec out of the critical section to favor the disconnection
-              # process.
-              sleep(0.1)
+              # No Prog means either that the VM is trying to disconnect or that the
+              # ProgList changed but has nothing for the resumer. We pass here out of
+              # the critical section to favor the other agents...
+              Thread.pass unless prog
             end
 
           rescue Interrupt

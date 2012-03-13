@@ -1,37 +1,38 @@
 module Gisele
   class VM
     class ProgList
-      class Memory < ProgList
+      class Memory < Storage
 
-        def initialize(progs = [])
-          @progs = progs
+        def initialize(options = {})
+          super
+          @progs = []
         end
 
         def fetch(puid)
           @progs[is_a_valid_puid!(puid)].dup
         end
 
-        def save(prog)
-          if Array===prog
-            prog.map{|p| save(p)}
-          else
-            prog = is_a_prog!(prog)
-            prog.puid ? save_prog(prog) : register_prog(prog)
-          end
-        end
-
-        def pick(waitfor, &bl)
-          candidate = @progs.select{|p| p.waitfor == waitfor}.sample
+        def pick(restriction, &bl)
+          keys = restriction.keys
+          candidate = @progs.select{|p|
+            p.to_hash(keys) == restriction
+          }.sample
           bl.call if bl and candidate.nil?
           candidate
         end
 
-        def empty?
-          @progs.empty?
+        def clear
+          @progs = []
         end
 
-        def to_relation
-          Alf::Relation(@progs.map{|p| p.to_hash})
+        def to_relation(restriction = nil)
+          progs = @progs
+          if restriction
+            keys  = restriction.keys
+            progs = progs.select{|p| p.to_hash(keys) == restriction}
+          end
+          progs = progs.map{|p| p.to_hash}
+          Alf::Relation(progs)
         end
 
       private
@@ -49,11 +50,6 @@ module Gisele
             d.root   = d.puid if d.root.nil?
           }
           @progs.last.puid
-        end
-
-        def is_a_prog!(prog)
-          raise ArgumentError, "Invalid prog: #{prog}", caller unless Prog===prog
-          prog
         end
 
         def is_a_valid_puid!(puid)

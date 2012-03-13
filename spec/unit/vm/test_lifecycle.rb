@@ -6,16 +6,17 @@ module Gisele
       class PseudoVM
         include Lifecycle
 
+        attr_reader :registry
+
         def initialize(components)
-          @components = components
+          @registry = Registry.new(self)
+          components.each do |c|
+            @registry.register(c)
+          end
           init_lifecycle
         end
 
         def info(msg)
-        end
-
-        def components
-          @components
         end
 
       end
@@ -41,7 +42,7 @@ module Gisele
       context 'when everything goes fine' do
 
         let(:components) do
-          (1..2).map{|x| Object.new.extend(VM::Component) }
+          (1..2).map{|x| VM::Component.new }
         end
 
         before do
@@ -77,8 +78,8 @@ module Gisele
 
         let(:components) do
           (1..2).map{|x|
-            c = Object.new.extend(VM::Component)
-            def c.connect(vm)
+            c = VM::Component.new
+            def c.connect
               raise ArgumentError, "blah"
             end if x == 2
             c

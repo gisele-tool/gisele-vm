@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Gisele VM: Worklist example</title>
+<meta charset="utf-8" />
+
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="/css/style.css" />
+<style>
+  h1 { 
+    margin: 15px 0px; 
+    font-size: 22px; }
+</style>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+<script src="/js/jquery-1.7.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="/js/worklist.js"></script>
+<script>
+  $(document).ready(function(){ Worklist.start(); });
+</script>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="#">The Medical Worklist</a>
+        <div class="nav-collapse">
+          <ul class="nav">
+            <li class="active"><a href="#">Pending tasks</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+          <p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="main" class="container" style="margin-top: 75px;">
+    <div class="row">
+      <div class='span4'>
+        <img src="/process.gif" width="85%"></img>
+      </div>
+      <div class='span8'>
+
+        <div class="row">
+          <h1>Start a process</h1>
+          <form id="start-process-form" class="form-horizontal">
+            <input name="first_name" type="text" class="span3" placeholder="Firstname"/>
+            <input name="last_name"  type="text" class="span3" placeholder="Lastname"/>
+            <select name="process" class='span2' placeholder="Pathway">
+              <option>Radiotherapy</option>
+            </select>
+            <input type="submit" class="btn span1" value="Go!" id="start-process-button"/>
+            <script>
+              $(function(){
+                $("#start-process-button").click(function(){
+                  Worklist.startProcess($("#start-process-form").serialize());
+                  return false;
+                });
+              });
+            </script>
+          </form>
+        </div>
+
+        <div class="row">
+          <h1>Tasks in progress</h1>
+          <div id="tasklist">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

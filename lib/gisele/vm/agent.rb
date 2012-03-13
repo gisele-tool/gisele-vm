@@ -1,13 +1,12 @@
 module Gisele
   class VM
-    class Agent
-      include Component
+    class Agent < Component
 
       attr_reader :options
       attr_reader :thread
 
       def initialize(options = {})
-        @lock = Mutex.new
+        super()
         @options = default_options.merge(options)
       end
 
@@ -15,13 +14,13 @@ module Gisele
         {}
       end
 
-      def connect(vm)
+      def connect
         super
         @thread = Thread.new{
 
           # The VM is still in warmup phase. We are not allowed to make any
           # request to the kernel during that phase...
-          sleep(0.01) while vm.warmup?
+          Thread.pass while vm.warmup?
 
           # while true loop is there
           run
@@ -47,10 +46,6 @@ module Gisele
       end
 
     private
-
-      def synchronize(&bl)
-        @lock.synchronize(&bl)
-      end
 
       def error_message(error, base = "An error occured:")
         base.to_s << " " << error.message << "\n" << error.backtrace.join("\n")

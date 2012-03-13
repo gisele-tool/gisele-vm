@@ -8,6 +8,7 @@ SYNOPSIS
 OPTIONS
   -c, --compile                    Compile the input file and output the VM bytecode
   -g, --gts                        Outputs a gisele transition system
+      --storage=URI                Use the specified storage (defaults to 'memory')
   -t, --truncate                   Truncate process instances first
   -i, --interactive                Start a console in interactive VM mode
   -s, --simulate                   Use an agent simulating the environment

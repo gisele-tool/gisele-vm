@@ -17,7 +17,7 @@ class Gisele::VM
       s.puid.should     be_nil
       s.parent.should   be_nil
       s.root.should     be_nil
-      s.pc.should       eq(0)
+      s.pc.should       eq(:main)
       s.waitfor.should  eq(:none)
       s.waitlist.should eq({})
       s.input.should    eq([])
