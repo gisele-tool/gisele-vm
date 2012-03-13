@@ -1,11 +1,12 @@
+require 'readline'
 module Gisele
   class VM
     class Command
       class Interactive < Agent
 
         def runone
-          puts "? Please choose an action:(list, new, resume, quit or help)\n"
-          case s = $stdin.gets
+          prompt = "\n? Please choose an action:(list, new, resume or quit)\ngisele-vm> "
+          case s = Readline.readline(prompt, true)
           when /^l(ist)?/           then list_action
           when /^n(ew)?\s+(.+)$/    then new_action($2)
           when /^r(esume)?\s+(.+)$/ then resume_action($2)
