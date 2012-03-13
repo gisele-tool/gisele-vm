@@ -1,0 +1,15 @@
+task Radiotherapy
+  par
+    seq
+      Diagnosis
+      par
+        Simulation
+        Administrative
+      end
+      PreTreatment
+      Treatment
+      PostTreatment
+    end
+    Rest
+  end
+end

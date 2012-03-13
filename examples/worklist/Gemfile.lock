@@ -1,0 +1,61 @@
+PATH
+  remote: ../..
+  specs:
+    gisele-vm (0.1.0)
+      alf (~> 0.12.1)
+      gisele (~> 0.5.0)
+      sequel (~> 3.33)
+      stamina-core (~> 0.5.4)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    alf (0.12.1)
+      backports (~> 2.3.0)
+      myrrha (~> 1.2.1)
+      quickl (~> 0.4.2)
+    awesome_print (1.0.2)
+    backports (2.3.0)
+    citrus (2.4.1)
+    daemons (1.1.5)
+    epath (0.0.1)
+    eventmachine (1.0.0.beta.4)
+    gisele (0.5.0)
+      awesome_print (~> 1.0)
+      citrus (~> 2.4)
+      epath (~> 0.0.1)
+      quickl (~> 0.4.3)
+      sexpr (~> 0.5.0)
+      stamina-core (~> 0.5.3)
+      yargi (~> 0.2.0)
+    myrrha (1.2.2)
+    quickl (0.4.3)
+    rack (1.4.1)
+    rack-protection (1.2.0)
+      rack
+    sequel (3.33.0)
+    sexpr (0.5.1)
+    sinatra (1.3.2)
+      rack (~> 1.3, >= 1.3.6)
+      rack-protection (~> 1.2)
+      tilt (~> 1.3, >= 1.3.3)
+    sqlite3 (1.3.5)
+    stamina-core (0.5.4)
+      quickl (~> 0.4.3)
+    thin (1.3.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+    tilt (1.3.3)
+    yargi (0.2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gisele-vm!
+  jdbc-sqlite3 (~> 3.7)
+  sequel (~> 3.33)
+  sinatra (~> 1.3)
+  sqlite3 (~> 1.3)
+  thin (~> 1.3)

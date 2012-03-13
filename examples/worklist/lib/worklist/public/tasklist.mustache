@@ -1,0 +1,24 @@
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Patient</th>
+      <th>Process</th>
+      <th>Task</th>
+      <th>Started at</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#tasklist}}
+    <tr class="{{task}}">
+      <td class="id">{{task_id}}</td>
+      <td>{{first_name}} {{last_name}}</td>
+      <td>{{process}}</td>
+      <td>{{task}}</td>
+      <td>{{started_at}}</td>
+      <td><button class="btn" onclick="Worklist.closeTask('{{task_id}}')">close</button></td>
+    </tr>
+    {{/tasklist}}
+  </tbody>
+</table>
