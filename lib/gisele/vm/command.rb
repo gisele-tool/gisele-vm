@@ -17,6 +17,13 @@ module Gisele
 
       # Install options
       options do |opt|
+        opt.on('--help', "Show this help message") do
+          raise Quickl::Help
+        end
+        opt.on('--version', 'Show version and exit') do
+          raise Quickl::Exit, "gvm #{Gisele::VM::VERSION} (c) The University of Louvain"
+        end
+
         @mode = :run
         opt.on('-c', '--compile', 'Compile the input file and output the VM bytecode') do
           @mode = :compile
@@ -25,16 +32,18 @@ module Gisele
           @mode = :gts
         end
 
+        opt.separator("\nStorage")
         @storage = "memory"
         opt.on('--storage=URI',
                "Use the specified storage (defaults to 'memory')") do |uri|
           @storage = uri
         end
-
         @truncate = false
         opt.on('-t', '--truncate', 'Truncate process instances first') do
           @truncate = true
         end
+
+        opt.separator("\nVM & Agents")
         @interactive = false
         opt.on('-i', '--interactive', 'Start a console in interactive VM mode') do
           @interactive = true
@@ -52,6 +61,7 @@ module Gisele
           @drb_client = true
         end
 
+        opt.separator("\nLogging")
         @verbose = Logger::INFO
         opt.on('--verbose', 'Log in verbose mode') do
           @verbose = Logger::DEBUG
@@ -62,13 +72,6 @@ module Gisele
         @log_file = $stdout
         opt.on('--log=FILE', 'Use a specific log file') do |file|
           @log_file = file
-        end
-
-        opt.on_tail('--help', "Show this help message") do
-          raise Quickl::Help
-        end
-        opt.on_tail('--version', 'Show version and exit') do
-          raise Quickl::Exit, "gvm #{Gisele::VM::VERSION} (c) The University of Louvain"
         end
       end
 

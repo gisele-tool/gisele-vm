@@ -7,18 +7,24 @@ SYNOPSIS
   gvm --drb-client [options]
 
 OPTIONS
+      --help                       Show this help message
+      --version                    Show version and exit
   -c, --compile                    Compile the input file and output the VM bytecode
   -g, --gts                        Outputs a gisele transition system
+
+Storage
       --storage=URI                Use the specified storage (defaults to 'memory')
   -t, --truncate                   Truncate process instances first
+
+VM & Agents
   -i, --interactive                Start a console in interactive VM mode
   -s, --simulate                   Use an agent simulating the environment
       --drb-server                 Register the VM as a DRb server
       --drb-client                 Look for the virtual machine on DRb
+
+Logging
       --verbose                    Log in verbose mode
       --silent                     Only show warnings and errors
       --log=FILE                   Use a specific log file
-      --help                       Show this help message
-      --version                    Show version and exit
 
 SystemExit
