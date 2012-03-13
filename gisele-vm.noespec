@@ -24,7 +24,7 @@ variables:
     - https://github.com/blambeau/gisele-vm
   dependencies:
     - {name: gisele,       version: "~> 0.5.0",  groups: [runtime]}
-    - {name: alf,          version: "~> 0.12.0", groups: [runtime]}
+    - {name: alf,          version: "~> 0.12.1", groups: [runtime]}
     - {name: stamina-core, version: "~> 0.5.4",  groups: [runtime]}
     - {name: sequel,       version: "~> 3.33",   groups: [runtime]}
     #

@@ -1,8 +1,7 @@
 source 'http://rubygems.org'
 
 group :runtime do
-  gem "sexpr", :git => "git://github.com/blambeau/sexpr.git"
-  gem "alf",   :git => "git://github.com/blambeau/alf.git"
+  gem "alf", "~> 0.12.1"
   gem "gisele", "~> 0.5.0"
   gem "stamina-core", "~> 0.5.4"
   gem "sequel", "~> 3.33"
