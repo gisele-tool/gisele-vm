@@ -19,7 +19,7 @@ module Worklist
       end
       @thread = Thread.new{ @server.start }
     end
-    
+
     def disconnect
       super
       @server.stop
@@ -37,10 +37,10 @@ module Worklist
       # Build the process tuple
       tuple = data.merge(:id => puid)
       db[:processes].insert(tuple)
-      
+
       # Wait for the process to be started by the enacter
       sleep(0.1) until vm.fetch(puid).waitfor == :world
-      
+
       # Resume it
       vm.resume(puid, [ data[:process].to_sym ])
     end
@@ -89,11 +89,11 @@ module Worklist
       end unless db.table_exists?(:tasks)
       unless db.table_exists?(:tasklist)
         db.create_view :tasklist, <<-SQL
-          SELECT T.id as task_id, 
-                 first_name, 
-                 last_name, 
-                 P.process as process, 
-                 task, 
+          SELECT T.id as task_id,
+                 first_name,
+                 last_name,
+                 P.process as process,
+                 task,
                  started_at
             FROM tasks as T join processes as P on T.process=P.id
            WHERE T.id != P.id

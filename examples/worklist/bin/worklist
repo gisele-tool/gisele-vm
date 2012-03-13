@@ -20,6 +20,9 @@ vm = Gisele::VM.new(bytecode) do |vm|
   require 'gisele/vm/command/interactive'
   vm.register Gisele::VM::Command::Interactive.new
 
+  require 'gisele/vm/proxy'
+  vm.register Gisele::VM::Proxy::Server.new
+
   vm.register(agent = Worklist::Agent.new(process_file))
   vm.event_manager = Gisele::VM::EventManager.new{|event|
     agent.event(event)

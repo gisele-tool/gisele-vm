@@ -6,7 +6,7 @@ module Worklist
     def agent
       settings.agent
     end
-    
+
     def db
       agent.db
     end
@@ -17,7 +17,7 @@ module Worklist
         out.callback { agent.listeners.delete(out) }
       end
     end
-    
+
     get '/' do
       send_file Path.dir/'public/index.html'
     end
