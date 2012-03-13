@@ -54,25 +54,16 @@ module Gisele
       self
     end
 
-    def connect
-      @registry.connect
-    end
-
-    def disconnect
-      @registry.disconnect
-    end
-
-    def connected?
-      @registry.connected?
-    end
-
     include Robustness
     include Logging
     include Lifecycle
 
     def_delegators :registry,      :components,
                                    :register,
-                                   :unregister
+                                   :unregister,
+                                   :connect,
+                                   :disconnect,
+                                   :connected?
 
     def_delegators :kernel,        :start,
                                    :resume,
