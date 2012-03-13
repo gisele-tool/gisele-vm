@@ -3,7 +3,8 @@ The Gisele Virtual Machine
 
 SYNOPSIS
   gvm [--version] [--help]
-  gvm GIS_FILE
+  gvm [--drb-server] [options] GIS_FILE
+  gvm --drb-client [options]
 
 OPTIONS
   -c, --compile                    Compile the input file and output the VM bytecode

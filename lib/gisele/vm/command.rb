@@ -5,7 +5,8 @@ module Gisele
     #
     # SYNOPSIS
     #   gvm [--version] [--help]
-    #   gvm GIS_FILE
+    #   gvm [--drb-server] [options] GIS_FILE
+    #   gvm --drb-client [options]
     #
     # OPTIONS
     # #{summarized_options}
@@ -72,10 +73,8 @@ module Gisele
       end
 
       def execute(args)
+        raise Quickl::Help if args.size > 1
         @gis_file = Path(args.shift)
-        unless gis_file.exist?
-          raise Quickl::IOAccessError, "File does not exists: #{gis_file}"
-        end
         case @mode
         when :run        then start_vm
         when :compile    then puts bytecode
@@ -102,32 +101,53 @@ module Gisele
         @bytecode ||= Compiling::Gts2Bytecode.call(gts)
       end
 
-      def vm
-        gvm_file.open("w"){|io| io << bytecode.to_s } unless gvm_file.exist?
-        VM.new(gvm_file) do |vm|
-
-          # Install the logger
-          vm.logger       = Logger.new(@log_file)
-          vm.logger.level = @verbose
-
-          # Install the ProgList
-          vm.proglist = VM::ProgList.new VM::ProgList.storage(@storage)
-
-          # Install the Enacter
-          vm.register VM::Enacter.new
-
-          if @interactive
-            require_relative 'command/interactive'
-            vm.register Command::Interactive.new
+      def real_vm
+        unless gvm_file.exist?
+          unless gis_file && gis_file.exist?
+            raise Quickl::IOAccessError, "File does not exists: #{gis_file}"
           end
-
-          # Add the simulation if required
-          if @simulation
-            vm.register Simulator::Resumer.new
-            vm.register Simulator::Starter.new
-          end
-          vm
+          gvm_file.open("w"){|io| io << bytecode.to_s }
         end
+        VM.new(gvm_file) do |vm|
+          vm.proglist = VM::ProgList.new VM::ProgList.storage(@storage)
+          vm.register VM::Enacter.new
+          populate(vm)
+        end
+      end
+
+      def drb_vm
+        require_relative 'proxy'
+        Proxy::Client.new{|vm|
+          populate(vm)
+        }
+      end
+
+      def populate(vm)
+        # Install the logger
+        vm.logger       = Logger.new(@log_file)
+        vm.logger.level = @verbose
+
+        if @interactive
+          require_relative 'command/interactive'
+          vm.register Command::Interactive.new
+        end
+
+        # Add the simulation if required
+        if @simulation
+          vm.register Simulator::Resumer.new
+          vm.register Simulator::Starter.new
+        end
+
+        # Add the DRb server if required
+        if @drb_server
+          require_relative 'proxy'
+          vm.register Proxy::Server.new
+        end
+        vm
+      end
+
+      def vm
+        @vm ||= @drb_client ? drb_vm : real_vm
       end
 
       def start_vm

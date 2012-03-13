@@ -18,7 +18,7 @@ module Gisele
               return unless connected? # could be disconnected in the meantime
               if prog = vm.proglist.pick(:waitfor => :world)
                 event = prog.waitlist.keys.sample
-                debug("Sending event #{event} to Prog #{prog.puid}@#{prog.pc}")
+                info("Sending event #{event} to Prog #{prog.puid}@#{prog.pc}")
                 vm.resume(prog, [ event ])
               end
             end

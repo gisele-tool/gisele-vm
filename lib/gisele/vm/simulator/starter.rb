@@ -15,7 +15,7 @@ module Gisele
             # the middle of an enactement step.
             synchronize do
               return unless connected? # could be disconnected in the meantime
-              debug("Starting a new process at :main")
+              info("Starting a new process at :main")
               vm.start(:main, [])
             end
 
