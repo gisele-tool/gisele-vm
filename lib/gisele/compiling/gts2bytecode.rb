@@ -86,7 +86,7 @@ module Gisele
 
       def on_end(state)
         unless state.out_edges.size <= 1
-          raise ArgumentError, "Invalid :end state"
+          raise ArgumentError, "Invalid :end state: #{state}"
         end
         at(state) do |b|
           b.then :notify
