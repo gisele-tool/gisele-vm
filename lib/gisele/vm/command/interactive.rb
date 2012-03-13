@@ -8,7 +8,7 @@ module Gisele
           prompt = "\n? Please choose an action:(list, new, resume or quit)\ngisele-vm> "
           case s = Readline.readline(prompt, true)
           when /^l(ist)?/           then list_action
-          when /^n(ew)?\s+(.+)$/    then new_action($2)
+          when /^n(ew)?/            then new_action($2)
           when /^r(esume)?\s+(.+)$/ then resume_action($2)
           when /^q(uit)?/           then stop_action
           else
@@ -29,7 +29,7 @@ module Gisele
         end
 
         def new_action(args)
-          vm.start(args.strip.to_sym, [])
+          vm.start(:main, [])
         end
 
         def resume_action(args)
