@@ -101,7 +101,7 @@ module Gisele
       end
 
       def task_nodes(sexpr)
-        registry[sexpr.last] ||= begin
+        registry[sexpr.last] || begin
           entry  = add_state(:event)
           listen = add_state(:listen)
           endevt = add_state(:event)
