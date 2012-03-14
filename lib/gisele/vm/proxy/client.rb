@@ -45,7 +45,8 @@ module Gisele
                                        :progress
         def_delegators :"@vm",         :pick,
                                        :fetch,
-                                       :save
+                                       :save,
+                                       :progs
         def_delegators :"@vm",         :event
 
       end # Client

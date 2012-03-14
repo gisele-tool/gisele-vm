@@ -11,7 +11,7 @@ module Gisele
         # the middle of an enactement step.
         synchronize do
           return unless connected? # could be disconnected in the meantime
-          if prog = vm.proglist.pick(:waitfor => :enacter)
+          if prog = vm.pick(:waitfor => :enacter)
             debug("Enacting Prog #{prog.puid}@#{prog.pc}")
             vm.progress(prog)
           end

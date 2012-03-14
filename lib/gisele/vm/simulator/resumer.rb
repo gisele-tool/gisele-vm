@@ -16,7 +16,7 @@ module Gisele
             # the middle of an enactement step.
             synchronize do
               return unless connected? # could be disconnected in the meantime
-              if prog = vm.proglist.pick(:waitfor => :world)
+              if prog = vm.pick(:waitfor => :world)
                 event = prog.waitlist.keys.sample
                 info("Sending event #{event} to Prog #{prog.puid}@#{prog.pc}")
                 vm.resume(prog, [ event ])

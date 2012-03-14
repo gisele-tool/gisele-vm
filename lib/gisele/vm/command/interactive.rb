@@ -21,7 +21,7 @@ module Gisele
         end
 
         def list_action(lispy = Alf.lispy)
-          rel = vm.proglist.to_relation
+          rel = vm.progs
           rel = lispy.extend(rel, :waitlist => lambda{ waitlist.keys })
           rel = lispy.group(rel, [:root], :progs, :allbut => true)
           puts rel.to_relation

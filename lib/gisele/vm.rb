@@ -75,5 +75,9 @@ module Gisele
 
     def_delegators :event_manager, :event
 
+    def progs(restriction = nil)
+      proglist.to_relation(restriction)
+    end
+
   end
 end
