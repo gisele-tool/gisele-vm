@@ -132,6 +132,8 @@ module Gisele
 
         # Add the simulation if required
         if @simulation
+          require_relative 'simulator/resumer'
+          vm.register Simulator::Resumer.new
         end
 
         # Add the DRb server if required
