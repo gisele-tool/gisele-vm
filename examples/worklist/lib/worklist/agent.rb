@@ -17,6 +17,7 @@ module Worklist
       @server = Thin::Server.new('0.0.0.0', 3000, Rack::CommonLogger.new(Gui.new), :signals => false)
       if EventMachine.reactor_running?
         @server.start
+        EventMachine.thread
       else
         Thread.new{ @server.start }
       end
