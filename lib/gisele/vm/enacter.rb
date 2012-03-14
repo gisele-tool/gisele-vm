@@ -2,9 +2,25 @@ module Gisele
   class VM
     class Enacter < Component
 
+      def connect
+        super
+        @timer = EM.add_periodic_timer(0.05, &method(:enact))
+        EM.reactor_thread
+      end
+
+      def disconnect
+        super
+        @timer.cancel
+      end
+
     private
 
-      def runone(prog)
+      def enact
+        prog = vm.pick(:waitfor => :enacter)
+        enact_one(prog) if prog
+      end
+
+      def enact_one(prog)
         debug("Enacting Prog #{prog.puid}@#{prog.pc}")
         vm.progress(prog)
       rescue Exception => ex
