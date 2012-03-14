@@ -34,7 +34,7 @@ module Gisele
       end
 
       it 'raises an InvalidStateError when connect is badly used' do
-        subject.registered(self)
+        subject.registered(vm)
         subject.connect
         lambda{
           subject.connect
@@ -42,7 +42,7 @@ module Gisele
       end
 
       it 'raises an InvalidStateError when disconnect is badly used' do
-        subject.registered(self)
+        subject.registered(vm)
         lambda{
           subject.disconnect
         }.should raise_error(InvalidStateError, "Not connected")

@@ -33,13 +33,11 @@ module Gisele
           rescue Exception => ex
             fatal("Components failed to load: #{ex.message}") rescue nil
             @status = :stopped
-            yield(@status) if block_given?
             raise
           end
           info('Gisele VM has taken stage!')
 
           @status = :running
-          yield(@status) if block_given?
         end
 
         @thread = Thread.new{
