@@ -23,6 +23,7 @@ module Gisele
           Thread.pass while vm.warmup?
 
           # while true loop is there
+          info(welcome_message)
           run
         }
       end
@@ -43,9 +44,18 @@ module Gisele
             fatal error_message(ex, "Agent #{self} crashed:") rescue nil
           end
         end
+        info(goodbye_message)
       end
 
     private
+
+      def welcome_message
+        "Agent #{self} entering loop."
+      end
+
+      def goodbye_message
+        "Agent #{self} loop exited."
+      end
 
       def error_message(error, base = "An error occured:")
         base.to_s << " " << error.message << "\n" << error.backtrace.join("\n")

@@ -41,6 +41,14 @@ module Gisele
           vm.stop
         end
 
+        def welcome_message
+          "Interactive console entering loop."
+        end
+
+        def goodbye_message
+          "Interactive console closed."
+        end
+
       end # class Interactive
     end # class Command
   end # class VM

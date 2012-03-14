@@ -20,6 +20,7 @@ module Gisele
 
         def connect
           super
+          info("Connecting to VM storage.")
           @sequel_db = Sequel.connect(connection_info)
           @sequel_db.test_connection
           ensure_schema(@sequel_db)
@@ -28,6 +29,7 @@ module Gisele
 
         def disconnect
           super
+          info("Disconnecting from VM storage.")
           @sequel_db.disconnect if @sequel_db
         end
 
