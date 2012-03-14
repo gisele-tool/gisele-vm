@@ -3,7 +3,7 @@ module Gisele
     module Lifecycle
 
       attr_reader :status
-      attr_reader :thread
+      attr_reader :last_error
 
       def stopped?
         @status == :stopped
@@ -21,55 +21,51 @@ module Gisele
         @status == :shutdown
       end
 
-      def run(block = true)
+      def run
         raise InvalidStateError, "VM already running" unless stopped?
 
-        @lock.synchronize do
-          @status     = :warmup
+        @last_error = nil
+        @status     = :warmup
+        info('VM start request received, connecting.')
 
-          info('VM start request received, connecting.')
+        starter = lambda{
           begin
             registry.connect
           rescue Exception => ex
             fatal("Components failed to load: #{ex.message}") rescue nil
-            @status = :stopped
-            raise
+            @last_error = ex
+            @status     = :stopped
           end
           info('Gisele VM has taken stage!')
-
           @status = :running
-        end
-
-        @thread = Thread.new{
-          registry.join
-          info('VM stopped successfully.')
-          @status = :stopped
         }
-        @thread.join if block
-      end
 
-      def run!
-        run(false)
+        if EM.reactor_running?
+          starter.call
+          EM.reactor_thread.join
+        else
+          EM::run &starter
+        end
       end
 
       def stop
         raise InvalidStateError, "VM not running" unless running?
-        @lock.synchronize do
-          @status = :shutdown
-          info('VM stop request received, disconnecting.')
-          begin
-            registry.disconnect
-          rescue Exception => ex
-            warn("Error when disconnecting: #{ex.message}") rescue nil
-          end
+        @status = :shutdown
+        info('VM stop request received, disconnecting.')
+        begin
+          registry.disconnect
+        rescue Exception => ex
+          warn("Error when disconnecting: #{ex.message}") rescue nil
         end
+        EM.stop_event_loop
+        @status = :stopped
+        info('VM stopped successfully.')
       end
 
     private
 
       def init_lifecycle
         @status = :stopped
-        @lock   = Mutex.new
       end
 
     end # module Lifecycle

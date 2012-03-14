@@ -158,12 +158,11 @@ module Gisele
           the_vm.stop
         }
         begin
-          the_vm.run(false)
+          the_vm.run
         rescue Exception => ex
           puts "Unable to start the Virtual Machine: #{ex.message}"
           puts ex.backtrace.join("\n")
         end
-        the_vm.thread.join
       end
 
     end # class Command

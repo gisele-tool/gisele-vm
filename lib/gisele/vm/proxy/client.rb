@@ -21,7 +21,7 @@ module Gisele
         include Logging
         include Lifecycle
 
-        def run(block = false)
+        def run
           DRb.start_service
           @vm = DRbObject.new nil, options[:uri]
           super

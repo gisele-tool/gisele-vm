@@ -6,7 +6,6 @@ module Gisele
       def initialize(storage)
         super()
         @storage = storage
-        @waiting = ConditionVariable.new
       end
 
       def self.memory
