@@ -8,7 +8,7 @@ module Gisele
         super()
         @vm         = vm
         @components = []
-        @connected_components = []
+        @threads    = {}
       end
 
       def register(component, prior = false)
@@ -32,8 +32,7 @@ module Gisele
       def connect
         super
         @components.each do |c|
-          c.connect
-          @connected_components << c
+          @threads[c] = c.connect
         end
       rescue Exception => ex
         disconnect
@@ -42,8 +41,18 @@ module Gisele
 
       def disconnect
         super
-        @connected_components.each do |c|
-          c.disconnect rescue nil
+        @threads.each_pair do |c,t|
+          begin
+            c.disconnect
+          rescue Exception => ex
+            warn("Error when disconnecting #{c}: #{ex.message}") rescue nil
+          end
+        end
+      end
+
+      def join
+        @threads.each_pair do |c,t|
+          t.join if Thread===t
         end
       end
 

@@ -4,7 +4,6 @@ module Gisele
 
       attr_reader :status
       attr_reader :thread
-      attr_reader :last_error
 
       def stopped?
         @status == :stopped
@@ -22,10 +21,10 @@ module Gisele
         @status == :shutdown
       end
 
-      def run
+      def run(block = true)
         raise InvalidStateError, "VM already running" unless stopped?
+
         @lock.synchronize do
-          @last_error = nil
           @status     = :warmup
 
           info('VM start request received, connecting.')
@@ -33,7 +32,6 @@ module Gisele
             registry.connect
           rescue Exception => ex
             fatal("Components failed to load: #{ex.message}") rescue nil
-            @last_error = ex
             @status = :stopped
             yield(@status) if block_given?
             raise
@@ -42,35 +40,30 @@ module Gisele
 
           @status = :running
           yield(@status) if block_given?
-          @cv.wait(@lock) while running?
         end
+
+        @thread = Thread.new{
+          registry.join
+          info('VM stopped successfully.')
+          @status = :stopped
+        }
+        @thread.join if block
       end
 
       def run!
-        raise InvalidStateError, "VM already running" unless stopped?
-        done    = false
-        @thread = Thread.new(self) do |vm|
-          vm.run{|s| done=true} rescue nil
-        end
-        Thread.pass until done
-        running? ? @thread : raise(last_error)
+        run(false)
       end
 
       def stop
         raise InvalidStateError, "VM not running" unless running?
         @lock.synchronize do
           @status = :shutdown
-
           info('VM stop request received, disconnecting.')
           begin
             registry.disconnect
           rescue Exception => ex
             warn("Error when disconnecting: #{ex.message}") rescue nil
           end
-          info('VM stopped successfully.')
-
-          @status = :stopped
-          @cv.signal
         end
       end
 
@@ -79,7 +72,6 @@ module Gisele
       def init_lifecycle
         @status = :stopped
         @lock   = Mutex.new
-        @cv     = ConditionVariable.new
       end
 
     end # module Lifecycle

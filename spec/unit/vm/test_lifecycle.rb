@@ -46,14 +46,12 @@ module Gisele
         end
 
         before do
-          @thread = vm.run!
-          @thread.should be_a(Thread)
+          vm.run!
           vm.should be_running
         end
 
         after do
           vm.stop
-          @thread.join
         end
 
         it 'connects components' do
