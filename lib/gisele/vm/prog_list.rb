@@ -37,52 +37,16 @@ module Gisele
       end
 
       def disconnect
-        synchronize do
-          super
-          @storage.disconnect
-          @waiting.broadcast
-        end
+        super
+        @storage.disconnect
       end
 
-      def_delegators :"@storage", :options
-
-      def fetch(puid)
-        connected!
-        @storage.fetch(puid)
-      end
-
-      def save(prog)
-        connected!
-        synchronize do
-          @storage.save(prog).tap do
-            @waiting.broadcast
-          end
-        end
-      end
-
-      def pick(restriction, &bl)
-        synchronize do
-          prog = nil
-          while connected? && (prog = @storage.pick(restriction)).nil?
-            bl.call if bl
-            @waiting.wait(lock)
-          end
-          prog
-        end
-      end
-
-      def clear
-        connected!
-        synchronize do
-          @storage.clear
-          @waiting.broadcast
-        end
-      end
-
-      def to_relation(restriction = nil)
-        connected!
-        @storage.to_relation(restriction)
-      end
+      def_delegators :"@storage", :options,
+                                  :fetch,
+                                  :pick,
+                                  :save,
+                                  :clear,
+                                  :to_relation
 
     end # class ProgList
   end # class VM
