@@ -3,9 +3,26 @@ module Gisele
     class Command
       class Interactive < Agent
 
+        def disconnect
+          super
+          @thread.kill if @in_gets
+        end
+
+        def gets
+          @in_gets = true
+          s = $stdin.gets
+          @in_gets = false
+          s
+        end
+
+        def run
+          sleep(0.2)
+          super
+        end
+
         def runone
           $stdout << "\n? Please choose an action:(list, new, resume or quit)\ngisele-vm> "
-          case s = $stdin.gets
+          case s = gets
           when /^l(ist)?/           then list_action
           when /^n(ew)?/            then new_action($2)
           when /^r(esume)?\s+(.+)$/ then resume_action($2)
@@ -13,9 +30,6 @@ module Gisele
           else
             puts "Unrecognized: #{s}"
           end
-        rescue Interrupt
-          puts "Interrupt on user request (graceful shutdown)."
-          stop_action
         rescue Exception => ex
           puts ex.message
         end
