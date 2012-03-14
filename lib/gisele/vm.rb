@@ -15,7 +15,6 @@ require_relative 'vm/kernel'
 require_relative 'vm/lifecycle'
 require_relative 'vm/agent'
 require_relative 'vm/enacter'
-require_relative 'vm/simulator'
 module Gisele
   class VM
     extend Forwardable
