@@ -27,6 +27,7 @@ variables:
     - {name: alf,          version: "~> 0.12.1", groups: [runtime]}
     - {name: stamina-core, version: "~> 0.5.4",  groups: [runtime]}
     - {name: sequel,       version: "~> 3.33",   groups: [runtime]}
+    - {name: eventmachine, version: "= 1.0.0.beta.3", groups: [runtime]}
     #
     - {name: sqlite3,      version: "~> 1.3",    groups: [extra]}
     #

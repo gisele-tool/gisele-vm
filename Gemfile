@@ -5,6 +5,7 @@ group :runtime do
   gem "gisele", "~> 0.5.0"
   gem "stamina-core", "~> 0.5.4"
   gem "sequel", "~> 3.33"
+  gem "eventmachine", "= 1.0.0.beta.3"
 end
 
 platform 'mri' do

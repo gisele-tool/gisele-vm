@@ -132,6 +132,7 @@ Gem::Specification.new do |s|
   s.add_dependency("alf", "~> 0.12.1")
   s.add_dependency("stamina-core", "~> 0.5.4")
   s.add_dependency("sequel", "~> 3.33")
+  s.add_dependency("eventmachine", "= 1.0.0.beta.3")
 
   # The version of ruby required by this gem
   #
