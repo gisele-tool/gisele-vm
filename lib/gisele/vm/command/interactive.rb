@@ -1,24 +1,7 @@
 module Gisele
   class VM
     class Command
-      class Interactive < Agent
-
-        def disconnect
-          super
-          @thread.kill if @in_gets
-        end
-
-        def gets
-          @in_gets = true
-          s = $stdin.gets
-          @in_gets = false
-          s
-        end
-
-        def run
-          sleep(0.2)
-          super
-        end
+      class Interactive < Component
 
         def runone
           $stdout << "\n? Please choose an action:(list, new, resume or quit)\ngisele-vm> "

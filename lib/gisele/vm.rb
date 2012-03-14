@@ -13,7 +13,6 @@ require_relative 'vm/registry'
 require_relative 'vm/bytecode'
 require_relative 'vm/kernel'
 require_relative 'vm/lifecycle'
-require_relative 'vm/agent'
 require_relative 'vm/enacter'
 module Gisele
   class VM
