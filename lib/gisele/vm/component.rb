@@ -39,11 +39,13 @@ module Gisele
         registered!
         raise InvalidStateError, "Already connected" if connected?
         @connected = true
+        info(welcome_message)
       end
 
       def disconnect
         raise InvalidStateError, "Not connected" unless connected?
         @connected = false
+        info(goodbye_message)
       end
 
       def connected?
@@ -56,6 +58,17 @@ module Gisele
 
       def_delegators :vm, :debug,  :info,  :warn,  :error,  :fatal
       def_delegators :vm, :debug?, :info?, :warn?, :error?, :fatal?
+
+    private
+
+      def welcome_message
+        "Component #{self} connected."
+      end
+
+      def goodbye_message
+        "Component #{self} disconnected."
+      end
+
     end # class Component
   end # class VM
 end # module Gisele
