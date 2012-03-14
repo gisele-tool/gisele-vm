@@ -14,7 +14,9 @@ module Gisele
           info(event.to_s)
         end
       rescue Exception => ex
-        warn "Error when processing `#{event.to_s}`\n\t#{ex.message}" rescue nil
+        msg  = "Error when processing `#{event.to_s}`\n\t#{ex.message}\n"
+        msg += ex.backtrace.join("\n")
+        warn(msg)  rescue nil
       end
 
     end # class EventManager
