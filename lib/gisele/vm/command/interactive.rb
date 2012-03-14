@@ -3,18 +3,36 @@ module Gisele
     class Command
       class Interactive < Component
 
-        def runone
-          $stdout << "\n? Please choose an action:(list, new, resume or quit)\ngisele-vm> "
-          case s = gets
-          when /^l(ist)?/           then list_action
-          when /^n(ew)?/            then new_action($2)
-          when /^r(esume)?\s+(.+)$/ then resume_action($2)
-          when /^q(uit)?/           then stop_action
-          else
-            puts "Unrecognized: #{s}"
+        module Handler
+          attr_accessor :interactive
+          def notify_readable
+            case s = @io.readline.strip
+            when /^l(ist)?$/           then interactive.list_action
+            when /^n(ew)?$/            then interactive.new_action($2)
+            when /^r(esume)?\s+(.+)$/  then interactive.resume_action($2)
+            when /^q(uit)?$/           then interactive.stop_action
+            else
+              puts "Unrecognized: #{s}" unless s.empty?
+            end
+          rescue Exception => ex
+            puts "ERROR: #{ex.message}"
+          ensure
+            interactive.prompt
           end
-        rescue Exception => ex
-          puts ex.message
+        end
+
+        def connect
+          super
+          EM.watch($stdin, Handler){|c|
+            c.interactive = self
+            c.notify_readable = true
+          }
+          prompt
+          EM.reactor_thread
+        end
+
+        def prompt
+          $stdout << "\n? Please choose an action:(list, new, resume or quit)\ngisele-vm> "
         end
 
         def list_action(lispy = Alf.lispy)
