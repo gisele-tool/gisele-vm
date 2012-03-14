@@ -130,11 +130,6 @@ module Gisele
         vm.logger       = Logger.new(@log_file)
         vm.logger.level = @verbose
 
-        if @interactive
-          require_relative 'command/interactive'
-          vm.register Command::Interactive.new
-        end
-
         # Add the simulation if required
         if @simulation
           vm.register Simulator::Resumer.new
@@ -145,6 +140,11 @@ module Gisele
         if @drb_server
           require_relative 'proxy'
           vm.register Proxy::Server.new
+        end
+
+        if @interactive
+          require_relative 'command/interactive'
+          vm.register Command::Interactive.new
         end
         vm
       end
