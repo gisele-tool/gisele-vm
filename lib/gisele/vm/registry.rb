@@ -36,6 +36,7 @@ module Gisele
           @cconnected << c
         end
       rescue Exception => ex
+        fatal error_message(ex, "Unable to connect VM:")
         disconnect
         raise
       end

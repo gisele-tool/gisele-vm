@@ -133,12 +133,7 @@ module Gisele
           the_vm.info "Interrupt on user request (graceful shutdown)."
           the_vm.stop
         }
-        begin
-          the_vm.run
-        rescue Exception => ex
-          puts "Unable to start the Virtual Machine: #{ex.message}"
-          puts ex.backtrace.join("\n")
-        end
+        the_vm.run
       end
 
     end # class Command
