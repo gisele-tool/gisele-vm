@@ -68,6 +68,10 @@ module Gisele
         "Component <#{component_name}> quit heartbeat."
       end
 
+      def error_message(error, base = "An error occured:")
+        base.to_s << " " << error.message << "\n" << error.backtrace.join("\n")
+      end
+
     end # class Component
   end # class VM
 end # module Gisele
