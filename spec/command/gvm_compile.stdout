@@ -1,6 +1,8 @@
 main: then :s0
 s0:   push {:Main=>:s2}
-      then :listen
+      flip
+      get
+      then
 s1:   then :notify
 s2:   then :s5
       then :e48

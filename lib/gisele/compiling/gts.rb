@@ -49,7 +49,8 @@ module Gisele
 
       def state_label(state)
         case state[:kind]
-        when :event then "EVT"
+        when :event  then "EVT"
+        when :launch then "LA"
         else
           state[:kind].to_s[0, 1].capitalize
         end

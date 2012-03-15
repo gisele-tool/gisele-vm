@@ -31,9 +31,7 @@ module Worklist
 
     def start_process(data)
       # Start on the VM
-      puid = vm.start(:main, [])
-             # vm.resume(puid, [ data[:process].to_sym ])
-             # vm.progress(puid)
+      puid = vm.start(:main, [ data[:process].to_sym ])
 
       # Build the process tuple
       tuple = data.merge(:id => puid)

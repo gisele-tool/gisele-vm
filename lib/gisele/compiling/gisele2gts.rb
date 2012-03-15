@@ -17,7 +17,7 @@ module Gisele
       use Language::IfToCase
 
       def on_unit_def(sexpr)
-        entry = add_state(:listen, :initial => true)
+        entry = add_state(:launch, :initial => true)
         exit  = add_state(:end)
         tasks = sexpr.sexpr_body.select{|n| n.first == :task_def}
         tasks.each do |task|

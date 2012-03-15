@@ -1,6 +1,6 @@
 digraph G {
   graph [rankdir="LR"];
-  0 [fillcolor="green" fixedsize="true" label="L" shape="doublecircle" style="filled" width="0.6"];
+  0 [fillcolor="green" fixedsize="true" label="LA" shape="circle" style="filled" width="0.6"];
   1 [fillcolor="grey" fixedsize="true" label="E" shape="doublecircle" style="filled" width="0.6"];
   2 [fillcolor="white" fixedsize="true" label="EVT" shape="circle" style="filled" width="0.6"];
   3 [fillcolor="grey" fixedsize="true" label="E" shape="doublecircle" style="filled" width="0.6"];

@@ -8,7 +8,7 @@ module Gisele
           def notify_readable
             case s = @io.readline.strip
             when /^l(ist)?$/           then interactive.list_action
-            when /^n(ew)?$/            then interactive.new_action($2)
+            when /^n(ew)?\s+(.+)$/     then interactive.new_action($2)
             when /^r(esume)?\s+(.+)$/  then interactive.resume_action($2)
             when /^q(uit)?$/           then interactive.stop_action
             else
@@ -41,7 +41,7 @@ module Gisele
         end
 
         def new_action(args)
-          vm.start(:main, [])
+          vm.start(:main, [ args.strip.to_sym ])
         end
 
         def resume_action(args)

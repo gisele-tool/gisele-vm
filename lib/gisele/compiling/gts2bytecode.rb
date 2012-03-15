@@ -33,6 +33,19 @@ module Gisele
         end
       end
 
+      def on_launch(state)
+        h = {}
+        state.out_edges.each do |edge|
+          h[edge.symbol] = label(edge.target)
+        end
+        at(state) do |b|
+          b.push h
+          b.flip
+          b.get
+          b.then
+        end
+      end
+
       def on_event(state)
         unless state.out_edges.size == 1
           raise ArgumentError, "Invalid :event state #{state.inspect}"
