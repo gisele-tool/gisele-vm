@@ -2,21 +2,56 @@ module Gisele
   class VM
     class EventManager < Component
 
-      def initialize(&proc)
+      def initialize
         super()
-        @proc = proc
+        @listeners = []
+      end
+
+      def connect
+        super
+        @channel, @names = EM::Channel.new, {}
+      end
+
+      def disconnect
+        super
+        @channel = @names = nil
+      end
+
+      def subscribe(a = nil, &b)
+        @listeners << (a || b)
+        em_subscribe(@listeners.last) if connected?
+      end
+
+      def unsubscribe(l)
+        if @listeners.delete(l) and connected?
+          em_unsubscribe(l)
+        end
+      end
+
+      def subscribed?(l)
+        @listeners.include?(l)
       end
 
       def event(event)
-        if @proc
-          @proc.call(event)
-        else
-          info(event.to_s)
-        end
+        info(event.to_s)
+        @channel.push(event) if connected?
       rescue Exception => ex
-        msg  = "Error when processing `#{event.to_s}`\n\t#{ex.message}\n"
-        msg += ex.backtrace.join("\n")
-        warn(msg)  rescue nil
+        error error_message(ex, "Error when processing `#{event.to_s}`")
+      end
+
+    private
+
+      def name_of(l)
+        @names[l]
+      end
+
+      def em_subscribe(l)
+        @names[l] = @channel.subscribe(l)
+      end
+
+      def em_unsubscribe(l)
+        @channel.unsubscribe(@names[l])
+        @names.delete(l)
       end
 
     end # class EventManager

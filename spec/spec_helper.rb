@@ -11,8 +11,16 @@ end
 
 module SpecHelpers
 
-  def events
-    @events ||= []
+  class FakeEventManager < Gisele::VM::Component
+    attr_reader :events
+    def event(event)
+      @events ||= []
+      @events << event
+    end
+  end
+
+  def observed_events
+    vm.event_manager.events
   end
 
   def an_event
@@ -23,9 +31,7 @@ module SpecHelpers
     @vm ||= begin
       vm = Gisele::VM.new(bc || [:gvm]) do |vm|
         vm.proglist      = Gisele::VM::ProgList.memory
-        vm.event_manager = Gisele::VM::EventManager.new{|evt|
-          events << evt
-        }
+        vm.event_manager = FakeEventManager.new
       end
       vm.connect
       vm.proglist.clear

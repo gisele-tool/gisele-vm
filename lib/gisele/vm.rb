@@ -74,7 +74,9 @@ module Gisele
                                    :fetch,
                                    :save
 
-    def_delegators :event_manager, :event
+    def_delegators :event_manager, :event,
+                                   :subscribe,
+                                   :unsubscribe
 
     def progs(restriction = nil)
       proglist.to_relation(restriction)
