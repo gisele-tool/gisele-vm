@@ -28,7 +28,6 @@ module Gisele
             c.notify_readable = true
           }
           prompt
-          EM.reactor_thread
         end
 
         def prompt

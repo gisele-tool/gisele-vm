@@ -5,7 +5,6 @@ module Gisele
       def connect
         super
         @timer = EM.add_periodic_timer(0.01, &method(:enact))
-        EM.reactor_thread
       end
 
       def disconnect

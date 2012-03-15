@@ -15,11 +15,11 @@ module Gisele
           super
           DRb.start_service options[:uri], vm
           info "VM proxy started at #{DRb.uri}."
-          DRb.thread
         end
 
         def disconnect
           DRb.stop_service
+          DRb.thread.join if DRb.thread
           super
         end
 
