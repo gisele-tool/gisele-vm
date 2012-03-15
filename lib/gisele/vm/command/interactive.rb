@@ -17,7 +17,7 @@ module Gisele
           rescue Exception => ex
             puts "ERROR: #{ex.message}"
           ensure
-            interactive.prompt
+            interactive.prompt if interactive.connected?
           end
         end
 
