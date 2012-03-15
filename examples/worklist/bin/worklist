@@ -7,30 +7,18 @@ rescue LoadError => ex
 end
 
 process_file = Path.pwd/'rxth.gis'
+
+require 'gisele/vm/command'
 command = Gisele::VM::Command.new
-command.parse_options %w{--drb-server --interactive --storage=sqlite://vm.db} + [ process_file]
+command.parse_options %w{--drb-server --interactive --storage=sqlite://vm.db}
 
-bytecode = Gisele::VM.compile(process_file)
-vm = Gisele::VM.new(bytecode) do |vm|
+vm = command.vm(process_file)
 
-  storage     = Gisele::VM::ProgList.storage("sqlite://#{Path.pwd/'vm.db'}")
-  vm.proglist = Gisele::VM::ProgList.new(storage)
+vm.register(agent = Worklist::Agent.new(process_file))
+vm.event_manager = Gisele::VM::EventManager.new{|event|
+  agent.event(event)
+}
 
-  vm.logger   = Logger.new($stdout)
-
-  vm.register Gisele::VM::Enacter.new
-
-  require 'gisele/vm/proxy'
-  vm.register Gisele::VM::Proxy::Server.new
-
-  vm.register(agent = Worklist::Agent.new(process_file))
-  vm.event_manager = Gisele::VM::EventManager.new{|event|
-    agent.event(event)
-  }
-
-  require 'gisele/vm/command/interactive'
-  vm.register Gisele::VM::Command::Interactive.new
-end
 trap('INT'){
   vm.info "Interrupt on user request (graceful shutdown)."
   vm.stop

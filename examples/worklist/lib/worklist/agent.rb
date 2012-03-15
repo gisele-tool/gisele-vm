@@ -10,24 +10,18 @@ module Worklist
 
     def connect
       super
+
+      info("Checking Worklist database.")
       @db = ensure_schema(Sequel.connect("sqlite://#{Path.pwd}/worklist.db"))
 
       info("Starting Thin webserver")
       Gui.set :agent, self
-      @server = Thin::Server.new('0.0.0.0', 3000, Rack::CommonLogger.new(Gui.new), :signals => false)
-      if EventMachine.reactor_running?
-        @server.start
-        EventMachine.thread
-      else
-        Thread.new{ @server.start }
-      end
+      Thin::Server.start('0.0.0.0', 3000, Rack::CommonLogger.new(Gui.new), :signals => false)
     end
 
     def disconnect
       super
-      info("Stopping thin.")
-      @server.stop
-      info("Disconnecting from Worklist database.")
+      info("Disconnecting Worklist database.")
       @db.disconnect
     end
 
@@ -38,16 +32,12 @@ module Worklist
     def start_process(data)
       # Start on the VM
       puid = vm.start(:main, [])
+             # vm.resume(puid, [ data[:process].to_sym ])
+             # vm.progress(puid)
 
       # Build the process tuple
       tuple = data.merge(:id => puid)
       db[:processes].insert(tuple)
-
-      # Wait for the process to be started by the enacter
-      sleep(0.1) until vm.fetch(puid).waitfor == :world
-
-      # Resume it
-      vm.resume(puid, [ data[:process].to_sym ])
     end
 
     def close_task(data)
@@ -78,7 +68,6 @@ module Worklist
   private
 
     def ensure_schema(db)
-      info("Verifying the Worklist database schema.")
       db.create_table :processes do
         Integer :id
         String  :first_name
