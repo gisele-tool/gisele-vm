@@ -3,17 +3,10 @@ module Gisele
   class VM
     describe Command, "vm" do
 
-      before do
-        class Command; public :vm; end
-      end
-
       subject do
         c = Command.new
-        def c.gvm_file
-          Path.dir/'code.gvm'
-        end
-        c.parse_options(argv)
-        c.vm
+        c.parse_options argv
+        c.vm(Path.dir/'code.gis')
       end
       let(:components){ subject.components }
 

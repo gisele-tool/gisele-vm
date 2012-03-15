@@ -43,9 +43,12 @@ module Gisele
       @registry.register @kernel, true
     end
 
+    def self.gts(gis)
+      Compiling::Gisele2Gts.compile(gis)
+    end
+
     def self.compile(gis)
-      gts = Compiling::Gisele2Gts.compile(gis)
-      bc  = Compiling::Gts2Bytecode.call(gts)
+      Compiling::Gts2Bytecode.call(gts(gis))
     end
 
     def vm

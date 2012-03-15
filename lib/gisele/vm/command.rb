@@ -13,8 +13,6 @@ module Gisele
     #
     class Command <  Quickl::Command(__FILE__, __LINE__)
 
-      attr_reader :gis_file
-
       # Install options
       options do |opt|
         opt.on('--help', "Show this help message") do
@@ -80,38 +78,20 @@ module Gisele
         @gis_file = Path(args.shift)
         case @mode
         when :run        then start_vm
-        when :compile    then puts bytecode
-        when :gts        then puts gts.to_dot
+        when :compile    then puts VM.compile(@gis_file)
+        when :gts        then puts VM.gts(@gis_file).to_dot
         end
+      end
+
+      def vm(gis_file = @gis_file)
+        @vm ||= @drb_client ? drb_vm : real_vm(gis_file)
       end
 
     private
 
-      def gvm_file
-        @gvm_file ||= gis_file.sub_ext(".gvm")
-      end
-
-      def gts
-        @gts ||= begin
-          sexpr = Gisele.sexpr(gis_file)
-          compiler = Compiling::Gisele2Gts.new
-          compiler.call(sexpr)
-          compiler.gts
-        end
-      end
-
-      def bytecode
-        @bytecode ||= Compiling::Gts2Bytecode.call(gts)
-      end
-
-      def real_vm
-        unless gvm_file.exist?
-          unless gis_file && gis_file.exist?
-            raise Quickl::IOAccessError, "File does not exists: #{gis_file}"
-          end
-          gvm_file.open("w"){|io| io << bytecode.to_s }
-        end
-        VM.new(gvm_file) do |vm|
+      def real_vm(gis_file = @gis_file)
+        bc = VM.compile(gis_file)
+        VM.new(bc) do |vm|
           vm.proglist = VM::ProgList.new VM::ProgList.storage(@storage)
           vm.register VM::Enacter.new
           populate(vm)
@@ -120,9 +100,7 @@ module Gisele
 
       def drb_vm
         require_relative 'proxy'
-        Proxy::Client.new{|vm|
-          populate(vm)
-        }
+        Proxy::Client.new{|vm| populate(vm) }
       end
 
       def populate(vm)
@@ -147,10 +125,6 @@ module Gisele
           vm.register Command::Interactive.new
         end
         vm
-      end
-
-      def vm
-        @vm ||= @drb_client ? drb_vm : real_vm
       end
 
       def start_vm

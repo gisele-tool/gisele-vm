@@ -7,6 +7,9 @@ rescue LoadError => ex
 end
 
 process_file = Path.pwd/'rxth.gis'
+command = Gisele::VM::Command.new
+command.parse_options %w{--drb-server --interactive --storage=sqlite://vm.db} + [ process_file]
+
 bytecode = Gisele::VM.compile(process_file)
 vm = Gisele::VM.new(bytecode) do |vm|
 
