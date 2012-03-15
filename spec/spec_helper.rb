@@ -72,17 +72,9 @@ module SpecHelpers
     {:uri => "#{sqlite_protocol}:memory"}
   end
 
-  def sqlite_empty
-    file = (fixtures/'empty.db')
-    {:uri => "#{sqlite_protocol}://#{file}"}
-  end
-
 end
 
 RSpec.configure do |c|
   c.extend  SpecHelpers
   c.include SpecHelpers
-#  c.filter_run :sqlite => lambda{|x|
-#    x.nil? or !ENV['TRAVIS']
-#  }
 end

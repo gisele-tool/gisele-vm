@@ -41,20 +41,6 @@ module Gisele
         end
       end
 
-      context 'when the database is already created' do
-        let(:options){ sqlite_empty }
-        it 'returns itself' do
-          subject.should be_a(ProgList::Sqldb)
-        end
-        it 'sets the database under sequel_db' do
-          subject.sequel_db.should be_a(Sequel::Database)
-        end
-        it 'installs the schema' do
-          table_name = subject.send(:table_name)
-          subject.sequel_db.table_exists?(table_name).should be_true
-        end
-      end
-
     end
   end
 end
