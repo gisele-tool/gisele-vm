@@ -2,13 +2,11 @@ module Gisele
   class VM
     class Enacter < Component
 
-      def connect
-        super
+      def enter_heartbeat
         @timer = EM.add_periodic_timer(0.01, &method(:enact))
       end
 
-      def disconnect
-        super
+      def leave_heartbeat
         @timer.cancel
       end
 

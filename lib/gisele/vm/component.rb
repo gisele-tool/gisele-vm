@@ -40,10 +40,12 @@ module Gisele
         raise InvalidStateError, "Already connected" if connected?
         @connected = true
         info(welcome_message)
+        EM.next_tick{ enter_heartbeat } if respond_to?(:enter_heartbeat)
       end
 
       def disconnect
         raise InvalidStateError, "Not connected" unless connected?
+        leave_heartbeat if respond_to?(:leave_heartbeat)
         @connected = false
         info(goodbye_message)
       end

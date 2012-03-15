@@ -21,8 +21,7 @@ module Gisele
           end
         end
 
-        def connect
-          super
+        def enter_heartbeat
           EM.watch($stdin, Handler){|c|
             c.interactive = self
             c.notify_readable = true

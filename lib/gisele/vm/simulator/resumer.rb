@@ -3,13 +3,11 @@ module Gisele
     module Simulator
       class Resumer < Component
 
-        def connect
-          super
+        def enter_heartbeat
           @timer = EM.add_periodic_timer(0.01, &method(:resume))
         end
 
-        def disconnect
-          super
+        def leave_heartbeat
           @timer.cancel
         end
 
