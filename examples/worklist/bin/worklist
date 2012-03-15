@@ -10,14 +10,11 @@ process_file = Path.pwd/'rxth.gis'
 
 require 'gisele/vm/command'
 command = Gisele::VM::Command.new
-command.parse_options %w{--drb-server --interactive --storage=sqlite://vm.db}
+command.parse_options %w{--drb-server --interactive --storage=sqlite://vm.db --verbose}
 
 vm = command.vm(process_file)
 
-vm.register(agent = Worklist::Agent.new(process_file))
-vm.event_manager = Gisele::VM::EventManager.new{|event|
-  agent.event(event)
-}
+vm.register Worklist::Agent.new(process_file)
 
 trap('INT'){
   vm.info "Interrupt on user request (graceful shutdown)."

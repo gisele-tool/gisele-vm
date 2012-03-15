@@ -14,6 +14,9 @@ module Worklist
       info("Checking Worklist database.")
       @db = ensure_schema(Sequel.connect("sqlite://#{Path.pwd}/worklist.db"))
 
+      info("Registering to event stream")
+      vm.subscribe{|event| event(event)}
+
       info("Starting Thin webserver")
       Gui.set :agent, self
       Thin::Server.start('0.0.0.0', 3000, Rack::CommonLogger.new(Gui.new), :signals => false)
