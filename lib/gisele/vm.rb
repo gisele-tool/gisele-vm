@@ -32,15 +32,15 @@ module Gisele
 
       # registration
       yield(self) if block_given?
+
+      # post-creation/registrations
       @proglist      ||= ProgList.memory
       @event_manager ||= EventManager.new
 
       # post installation of prior components
       @registry.register @event_manager, true
       @registry.register @proglist, true
-
-      # install the kernel as last one (the last one disconnected)
-      @registry.register @kernel
+      @registry.register @kernel, true
     end
 
     def self.compile(gis)
