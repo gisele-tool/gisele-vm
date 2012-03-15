@@ -24,6 +24,7 @@ module Gisele
         def run
           DRb.start_service
           @vm = DRbObject.new nil, options[:uri]
+          @vm.to_s
           super
         end
 
