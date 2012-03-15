@@ -20,14 +20,6 @@ module Gisele
 
       private
 
-        def welcome_message
-          "Connecting to VM storage."
-        end
-
-        def goodbye_message
-          "Disconnecting from VM storage."
-        end
-
         def is_a_prog!(prog)
           raise ArgumentError, "Invalid prog: #{prog}", caller unless Prog===prog
           prog

@@ -19,7 +19,6 @@ module Gisele
         end
 
         def disconnect
-          info "Shutting down the DRb service."
           DRb.stop_service
           super
         end

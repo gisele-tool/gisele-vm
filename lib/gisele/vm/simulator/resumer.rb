@@ -29,14 +29,6 @@ module Gisele
           error error_message(ex, "Resume error (#{prog.puid}):")
         end
 
-        def welcome_message
-          "Simulator(resumer) entering loop."
-        end
-
-        def goodbye_message
-          "Simulator(resumer) stopped."
-        end
-
       end # class Resumer
     end # class Simulator
   end # class VM

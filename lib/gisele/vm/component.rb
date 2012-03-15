@@ -61,12 +61,16 @@ module Gisele
 
     private
 
+      def component_name
+        self.class.name.to_s.split('::').last
+      end
+
       def welcome_message
-        "Component #{self} connected."
+        "Component <#{component_name}> entering heartbeat."
       end
 
       def goodbye_message
-        "Component #{self} disconnected."
+        "Component <#{component_name}> quit heartbeat."
       end
 
     end # class Component
