@@ -33,12 +33,18 @@ module Gisele
         raise InvalidStateError, "Already connected" if connected?
         @connected = true
         info(welcome_message)
-        EM.next_tick{ enter_heartbeat } if respond_to?(:enter_heartbeat)
+        EM.next_tick do
+          info(heartbeat_in_message)
+          enter_heartbeat
+        end if respond_to?(:enter_heartbeat)
       end
 
       def disconnect
         raise InvalidStateError, "Not connected" unless connected?
-        leave_heartbeat if respond_to?(:leave_heartbeat)
+        if respond_to?(:leave_heartbeat)
+          info(heartbeat_out_message)
+          leave_heartbeat
+        end
         @connected = false
         info(goodbye_message)
       end
@@ -61,11 +67,19 @@ module Gisele
       end
 
       def welcome_message
+        "Component <#{component_name}> connecting."
+      end
+
+      def heartbeat_in_message
         "Component <#{component_name}> entering heartbeat."
       end
 
+      def heartbeat_out_message
+        "Component <#{component_name}> exiting heartbeat."
+      end
+
       def goodbye_message
-        "Component <#{component_name}> quit heartbeat."
+        "Component <#{component_name}> disconnected."
       end
 
       def error_message(error, base = "An error occured:")
