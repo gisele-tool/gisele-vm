@@ -21,10 +21,6 @@ module Gisele
         subject.should_not be_connected
       end
 
-      it 'has a global lock on the object' do
-        subject.lock.should be_a(Mutex)
-      end
-
       it 'raises an InvalidStateError when connect used unregistered' do
         unless subject.registered? # the registry is always connected
           lambda{
