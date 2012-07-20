@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 group :runtime do
   gem "alf", "~> 0.12.1"
-  gem "gisele", "~> 0.5.0"
+  gem "gisele", "~> 0.5.1"
   gem "stamina-core", "~> 0.5.4"
   gem "sequel", "~> 3.33"
   gem "eventmachine", "= 1.0.0.beta.3"
@@ -11,9 +11,6 @@ end
 platform 'mri' do
   group :extra do
     gem "sqlite3", "~> 1.3"
-  end
-  group :benchmarks do
-    gem "ruby-prof", "~> 0.10.8"
   end
 end
 
@@ -25,6 +22,5 @@ end
 
 group :development do
   gem "rake", "~> 0.9.2"
-  gem "rspec", "~> 2.8"
-  gem "wlang", "~> 0.10.2"
+  gem "rspec", "~> 2.11"
 end
