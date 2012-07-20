@@ -44,13 +44,12 @@ module Worklist
     end
 
     COLORS = {
-      "Simulation"     => "#CCFFE9",
+      "Consultation"   => "#CCFFE9",
       "Treatment"      => "#CCFF33",
-      "Diagnosis"      => "#00CCFF",
-      "Administrative" => "#FFCC00",
-      "PreTreatment"   => "#CC6600",
-      "PostTreatment"  => "#FF99FF",
-      "Rest"           => "#CC3333"
+      "Endoscopy"      => "#00CCFF",
+      "Biopsy"         => "#FFCC00",
+      "Chemotherapy"   => "#CC6600",
+      "Surgery"        => "#FF99FF",
     }
 
     get '/css/style.css' do

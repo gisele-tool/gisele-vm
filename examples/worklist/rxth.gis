@@ -1,15 +1,13 @@
-task Radiotherapy
-  par
-    seq
-      Diagnosis
-      par
-        Simulation
-        Administrative
+task Treatment
+  seq
+    Consultation
+    par
+      seq
+        Endoscopy
+        Biopsy
       end
-      PreTreatment
-      Treatment
-      PostTreatment
+      Chemotherapy
     end
-    Rest
+    Surgery
   end
 end
