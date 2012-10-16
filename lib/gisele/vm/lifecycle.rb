@@ -28,7 +28,7 @@ module Gisele
           EM.reactor_thread.join
         else
           EM.error_handler do |ex|
-            fatal("EventMachine crashed: #{ex.message}")
+            fatal("EventMachine crashed: #{ex.message}\n" + ex.backtrace.join("\n"))
             if warmup?
               @status = :stopped
               EM.stop_event_loop
