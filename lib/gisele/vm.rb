@@ -26,17 +26,16 @@ module Gisele
     attr_accessor :event_manager
 
     def initialize(bytecode = [:gvm])
-      @bytecode  = (Kernel.bytecode + Bytecode.coerce(bytecode)).verify!
-      @registry  = Registry.new(self)
-      @kernel    = Kernel.new
+      @bytecode      = (Kernel.bytecode + Bytecode.coerce(bytecode)).verify!
+      @registry      = Registry.new(self)
+      @kernel        = Kernel.new
+      @proglist      = ProgList.memory
+      @event_manager = EventManager.new
+
       init_lifecycle
 
-      # registration
+      # other registration
       yield(self) if block_given?
-
-      # post-creation/registrations
-      @proglist      ||= ProgList.memory
-      @event_manager ||= EventManager.new
 
       # post installation of prior components
       @registry.register @event_manager, true
