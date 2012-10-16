@@ -129,7 +129,7 @@ Gem::Specification.new do |s|
   s.add_dependency("gisele-language", "~> 0.6.0")
   s.add_dependency("alf", "~> 0.12.2")
   s.add_dependency("stamina-core", "~> 0.6.1")
-  s.add_dependency("sequel", "~> 3.33")
+  s.add_dependency("sequel", "~> 3.40")
   s.add_dependency("eventmachine", "~> 1.0.0")
 
   # The version of ruby required by this gem
