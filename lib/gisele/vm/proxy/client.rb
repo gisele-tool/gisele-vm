@@ -25,6 +25,7 @@ module Gisele
           DRb.start_service
           @vm = DRbObject.new nil, options[:uri]
           @vm.to_s
+          yield(@vm) if block_given?
           super
         end
 
@@ -33,14 +34,14 @@ module Gisele
           super
         end
 
-        def_delegators :"@vm",         :proglist,
-                                       :event_manager
         def_delegators :registry,      :components,
                                        :register,
                                        :unregister,
                                        :connect,
                                        :disconnect,
                                        :connected?
+        def_delegators :"@vm",         :proglist,
+                                       :event_manager
         def_delegators :"@vm",         :start,
                                        :resume,
                                        :progress
@@ -48,9 +49,16 @@ module Gisele
                                        :fetch,
                                        :save,
                                        :progs
-        def_delegators :"@vm",         :event
+        def_delegators :"@vm",         :event,
+                                       :subscribe,
+                                       :unsubscribe
 
       end # Client
     end # module Proxy
+
+    def self.drb_client(&bl)
+      Proxy::Client.new.run(&bl)
+    end
+
   end # class VM
 end # module Gisele
