@@ -1,11 +1,11 @@
 source 'http://rubygems.org'
 
 group :runtime do
-  gem "gisele-language", :path => "../gisele-language"
-  gem "alf", "~> 0.12.1"
-  gem "stamina-core", "~> 0.5.4"
+  gem "gisele-language", "~> 0.6.0"
+  gem "alf", "~> 0.12.2"
+  gem "stamina-core", "~> 0.6.1"
   gem "sequel", "~> 3.33"
-  gem "eventmachine", "= 1.0.0.beta.3"
+  gem "eventmachine", "~> 1.0.0"
 end
 
 group :extra do
