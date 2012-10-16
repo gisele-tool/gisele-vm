@@ -10,7 +10,7 @@ variables:
   upper:
     Gisele::VM
   version:
-    0.5.1
+    0.6.0
   summary: |-
     A virtual machine for the gisele process language.
   description: |-
