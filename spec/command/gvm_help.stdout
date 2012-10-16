@@ -23,7 +23,7 @@ VM & Agents
       --drb-client                 Look for the virtual machine on DRb
 
 Logging
-      --verbose                    Log in verbose mode
+  -v, --verbose                    Log in verbose mode
       --silent                     Only show warnings and errors
       --log=FILE                   Use a specific log file
 

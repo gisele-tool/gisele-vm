@@ -61,7 +61,7 @@ module Gisele
 
         opt.separator("\nLogging")
         @verbose = Logger::INFO
-        opt.on('--verbose', 'Log in verbose mode') do
+        opt.on('-v', '--verbose', 'Log in verbose mode') do
           @verbose = Logger::DEBUG
         end
         opt.on('--silent', 'Only show warnings and errors') do
