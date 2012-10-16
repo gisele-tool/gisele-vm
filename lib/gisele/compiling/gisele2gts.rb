@@ -5,7 +5,10 @@ module Gisele
 
       def self.compile(arg, parse_options = {})
         case arg
-        when String, Path then compile(Gisele.sexpr(Gisele.parse(arg, parse_options)))
+        when String, Path
+          parsed = Gisele.parse(arg, parse_options)
+          sexpr  = Gisele.sexpr(parsed)
+          compile(sexpr)
         else
           compiler = new
           compiler.call(arg)
