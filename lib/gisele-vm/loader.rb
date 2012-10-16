@@ -1,4 +1,4 @@
-require "gisele"
+require "gisele-language"
 require "alf"
 require "stamina-core"
 require "sequel"

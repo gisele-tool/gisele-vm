@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 group :runtime do
-  gem "gisele", "~> 0.5.1"
+  gem "gisele-language", :path => "../gisele-language"
   gem "alf", "~> 0.12.1"
   gem "stamina-core", "~> 0.5.4"
   gem "sequel", "~> 3.33"
