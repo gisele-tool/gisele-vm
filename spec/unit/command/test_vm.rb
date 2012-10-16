@@ -34,8 +34,8 @@ module Gisele
 
       context 'with --interactive' do
         let(:argv){ ["--interactive"] }
-        it 'should have an Interactive agent' do
-          components.any?{|c| c.is_a?(Command::Interactive)}.should be_true
+        it 'should have a Console agent' do
+          components.any?{|c| c.is_a?(Console)}.should be_true
         end
       end
 

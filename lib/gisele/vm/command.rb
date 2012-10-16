@@ -121,8 +121,7 @@ module Gisele
         end
 
         if @interactive
-          require_relative 'command/interactive'
-          vm.register Command::Interactive.new
+          vm.register Console.new
         end
         vm
       end

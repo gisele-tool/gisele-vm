@@ -14,6 +14,7 @@ require_relative 'vm/bytecode'
 require_relative 'vm/kernel'
 require_relative 'vm/lifecycle'
 require_relative 'vm/enacter'
+require_relative 'vm/console'
 module Gisele
   class VM
     extend Forwardable
