@@ -1,0 +1,13 @@
+task Treatment
+  seq
+    Consultation
+    par
+      seq
+        Endoscopy
+        Biopsy
+      end
+      Chemotherapy
+    end
+    Surgery
+  end
+end
