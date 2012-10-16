@@ -10,10 +10,16 @@ module Gisele
       def connect
         super
         @channel, @names = EM::Channel.new, {}
+        @listeners.each do |l|
+          em_subscribe(l)
+        end
       end
 
       def disconnect
         super
+        @listeners.each do |l|
+          em_unsubscribe(l)
+        end
         @channel = @names = nil
       end
 
@@ -33,7 +39,7 @@ module Gisele
       end
 
       def event(event)
-        info(event.to_s)
+        debug(event.to_s)
         @channel.push(event) if connected?
       rescue Exception => ex
         error error_message(ex, "Error when processing `#{event.to_s}`")
