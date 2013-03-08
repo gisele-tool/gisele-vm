@@ -6,7 +6,7 @@ To run it (the first line ensures ruby dependencies are properly installed):
 
 ```
 bundle install
-bundle exec ruby inside.rg treatment.gis
+bundle exec ruby inside.rb treatment.gis
 ```
 
 This will launch a VM instance with a console. A typical session in that console is as follows:
@@ -17,7 +17,7 @@ This will launch a VM instance with a console. A typical session in that console
 * Observe the events seen by the Listener instance
 * ...
 
-## Example:
+## Example
 
 ```
 athena:listening blambeau$ bundle exec ruby inside.rb treatment.gis
