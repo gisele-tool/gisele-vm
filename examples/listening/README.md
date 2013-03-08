@@ -17,9 +17,9 @@ This will launch a VM instance with a console. A typical session in that console
 * Observe the events seen by the Listener instance
 * ...
 
-```
-Example:
+## Example:
 
+```
 athena:listening blambeau$ bundle exec ruby inside.rb treatment.gis
 I, [2013-03-08T15:42:37.059159 #3854]  INFO -- : VM start request received, connecting.
 I, [2013-03-08T15:42:37.059270 #3854]  INFO -- : Component <Registry> connecting.
