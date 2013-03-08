@@ -1,3 +1,4 @@
+$:.unshift File.expand_path('../../../lib', __FILE__)
 require 'gisele-vm'
 
 class Listener
@@ -6,7 +7,7 @@ class Listener
     prog      = event.prog
     type      = event.type
     task_name = event.args.first
-    puts "#{task_name}:#{type} (#{prog.root})"
+    puts "SEEN: #{task_name}:#{type} (#{prog.puid} with parent #{prog.root})"
   end
   
 end
